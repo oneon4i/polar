@@ -1,0 +1,6 @@
+{
+    "author": "slavlend",
+    "group": "st",
+    "app": "example",
+    "run" = "test.eg"
+}

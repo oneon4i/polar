@@ -1,0 +1,92 @@
+use 'lib.telegram'
+use 'lib.array'
+use 'lib.map'
+
+class Handler() = {
+    func init() = {
+        this.tg = new Telegram()
+        # квизы в реальном времени #
+        # выглядят так: {'user_id': {'correct': ..., 'current_question': ...}}#
+        this.quizes_realtime = {}
+        this.quiz = [
+            {
+                'question': 'test',
+                'options': [
+                    'A',
+                    'B',
+                    'C'
+                ],
+                'correct': 0
+            },
+            {
+                'question': 'test 2',
+                'options': [
+                    'A',
+                    'B',
+                    'C'
+                ],
+                'correct': 2
+            }
+        ]
+        this.new_line = '%0A'
+    }
+
+    func start_bot() = {
+        @put('🤖 Starting bot')
+        @this.tg.start('5742807524:AAH3oScbSFmqLQQgo6r6xRRaF6S6DgAPkl4')
+        @this.tg.on_message(this, this.on_message)
+        @this.tg.on_quiz_answer(this, this.on_quiz_answer)
+    }
+
+    func on_quiz_answer(chat_id, correct) = {
+        if (@this.quizes_realtime.contains(chat_id) == true) {
+            if (correct == @this.quizes_realtime.get(chat_id).get('correct')) {
+                @this.tg.send_message(chat_id, 'Правильно! ✅')
+                @this.send_next(chat_id)
+            }
+            else {
+                @this.tg.send_message(chat_id, 'Не правильно! ❌')
+                @this.send_next(chat_id)
+            }
+        } else {
+            @this.tg.send_message(chat_id, 'Сессия истекла 🌙')
+        }
+    }
+
+    func send_next(chat_id) = {
+        if (@this.quizes_realtime.contains(chat_id) == true) {
+            last = @this.quizes_realtime.get(chat_id).get('now')
+
+            if (last + 1 < @this.quiz.size()) {
+                question = @this.quiz.get(last + 1)
+
+                @this.tg.send_quiz(chat_id, @question.get('question'), @question.get('correct'), @question.get('options'))
+
+                @this.quizes_realtime.get(chat_id).del('now')
+                @this.quizes_realtime.get(chat_id).del('correct')
+                @this.quizes_realtime.get(chat_id).add('now', last + 1)
+                @this.quizes_realtime.get(chat_id).add('correct', @question.get('correct'))
+            } else {
+                @this.tg.send_message(chat_id, 'Вы прошли квиз 🚩')
+                @this.quizes_realtime.del(chat_id)
+            }
+        } else {
+            question = @this.quiz.get(0)
+
+            @this.tg.send_quiz(chat_id, @question.get('question'), @question.get('correct'), @question.get('options'))
+            @this.quizes_realtime.add(chat_id, {'now': 0, 'correct': @question.get('correct')})
+        }
+    }
+
+    func on_message(chat_id, msg) = {
+        if (msg == '/start') {
+            @this.tg.send_message_markup(chat_id, '*Добро пожаловать в квиз бота 🐜* \n\nВыберете квиз: ', {'button_test': 'callback_test'})
+        }
+        elif (msg == '/quiz') {
+            @this.send_next(chat_id)
+        }
+    }
+}
+
+handler = new Handler()
+@handler.start_bot()
