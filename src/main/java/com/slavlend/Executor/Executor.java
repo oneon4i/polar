@@ -40,5 +40,8 @@ public class Executor {
         // интерпретация
         System.out.println(Colors.ANSI_GREEN + "🐲 Done!" + Colors.ANSI_RESET);
         System.out.println(Colors.ANSI_CYAN + "❄️ Interpreting..." + Colors.ANSI_RESET);
+
+        // интерпретируем
+        parser.execute();
     }
 }

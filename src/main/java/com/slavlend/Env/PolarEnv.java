@@ -45,4 +45,10 @@ public class PolarEnv {
             System.out.println("| " + element);
         }
     }
+
+    // получение пути к языку
+    public static String getPolarPath() {
+        // return System.getenv("POLAR_HOME");
+        return "E:\\polar-lang\\language\\src\\main\\resources\\PolarDirectory\\pkgs";
+    }
 }

@@ -66,6 +66,9 @@ public class ArithmeticExpression implements Expression {
             else if (operator.operator.equals("-")) {
                 return new PolarValue(right.asNumber() - left.asNumber());
             }
+            else if (operator.operator.equals("%")) {
+                return new PolarValue(right.asNumber() % left.asNumber());
+            }
             else {
                 PolarEnv.Crash("Cannot Concat: " + right.data + " and " + left.data, address);
                 return null;

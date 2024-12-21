@@ -150,7 +150,7 @@ class Lexer // конструктор
 
                 Next(i+1)
                 continue
-            } else if (cur == '*' || cur == '+' || cur == '-' || cur == '/') {
+            } else if (cur == '*' || cur == '+' || cur == '-' || cur == '/' || cur == '%') {
                 if (input[current + 1] != '=') {
                     if (cur == '-' && Peek(1).isDigit()) {
                         // отрицательное число
@@ -239,7 +239,7 @@ class Lexer // конструктор
 
                         Next(2)
                         continue
-                    } else {
+                    } else if (cur == '/') {
                         tokens.add(
                             Token(
                                 TokenType.ASSIGN_DIVIDE,
@@ -250,6 +250,8 @@ class Lexer // конструктор
 
                         Next(2)
                         continue
+                    } else {
+                        PolarEnv.Crash("Invalid Operator % For Assigning Value", Address(line))
                     }
                 }
             } else if (cur == ',') {
@@ -461,7 +463,7 @@ class Lexer // конструктор
                     ) != ')' && Peek(j) != ',' && Peek(j) != '.' && Peek(j) != '=' && Peek(j) != ' ' && Peek(j) != '@' && Peek(
                         j
                     ) != '\t' && Peek(j) != ':' && Peek(j) != '[' && Peek(j) != ']' && Peek(j) != '+' && Peek(j) != '-' && Peek(
-                        j) != '*' && Peek(j) != '/'
+                        j) != '*' && Peek(j) != '/' && Peek(j) != '%'
                 ) {
                     //System.out.println("%%% " + Peek(j));
                     builder.append(Peek(j))

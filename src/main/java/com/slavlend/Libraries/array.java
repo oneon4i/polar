@@ -43,6 +43,11 @@ public class array {
         return valueArrayList.get(index);
     }
 
+    // переписывание элемента по индексу
+    public void set(int index, PolarValue value) {
+        valueArrayList.set(index, value);
+    }
+
     // получение индекса элементов
     public PolarValue indexOf(PolarValue obj) {
         return new PolarValue(valueArrayList.indexOf(obj));
@@ -90,6 +95,39 @@ public class array {
         }
 
         str.append("]");
+
+        return new PolarValue(str.toString().replace("'", "\""));
+    }
+
+    // функция преобразования в строку
+    public PolarValue stringify() {
+        StringBuilder str = new StringBuilder("");
+
+        for (PolarValue value : valueArrayList) {
+            if (!value.isObject()) {
+                str.append(value.asString() + "");
+            }
+            else {
+                if (value.asObject().clazz.name.equals("Map") ||
+                        value.asObject().clazz.name.equals("Array")) {
+                    String _value = "";
+
+                    Storage.getInstance().push();
+                    _value = value.asObject().classValues.get("dumps").asFunc().call(value.asObject(), new ArrayList<>()).asString();
+                    Storage.getInstance().pop();
+
+                    str.append(_value + "");
+                }
+                else {
+                    str.append("'" + value.asString() + "'" + "");
+                }
+            }
+        }
+
+        // удаляем последнию запятую
+        if (str.toString().length() > 1) {
+            str.delete(str.toString().length() - 2, str.toString().length() - 1);
+        }
 
         return new PolarValue(str.toString().replace("'", "\""));
     }

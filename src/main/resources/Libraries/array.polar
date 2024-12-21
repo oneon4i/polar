@@ -11,6 +11,10 @@ class OBJArray() = {
         @this.javaArr.del(elem)
     }
 
+    func set(index, elem) = {
+        @this.javaArr.set(index, elem)
+    }
+
     func get(index) = {
         @back(@this.javaArr.get(index))
     }
@@ -34,6 +38,10 @@ class OBJArray() = {
     func dumps() = {
         @back(@this.javaArr.dumps())
     }
+
+    func stringify() = {
+        @back(@this.javaArr.stringify())
+    }
 }
 
 class Array() = {
@@ -53,6 +61,10 @@ class Array() = {
 
     func get(index) = {
         @back(@this.arr.get(index))
+    }
+
+    func set(index, elem) = {
+        @this.arr.set(index, elem)
     }
 
     func to_string() = {
@@ -94,11 +106,19 @@ class Array() = {
         @back(@this.arr.dumps())
     }
 
+    func stringify() = {
+        @back(@this.arr.stringify())
+    }
+
     func size() = {
         @back(@num(@this.arr.size()))
     }
 
     func contains(elem) = {
         @back(@this.arr.contains(elem))
+    }
+
+    func indexOf(elem) = {
+        @back(@this.arr.indexOf(elem))
     }
 }

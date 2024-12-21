@@ -189,24 +189,16 @@ public class Parser {
                 // аргументы
                 consume(TokenType.BRACKET);
 
-                int level = 1;
-                while (level != 0) {
-                    if (check(TokenType.BRACKET)) {
-                        String bracket = consume(TokenType.BRACKET).value;
-                        if (bracket.equals("(")) {
-                            level += 1;
-                        }
-                        else if (bracket.equals(")")) {
-                            level -= 1;
-                        }
-                    }
-                    else if (!check(TokenType.COMMA)) {
+                while (!match(")")) {
+                    if (!check(TokenType.COMMA)) {
                         params.add(parseExpression());
                     }
                     else {
                         consume(TokenType.COMMA);
                     }
                 }
+
+                consume(TokenType.BRACKET);
                 return new CallAccess(_address, null, name, params);
             }
             // переменная
@@ -567,21 +559,15 @@ public class Parser {
         consume(TokenType.BRACKET);
         // кондишены
         ArrayList<ConditionExpression> _conditions = new ArrayList<>();
-        int level = 1;
-        while (level != 0) {
-            if (check(TokenType.BRACKET)) {
-                String bracket = consume(TokenType.BRACKET).value;
-                if (bracket.equals("(")) {
-                    level += 1;
-                } else if (bracket.equals(")")) {
-                    level -= 1;
-                }
-            } else if (!check(TokenType.AND)) {
+        while (!match(")")) {
+            if (!check(TokenType.AND)) {
                 _conditions.add((ConditionExpression) parseConditionalExpression());
             } else {
                 consume(TokenType.AND);
             }
         }
+        // брэкет
+        consume(TokenType.BRACKET);
         // брэйкс
         consume(TokenType.BRACE);
         // стэйтмент вайл
@@ -689,20 +675,9 @@ public class Parser {
         // кондишены
         ArrayList<ConditionExpression> conditions = new ArrayList<>();
         // уровень скобок
-        int level = 1;
-        while (level != 0) {
-            // ( )
-            if (check(TokenType.BRACKET)) {
-                String bracket = consume(TokenType.BRACKET).value;
-                if (bracket.equals("(")) {
-                    level += 1;
-                } else if (bracket.equals(")")) {
-                    level -= 1;
-                }
-
-            }
+        while (!match(")")) {
             // and
-            else if (check(TokenType.AND)) {
+            if (check(TokenType.AND)) {
                 consume(TokenType.AND);
             }
             // expr
@@ -710,6 +685,8 @@ public class Parser {
                 conditions.add((ConditionExpression) parseConditionalExpression());
             }
         }
+        // брэкет
+        consume(TokenType.BRACKET);
         // брэйс
         consume(TokenType.BRACE);
         // иф стэйтмент
@@ -732,21 +709,15 @@ public class Parser {
                 consume(TokenType.BRACKET);
                 // кондишены
                 ArrayList<ConditionExpression> _conditions = new ArrayList<>();
-                level = 1;
-                while (level != 0) {
-                    if (check(TokenType.BRACKET)) {
-                        String bracket = consume(TokenType.BRACKET).value;
-                        if (bracket.equals("(")) {
-                            level += 1;
-                        } else if (bracket.equals(")")) {
-                            level -= 1;
-                        }
-                    } else if (!check(TokenType.AND)) {
+                while (!match(")")) {
+                    if (!check(TokenType.AND)) {
                         _conditions.add((ConditionExpression) parseConditionalExpression());
                     } else {
                         consume(TokenType.AND);
                     }
                 }
+                // брэкет
+                consume(TokenType.BRACKET);
                 // брэйс
                 consume(TokenType.BRACE);
                 // иф стэйтмент
@@ -833,6 +804,7 @@ public class Parser {
         // or
         // @%object%.%func%
         // колл
+        // колл
         consume(TokenType.CALL);
         // айди или new (юзер дефайнед функции)
         if (check(TokenType.ID) || check(TokenType.NEW)) {
@@ -896,24 +868,16 @@ public class Parser {
         // параметры
         ArrayList<Expression> params = new ArrayList<>();
         // конструктор
-        int level = 1;
-        while (level != 0) {
-            if (check(TokenType.BRACKET)) {
-                String bracket = consume(TokenType.BRACKET).value;
-                if (bracket.equals("(")) {
-                    level += 1;
-                }
-                else if (bracket.equals(")")) {
-                    level -= 1;
-                }
-            }
-            else if (!check(TokenType.COMMA)) {
+        while (!match(")")) {
+            if (!check(TokenType.COMMA)) {
                 params.add(parseExpression());
             }
             else {
                 consume(TokenType.COMMA);
             }
         }
+        // брэкет
+        consume(TokenType.BRACKET);
         // экспрешенн
         return new ObjectExpression(clazz, params);
     }
@@ -956,7 +920,7 @@ public class Parser {
     private Expression parseMultiplicationDivision() {
         Expression expr = parsePrimary();
 
-        while (check(TokenType.OPERATOR) && (match("*") || match("/"))) {
+        while (check(TokenType.OPERATOR) && (match("*") || match("/") || match("%"))) {
             Operator operator = new Operator(consume(TokenType.OPERATOR).value);
             Expression right = parsePrimary();
             expr = new ArithmeticExpression(expr, operator, right);
@@ -967,7 +931,7 @@ public class Parser {
 
     // Парсинг умножения и деления с экспрешенном
     private Expression parseMultiplicationDivisionExpr(Expression expr) {
-        while (check(TokenType.OPERATOR) && (match("*") || match("/"))) {
+        while (check(TokenType.OPERATOR) && (match("*") || match("/") || match("%"))) {
             Operator operator = new Operator(consume(TokenType.OPERATOR).value);
             Expression right = parsePrimary();
             expr = new ArithmeticExpression(expr, operator, right);
@@ -1227,6 +1191,7 @@ public class Parser {
 
     // парсинг праймари экспрешенна
     public Expression parsePrimary() {
+
         // Проверка вызова функции
         if (check(TokenType.CALL)) {
             return (Expression) parseCall();
@@ -1420,7 +1385,7 @@ public class Parser {
         // токен
         Token token = tokens.get(current);
         // инфа токена
-        return "(" + token.type + ", " + token.value + ")" /*+ " №" + current + " L:"*/;
+        return "(" + token.type + ", " + token.value + ", "  + token.line + ")" /*+ " №" + current + " L:"*/;
     }
 
     // загрузка классов библиотеки в кучу
