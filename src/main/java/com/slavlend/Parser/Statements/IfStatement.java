@@ -1,6 +1,7 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
+import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ConditionExpression;
@@ -13,7 +14,7 @@ public class IfStatement implements Statement {
     // в ином случае
     public IfStatement _else = null;
     // кодишены для ифа
-    public ArrayList<ConditionExpression> conditions = new ArrayList<>();
+    public ArrayList<Expression> conditions = new ArrayList<>();
     // адресс
     private Address address = App.parser.address();
 
@@ -49,7 +50,7 @@ public class IfStatement implements Statement {
 
     // кодишены
     public boolean conditions() {
-        for (ConditionExpression e : conditions) {
+        for (Expression e : conditions) {
             PolarValue v = e.evaluate();
             if (!v.asBool()) {
                 return false;
@@ -87,7 +88,7 @@ public class IfStatement implements Statement {
     }
 
     // конструктор
-    public IfStatement(ArrayList<ConditionExpression> expressions) {
+    public IfStatement(ArrayList<Expression> expressions) {
         this.conditions = expressions;
     }
 }

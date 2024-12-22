@@ -69,7 +69,7 @@ for (i = 0, i < 100) {
 }
 
 # Вывод анимации в консоли #
-while (1 == 1) {
+while ((1 == 1)) {
     each(frame, frames) {
         for (i = 0, i < @frame.size()+1) {
             @put('')

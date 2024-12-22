@@ -97,7 +97,7 @@ public class Parser {
         }
     }
 
-    public Operator parseConditionalOperator() {
+    public Operator condOperator() {
         // ==
         if (check(TokenType.EQUAL)) {
             return new Operator(consume(TokenType.EQUAL).value);
@@ -131,47 +131,21 @@ public class Parser {
         return null;
     }
 
-    public Expression parseConditionalExpression() {
-        // левые экспрешен
-        Expression _l = parseExpression(false);
-        // оператор
-        Operator _o = parseConditionalOperator();
-        // правый экспрешен
-        Expression _r = parseExpression(false);
-        // кондишен
-        return new ConditionExpression(_l, _o, _r);
-    }
-
-    public Expression parseConditionalExpressionExpr(Expression _l) {
-        // оператор
-        Operator _o = parseConditionalOperator();
-        // правый экспрешен
-        Expression _r = parseExpression(false);
-        // кондишен
-        return new ConditionExpression(_l, _o, _r);
-    }
-
-    // айди функции для её вызова
-    public String parseCallId() {
-        // текущее имя
-        String name = consume(TokenType.ID).value;
-
-        // нет точки -> возвращаем имя
-        if (!check(TokenType.DOT)) {
-            return name;
+    public Expression conditional() {
+        // левый экспрешен
+        Expression _l = additive();
+        // если это кондишенал то парсим
+        if (check(TokenType.LOWER_EQUAL) || check(TokenType.BIGGER_EQUAL) || check(TokenType.EQUAL) ||
+            check(TokenType.NOT_EQUAL) || check(TokenType.BIGGER_EQUAL) || check(TokenType.LOWER) || check(TokenType.IS)) {
+            // оператор
+            Operator _o = condOperator();
+            // правый экспрешен
+            Expression _r = additive();
+            // кондишен
+            return new ConditionExpression(_l, _o, _r);
         }
-        else {
-            // если еми равно this.
-            if (name.equals("this")) {
-                // добавляем в дату
-                name += consume(TokenType.DOT).value + consume(TokenType.ID).value;
-            }
-            else {
-                return name;
-            }
-        }
-
-        return name;
+        // в ином случае возвращаем
+        return _l;
     }
 
     // парсинг акссесса
@@ -208,7 +182,7 @@ public class Parser {
         }
         else {
             // new объект
-            return new TempAccess(_address, null, (ObjectExpression) parseObjectExpression());
+            return new TempAccess(_address, null, (ObjectExpression) objectExpr());
         }
     }
 
@@ -561,7 +535,7 @@ public class Parser {
         ArrayList<ConditionExpression> _conditions = new ArrayList<>();
         while (!match(")")) {
             if (!check(TokenType.AND)) {
-                _conditions.add((ConditionExpression) parseConditionalExpression());
+                _conditions.add((ConditionExpression) conditional());
             } else {
                 consume(TokenType.AND);
             }
@@ -602,7 +576,7 @@ public class Parser {
         // левый экспрешен
         AccessExpression _l = parseAccess();
         // оператор
-        Operator _o = parseConditionalOperator();
+        Operator _o = condOperator();
         // правый экспрешен
         Expression _r = parseExpression();
         // кондишен
@@ -658,7 +632,7 @@ public class Parser {
         // скобка
         consume(TokenType.BRACKET);
         // экспрешенн
-        ConditionExpression expr = (ConditionExpression) parseConditionalExpression();
+        ConditionExpression expr = (ConditionExpression) conditional();
         // скобка
         consume(TokenType.BRACKET);
         // возвращаем
@@ -673,7 +647,7 @@ public class Parser {
         // скобка
         consume(TokenType.BRACKET);
         // кондишены
-        ArrayList<ConditionExpression> conditions = new ArrayList<>();
+        ArrayList<Expression> conditions = new ArrayList<>();
         // уровень скобок
         while (!match(")")) {
             // and
@@ -682,7 +656,7 @@ public class Parser {
             }
             // expr
             else {
-                conditions.add((ConditionExpression) parseConditionalExpression());
+                conditions.add(conditional());
             }
         }
         // брэкет
@@ -708,10 +682,10 @@ public class Parser {
                 // скобка
                 consume(TokenType.BRACKET);
                 // кондишены
-                ArrayList<ConditionExpression> _conditions = new ArrayList<>();
+                ArrayList<Expression> _conditions = new ArrayList<>();
                 while (!match(")")) {
                     if (!check(TokenType.AND)) {
-                        _conditions.add((ConditionExpression) parseConditionalExpression());
+                        _conditions.add(conditional());
                     } else {
                         consume(TokenType.AND);
                     }
@@ -738,7 +712,7 @@ public class Parser {
                 // брэйс
                 consume(TokenType.BRACE);
                 // кондишены
-                ArrayList<ConditionExpression> conditionalExpressions = new ArrayList<ConditionExpression>();
+                ArrayList<Expression> conditionalExpressions = new ArrayList<Expression>();
                 conditionalExpressions.add(new ConditionExpression(new NumberExpression("0"), new Operator("=="), new NumberExpression("0")));
                 // стэйтмент
                 IfStatement _statement = new IfStatement(conditionalExpressions);
@@ -857,7 +831,7 @@ public class Parser {
     }
 
     // парсинг создания объекта
-    public Expression parseObjectExpression() {
+    public Expression objectExpr() {
         // паттерн
         // ... = new %class%()
         consume(TokenType.NEW);
@@ -883,7 +857,7 @@ public class Parser {
     }
 
     // Парсинг рефлексийного выражения
-    private Expression parseReflectExpression() {
+    private Expression reflectExpr() {
         // рефлексия
         consume(TokenType.REFLECT);
         // имя класса
@@ -893,23 +867,12 @@ public class Parser {
     }
 
     // Парсинг сложения и вычитания
-    private Expression parseAdditionSubtraction() {
-        Expression expr = parseMultiplicationDivision();
+    private Expression additive() {
+        Expression expr = multiplicative();
 
         while (check(TokenType.OPERATOR) && (match("+") || match("-"))) {
             Operator operator = new Operator(consume(TokenType.OPERATOR).value);
-            Expression right = parseMultiplicationDivision();
-            expr = new ArithmeticExpression(expr, operator, right);
-        }
-
-        return expr;
-    }
-
-    // Парсинг сложения и вычитания с экспрешенном
-    private Expression parseAdditionSubtractionExpr(Expression expr) {
-        while (check(TokenType.OPERATOR) && (match("+") || match("-"))) {
-            Operator operator = new Operator(consume(TokenType.OPERATOR).value);
-            Expression right = parseMultiplicationDivision();
+            Expression right = multiplicative();
             expr = new ArithmeticExpression(expr, operator, right);
         }
 
@@ -917,7 +880,7 @@ public class Parser {
     }
 
     // Парсинг умножения и деления
-    private Expression parseMultiplicationDivision() {
+    private Expression multiplicative() {
         Expression expr = parsePrimary();
 
         while (check(TokenType.OPERATOR) && (match("*") || match("/") || match("%"))) {
@@ -929,264 +892,9 @@ public class Parser {
         return expr;
     }
 
-    // Парсинг умножения и деления с экспрешенном
-    private Expression parseMultiplicationDivisionExpr(Expression expr) {
-        while (check(TokenType.OPERATOR) && (match("*") || match("/") || match("%"))) {
-            Operator operator = new Operator(consume(TokenType.OPERATOR).value);
-            Expression right = parsePrimary();
-            expr = new ArithmeticExpression(expr, operator, right);
-        }
-
-        return expr;
-    }
-
     // парсинг экспрешенн
     public Expression parseExpression() {
-        // вызов
-        if (check(TokenType.CALL)) {
-            // левая часть
-            Expression l = (Expression) parseCall();
-            // оператор с правой частью
-            if (check(TokenType.OPERATOR)) {
-                return parseAdditionSubtractionExpr(parseMultiplicationDivisionExpr(l));
-            }
-            else if (check(TokenType.EQUAL) || check(TokenType.BIGGER) || check(TokenType.LOWER) ||
-                    check(TokenType.LOWER_EQUAL) || check(TokenType.BIGGER_EQUAL)) {
-                return parseConditionalExpressionExpr(l);
-            }
-            else {
-                return l;
-            }
-        }
-        // рефлексийный вызов
-        /*
-        if (check(TokenType.RCALL)) {
-            // левая часть
-            Expression l = (Expression) parseRCall();
-            // оператор с правой частью
-            if (check(TokenType.OPERATOR)) {
-                return parseAdditionSubtractionExpr(parseMultiplicationDivisionExpr(l));
-            }
-            else if (check(TokenType.EQUAL) || check(TokenType.BIGGER) || check(TokenType.LOWER) ||
-                    check(TokenType.LOWER_EQUAL) || check(TokenType.BIGGER_EQUAL)) {
-                return parseConditionalExpressionExpr(l);
-            }
-            else {
-                return l;
-            }
-        }
-         */
-        // нулл
-        if (check(TokenType.NIL)) {
-            return parsePrimary();
-        }
-        // создание рефлексийного объекта
-        if (check(TokenType.REFLECT)) {
-            return parseReflectExpression();
-        }
-        // айди без оператора
-        if (check(TokenType.ID) && !next(TokenType.OPERATOR)) {
-            AccessExpression expr = parseAccess();
-            if (check(TokenType.OPERATOR)) {
-                return parseAdditionSubtractionExpr(parseMultiplicationDivisionExpr(expr));
-            } else if (check(TokenType.EQUAL) || check(TokenType.BIGGER) || check(TokenType.LOWER) ||
-                check(TokenType.LOWER_EQUAL) || check(TokenType.BIGGER_EQUAL)) {
-                return parseConditionalExpressionExpr(expr);
-            }
-            return expr;
-        }
-        // нью без оператора
-        if (check(TokenType.NEW) && !next(TokenType.OPERATOR)) {
-            // создание объекта
-            ObjectExpression expression = (ObjectExpression) parseObjectExpression();
-            // айди экспрешенн по обджект экспрешенну
-            if (check(TokenType.DOT)) {
-                return parseAccess();
-            }
-            else {
-                return expression;
-            }
-        }
-        // текстовое выражение
-        if (check(TokenType.TEXT) && !next(TokenType.OPERATOR)) {
-            return new TextExpression(consume(TokenType.TEXT).value);
-        }
-        // числовое выражение
-        if (check(TokenType.NUM) && !next(TokenType.OPERATOR)) {
-            return new NumberExpression(consume(TokenType.NUM).value);
-        }
-        // булево выражение
-        if (check(TokenType.BOOL) && !next(TokenType.OPERATOR)) {
-            return new BoolExpression(consume(TokenType.BOOL).value);
-        }
-        // тернарное выражение
-        if (check(TokenType.TERNARY)) {
-            // экспрешенн
-            Expression expr = parsePrimary();
-            // оператор
-            if (check(TokenType.OPERATOR)) {
-                return parseAdditionSubtractionExpr(parseMultiplicationDivisionExpr(expr));
-            }
-            else if (check(TokenType.EQUAL) || check(TokenType.BIGGER) || check(TokenType.LOWER) ||
-                    check(TokenType.LOWER_EQUAL) || check(TokenType.BIGGER_EQUAL)) {
-                return parseConditionalExpressionExpr(expr);
-            }
-            else {
-                return expr;
-            }
-        }
-        // скобка
-        if (check(TokenType.BRACKET)) {
-            return parseAdditionSubtraction();
-        }
-        // q_bracket (container) - контейнерная скобка для списка
-        if (check(TokenType.Q_BRACKET)) {
-            return parsePrimary();
-        }
-        // brace (map container) - контейнерная фигурная скобка для мапы
-        if (check(TokenType.BRACE)) {
-            return parsePrimary();
-        }
-        // числовое выражение и оператор
-        if (check(TokenType.NUM) && next(TokenType.OPERATOR)) {
-            return parseAdditionSubtraction();
-        }
-        // айди выражение и оператор
-        if (check(TokenType.ID) && next(TokenType.OPERATOR)) {
-            return parseAdditionSubtraction();
-        }
-        // текстовое выражение и оператор
-        if (check(TokenType.TEXT) && next(TokenType.OPERATOR)) {
-            return parseAdditionSubtraction();
-        }
-        // нью выражение о оператор -> ошибка
-        if (check(TokenType.NEW) && next(TokenType.OPERATOR)) {
-            printTrace("Cannot Use Keyword (new) With Any Operator: " + tokenInfo());
-        }
-
-        // ошибка не найден экспрешен для токена
-        printTrace("Expression For Token Not Found: " + tokenInfo());
-        return null;
-    }
-
-    public Expression parseExpression(boolean withConditions) {
-        // если с кондишенами
-        if (withConditions) { return parseExpression(); }
-        // если без
-        // вызов
-        if (check(TokenType.CALL)) {
-            // левая часть
-            Expression l = (Expression) parseCall();
-            // оператор с правой частью
-            if (check(TokenType.OPERATOR)) {
-                return parseAdditionSubtractionExpr(parseMultiplicationDivisionExpr(l));
-            }
-            else {
-                return l;
-            }
-        }
-        // рефлексийный вызов
-        /*
-        if (check(TokenType.RCALL)) {
-            // левая часть
-            Expression l = (Expression) parseRCall();
-            // оператор с правой частью
-            if (check(TokenType.OPERATOR)) {
-                return parseAdditionSubtractionExpr(parseMultiplicationDivisionExpr(l));
-            }
-            else if (check(TokenType.EQUAL) || check(TokenType.BIGGER) || check(TokenType.LOWER) ||
-                    check(TokenType.LOWER_EQUAL) || check(TokenType.BIGGER_EQUAL)) {
-                return parseConditionalExpressionExpr(l);
-            }
-            else {
-                return l;
-            }
-        }
-         */
-        // нулл
-        if (check(TokenType.NIL)) {
-            return parsePrimary();
-        }
-        // создание рефлексийного объекта
-        if (check(TokenType.REFLECT)) {
-            return parseReflectExpression();
-        }
-        // айди без оператора
-        if (check(TokenType.ID) && !next(TokenType.OPERATOR)) {
-            AccessExpression expr = parseAccess();
-            if (check(TokenType.OPERATOR)) {
-                return parseAdditionSubtractionExpr(parseMultiplicationDivisionExpr(expr));
-            }
-            return expr;
-        }
-        // нью без оператора
-        if (check(TokenType.NEW) && !next(TokenType.OPERATOR)) {
-            // создание объекта
-            ObjectExpression expression = (ObjectExpression) parseObjectExpression();
-            // айди экспрешенн по обджект экспрешенну
-            if (check(TokenType.DOT)) {
-                return parseAccess();
-            }
-            else {
-                return expression;
-            }
-        }
-        // текстовое выражение
-        if (check(TokenType.TEXT) && !next(TokenType.OPERATOR)) {
-            return new TextExpression(consume(TokenType.TEXT).value);
-        }
-        // числовое выражение
-        if (check(TokenType.NUM) && !next(TokenType.OPERATOR)) {
-            return new NumberExpression(consume(TokenType.NUM).value);
-        }
-        // булево выражение
-        if (check(TokenType.BOOL) && !next(TokenType.OPERATOR)) {
-            return new BoolExpression(consume(TokenType.BOOL).value);
-        }
-        // тернарное выражение
-        if (check(TokenType.TERNARY)) {
-            // экспрешенн
-            Expression expr = parsePrimary();
-            // оператор
-            if (check(TokenType.OPERATOR)) {
-                return parseAdditionSubtractionExpr(parseMultiplicationDivisionExpr(expr));
-            }
-            else {
-                return expr;
-            }
-        }
-        // скобка
-        if (check(TokenType.BRACKET)) {
-            return parseAdditionSubtraction();
-        }
-        // q_bracket (container) - контейнерная скобка для списка
-        if (check(TokenType.Q_BRACKET)) {
-            return parsePrimary();
-        }
-        // brace (map container) - контейнерная фигурная скобка для мапы
-        if (check(TokenType.BRACE)) {
-            return parsePrimary();
-        }
-        // числовое выражение и оператор
-        if (check(TokenType.NUM) && next(TokenType.OPERATOR)) {
-            return parseAdditionSubtraction();
-        }
-        // айди выражение и оператор
-        if (check(TokenType.ID) && next(TokenType.OPERATOR)) {
-            return parseAdditionSubtraction();
-        }
-        // текстовое выражение и оператор
-        if (check(TokenType.TEXT) && next(TokenType.OPERATOR)) {
-            return parseAdditionSubtraction();
-        }
-        // нью выражение о оператор -> ошибка
-        if (check(TokenType.NEW) && next(TokenType.OPERATOR)) {
-            printTrace("Cannot Use Keyword (new) With Any Operator: " + tokenInfo());
-        }
-
-        // ошибка не найден экспрешен для токена
-        printTrace("Expression For Token Not Found: " + tokenInfo());
-        return null;
+        return conditional();
     }
 
     // парсинг праймари экспрешенна
@@ -1204,7 +912,7 @@ public class Parser {
          */
         // Проверка создания объекта
         if (check(TokenType.NEW)) {
-            return parseObjectExpression();
+            return objectExpr();
         }
         // Обработка идентификаторов
         if (check(TokenType.ID)) {
@@ -1225,7 +933,7 @@ public class Parser {
         }
         // Обработка рефлексии
         if (check(TokenType.REFLECT)) {
-            return parseReflectExpression();
+            return reflectExpr();
         }
         // Обработка булевых литералов
         if (check(TokenType.BOOL)) {
@@ -1256,7 +964,7 @@ public class Parser {
         if (check(TokenType.TERNARY)) {
             consume(TokenType.TERNARY); // Вопросительный знак
             consume(TokenType.BRACKET); // Открывающая скобка
-            Expression expr = parseConditionalExpression();
+            Expression expr = conditional();
             consume(TokenType.BRACKET); // Закрывающая скобка
             consume(TokenType.BRACKET); // Открывающая скобка
             Expression lExpr = parseExpression();
