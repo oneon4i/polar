@@ -6,7 +6,6 @@ import com.slavlend.Parser.Expressions.*;
 import com.slavlend.Lexer.Token;
 import com.slavlend.Parser.Expressions.Access.*;
 import com.slavlend.Parser.Statements.*;
-// import com.slavlend.Parser.Statements.Assings.*;
 import com.slavlend.Parser.Statements.Match.CaseStatement;
 import com.slavlend.Parser.Statements.Match.DefaultStatement;
 import com.slavlend.Parser.Statements.Match.MatchStatement;
@@ -26,29 +25,29 @@ public class Parser {
     // текущий токен
     private int current = 0;
     // библиотеки
-    public static HashMap<String, String> libraries = new HashMap<String, String>() {{
-            put("lib.random", "Libraries/random.polar");
-            put("lib.array", "Libraries/array.polar");
-            put("lib.map", "Libraries/map.polar");
-            put("lib.telegram", "Libraries/telegram.polar");
-            put("lib.tests", "Libraries/tests.polar");
-            put("lib.log", "Libraries/logger.polar");
-            put("lib.files", "Libraries/files.polar");
-            put("lib.sys", "Libraries/sys.polar");
-            put("lib.json", "Libraries/json.polar");
-            put("lib.tasks", "Libraries/tasks.polar");
-            put("lib.str", "Libraries/str.polar");
-            put("lib.math", "Libraries/math.polar");
-            put("lib.ant", "Libraries/ant.polar");
-            put("lib.graphics", "Libraries/graphics.polar");
-            put("lib.console", "Libraries/console.polar");
-            put("lib.time", "Libraries/time.polar");
-            put("lib.crypto", "Libraries/crypto.polar");
-            put("lib.http", "Libraries/http.polar");
-            put("lib.http.server", "Libraries/httpserver.polar");
+    public static HashMap<String, String> libraries = new HashMap<>() {{
+        put("lib.random", "Libraries/random.polar");
+        put("lib.array", "Libraries/array.polar");
+        put("lib.map", "Libraries/map.polar");
+        put("lib.telegram", "Libraries/telegram.polar");
+        put("lib.tests", "Libraries/tests.polar");
+        put("lib.log", "Libraries/logger.polar");
+        put("lib.files", "Libraries/files.polar");
+        put("lib.sys", "Libraries/sys.polar");
+        put("lib.json", "Libraries/json.polar");
+        put("lib.tasks", "Libraries/tasks.polar");
+        put("lib.str", "Libraries/str.polar");
+        put("lib.math", "Libraries/math.polar");
+        put("lib.ant", "Libraries/ant.polar");
+        put("lib.graphics", "Libraries/graphics.polar");
+        put("lib.console", "Libraries/console.polar");
+        put("lib.time", "Libraries/time.polar");
+        put("lib.crypto", "Libraries/crypto.polar");
+        put("lib.http", "Libraries/http.polar");
+        put("lib.http.server", "Libraries/httpserver.polar");
     }};
 
-    // путь эвайронмента
+    // путь эвайронмента (окружения)
     private String environmentPath;
 
     // конструктор
@@ -69,66 +68,30 @@ public class Parser {
 
             // парсим стэйтменты
             while (current < tokens.size()) {
-                statement.add(parseStatement());
+                statement.add(statement());
             }
 
             // экзекьютим
             statement.execute();
         } catch (Exception e) {
-            throw e;
-        }
-    }
-
-    // парсинг
-    public BlockStatement parse() {
-        try {
-            BlockStatement statement = new BlockStatement();
-
-            // парсим стэйтменты
-            while (current < tokens.size()) {
-                statement.add(parseStatement());
-            }
-
-            // экзекьютим
-            // statement.execute();
-            return statement;
-        } catch (Exception e) {
-            throw e;
+            PolarEnv.Crash("Parsing Error: " + e.getMessage(), address());
         }
     }
 
     public Operator condOperator() {
-        // ==
-        if (check(TokenType.EQUAL)) {
-            return new Operator(consume(TokenType.EQUAL).value);
-        }
-        // !=
-        else if (check(TokenType.NOT_EQUAL)) {
-            return new Operator(consume(TokenType.NOT_EQUAL).value);
-        }
-        // >
-        else if (check(TokenType.BIGGER)) {
-            return new Operator(consume(TokenType.BIGGER).value);
-        }
-        // <
-        else if (check(TokenType.LOWER)) {
-            return new Operator(consume(TokenType.LOWER).value);
-        }
-        // >=
-        else if (check(TokenType.BIGGER_EQUAL)) {
-            return new Operator(consume(TokenType.BIGGER_EQUAL).value);
-        }
-        // <=
-        else if (check(TokenType.LOWER_EQUAL)) {
-            return new Operator(consume(TokenType.LOWER_EQUAL).value);
-        }
-        // is
-        else if (check(TokenType.IS)) {
-            return new Operator(consume(TokenType.IS).value);
-        }
-        // неизвестный оператор
-        PolarEnv.Crash("Invalid Conditional Operator: " + tokenInfo(), new Address(tokens.get(current).line));
-        return null;
+        // перебор операторов
+        return switch (tokens.get(current).type) {
+            case EQUAL -> new Operator(consume(TokenType.EQUAL).value);
+            case NOT_EQUAL -> new Operator(consume(TokenType.NOT_EQUAL).value);
+            case LOWER -> new Operator(consume(TokenType.LOWER).value);
+            case BIGGER -> new Operator(consume(TokenType.BIGGER).value);
+            case LOWER_EQUAL -> new Operator(consume(TokenType.LOWER_EQUAL).value);
+            case BIGGER_EQUAL -> new Operator(consume(TokenType.BIGGER_EQUAL).value);
+            default -> {
+                PolarEnv.Crash("Invalid Conditional Operator: " + tokenInfo(), new Address(tokens.get(current).line));
+                yield null;
+            }
+        };
     }
 
     public Expression conditional() {
@@ -149,7 +112,7 @@ public class Parser {
     }
 
     // парсинг акссесса
-    public Access parseOneAccess() {
+    public Access accessPart() {
         // адресс
         Address _address = address();
         // дальнейшие действия
@@ -191,20 +154,20 @@ public class Parser {
         AccessExpression expr = new AccessExpression(address(), null);
 
         // добавляем акссесс
-        expr.Add(parseOneAccess());
+        expr.Add(accessPart());
 
         while (check(TokenType.DOT)) {
             // консьюм
             consume(TokenType.DOT);
             // добавляем акссесс
-            expr.Add(parseOneAccess());
+            expr.Add(accessPart());
         }
 
         return expr;
     }
 
     // парсим функции
-    public Statement parseFunction() {
+    public Statement function() {
         // паттерн
         // func (...) = { ... }
         consume(TokenType.FUNC);
@@ -232,7 +195,7 @@ public class Parser {
         consume(TokenType.BRACE);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
-            Statement statement = parseStatement();
+            Statement statement = statement();
             functionStatement.add(statement);
         }
         // брэйс
@@ -242,52 +205,46 @@ public class Parser {
     }
 
     // парсим стэйтмент
-    public Statement parseStatement() {
+    public Statement statement() {
         // вызов функции
         if (check(TokenType.CALL)) {
-            return parseCall();
+            return call();
         }
-        // вызов рефлексированной функции
-        /*
-        if (check(TokenType.RCALL)) {
-            return parseRCall();
-        }
-        */
         // стэйтмент if
         if (check(TokenType.IF)) {
-            return parseIf();
+            return ifElifElse();
         }
         // стэйтмент match
         if (check(TokenType.MATCH)) {
             // мэтч
-            return parseMatch();
+            return match();
         }
         // стэйтмент while
         if (check(TokenType.WHILE)) {
-            return parseWhile();
+            return whileLoop();
         }
         // стэйтмент for
         if (check(TokenType.FOR)) {
-            return parseFor();
+            return forLoop();
         }
         // стэйтмент each
         if (check(TokenType.EACH)) {
-            return parseEach();
+            return eachLoop();
         }
         // стэйтмент ассерт
         if (check(TokenType.ASSERT)) {
-            return parseAssert();
+            return polarAssert();
         }
         // стэйтмент функции
         if (check(TokenType.FUNC)) {
-            FunctionStatement func = (FunctionStatement) parseFunction();
+            FunctionStatement func = (FunctionStatement) function();
             func.putToFunction();
 
             return func;
         }
         // стэйтмент класса
         if (check(TokenType.CLASS)) {
-            return parseClass();
+            return polarClass();
         }
         // стэйтмент id
         if (check(TokenType.ID)) {
@@ -340,7 +297,7 @@ public class Parser {
             }
             else {
                 // неизвестный оператор кондишена
-                printTrace("Cannot Use Id Like Statement If Its Not For Assignment Or Call: " + tokenInfo());
+                error("Cannot Use Id Like Statement If Its Not For Assignment Or Call: " + tokenInfo());
 
                 return null;
             }
@@ -372,13 +329,13 @@ public class Parser {
         }
         else {
             // неизвестный токен
-            printTrace("Invalid Statement Token: " + tokenInfo());
+            error("Invalid Statement Token: " + tokenInfo());
             return null;
         }
     }
 
     // парсинг кейса
-    private Statement parseCase() {
+    private Statement matchCase() {
         // кейс
         consume(TokenType.CASE);
         // скобка
@@ -393,7 +350,7 @@ public class Parser {
         CaseStatement statement = new CaseStatement(expr);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
-            statement.add(parseStatement());
+            statement.add(statement());
         }
         // брэйс
         consume(TokenType.BRACE);
@@ -402,7 +359,7 @@ public class Parser {
     }
 
     // парсинг дефолта
-    private Statement parseDefault() {
+    private Statement matchDefault() {
         // дефолт
         consume(TokenType.DEFAULT);
         // тело функции
@@ -411,7 +368,7 @@ public class Parser {
         DefaultStatement statement = new DefaultStatement();
         // стэйтменты
         while (!check(TokenType.BRACE)) {
-            statement.add(parseStatement());
+            statement.add(statement());
         }
         // брэйс
         consume(TokenType.BRACE);
@@ -420,7 +377,7 @@ public class Parser {
     }
 
     // парсинг мэтча
-    private Statement parseMatch() {
+    private Statement match() {
         // мэтч
         consume(TokenType.MATCH);
         // скобка
@@ -435,11 +392,11 @@ public class Parser {
         consume(TokenType.BRACE);
         // кейсы
         while (check(TokenType.CASE)) {
-            statement.add(parseCase());
+            statement.add(matchCase());
         }
         // дефолт
         if (check(TokenType.DEFAULT)) {
-            statement.add(parseDefault());
+            statement.add(matchDefault());
         }
         // брэйс
         consume(TokenType.BRACE);
@@ -448,7 +405,7 @@ public class Parser {
     }
 
     // парсинг класса
-    private Statement parseClass() {
+    private Statement polarClass() {
         // паттерн
         // class (...) = { ... }
         consume(TokenType.CLASS);
@@ -479,13 +436,13 @@ public class Parser {
             // функция
             if (check(TokenType.FUNC)) {
                 // функция
-                Statement statement = parseFunction();
+                Statement statement = function();
                 // добавляем в класс
                 if (statement instanceof FunctionStatement) {
                     classStatement.add((FunctionStatement) statement);
                 }
                 else {
-                    printTrace("Cannot Use Any Statements Except Functions: " + tokenInfo());
+                    error("Cannot Use Any Statements Except Functions: " + tokenInfo());
                     return null;
                 }
             }
@@ -495,13 +452,13 @@ public class Parser {
                 // модульная функция
                 if (check(TokenType.FUNC)) {
                     // функция
-                    Statement statement = parseFunction();
+                    Statement statement = function();
                     // добавляем
                     if (statement instanceof FunctionStatement) {
                         classStatement.addModule((FunctionStatement) statement);
                     }
                     else {
-                        printTrace("Cannot Use Any Statements Except Functions: " + tokenInfo());
+                        error("Cannot Use Any Statements Except Functions: " + tokenInfo());
                         return null;
                     }
                 }
@@ -525,7 +482,7 @@ public class Parser {
     }
 
     // парсинг while
-    private Statement parseWhile() {
+    private Statement whileLoop() {
         // паттерн
         // while (...) { ... }
         consume(TokenType.WHILE);
@@ -548,7 +505,7 @@ public class Parser {
         WhileStatement statement = new WhileStatement(_conditions);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
-            statement.add(parseStatement());
+            statement.add(statement());
         }
         // брэйс
         consume(TokenType.BRACE);
@@ -557,7 +514,7 @@ public class Parser {
     }
 
     // парсинг for
-    private Statement parseFor() {
+    private Statement forLoop() {
         // паттерн
         // for (... = ..., ... operator ...) { ... }
         consume(TokenType.FOR);
@@ -589,7 +546,7 @@ public class Parser {
         ForStatement statement = new ForStatement(_conditions, assignVariableName, assignVariableExpr);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
-            statement.add(parseStatement());
+            statement.add(statement());
         }
         // брэйс
         consume(TokenType.BRACE);
@@ -598,7 +555,7 @@ public class Parser {
     }
 
     // парсинг each
-    private Statement parseEach() {
+    private Statement eachLoop() {
         // паттерн
         // each (elem, lst) { ... }
         consume(TokenType.EACH);
@@ -616,7 +573,7 @@ public class Parser {
         EachStatement statement = new EachStatement(lst, elem);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
-            statement.add(parseStatement());
+            statement.add(statement());
         }
         // брэйс
         consume(TokenType.BRACE);
@@ -625,7 +582,7 @@ public class Parser {
     }
 
     // парсинг ассерта
-    private Statement parseAssert() {
+    private Statement polarAssert() {
         // паттерн
         // assert (... = ...)
         consume(TokenType.ASSERT);
@@ -640,7 +597,7 @@ public class Parser {
     }
 
     // парсинг ифа
-    private Statement parseIf() {
+    private Statement ifElifElse() {
         // паттерн
         // if (...) { ... }
         consume(TokenType.IF);
@@ -668,7 +625,7 @@ public class Parser {
         IfStatement last = statement;
         // стэйтменты
         while (!check(TokenType.BRACE)) {
-            statement.add(parseStatement());
+            statement.add(statement());
         }
         // брейс
         consume(TokenType.BRACE);
@@ -698,7 +655,7 @@ public class Parser {
                 IfStatement _statement = new IfStatement(_conditions);
                 // тело функции
                 while (!check(TokenType.BRACE)) {
-                    _statement.add(parseStatement());
+                    _statement.add(statement());
                 }
                 // брэйс
                 consume(TokenType.BRACE);
@@ -712,13 +669,13 @@ public class Parser {
                 // брэйс
                 consume(TokenType.BRACE);
                 // кондишены
-                ArrayList<Expression> conditionalExpressions = new ArrayList<Expression>();
+                ArrayList<Expression> conditionalExpressions = new ArrayList<>();
                 conditionalExpressions.add(new ConditionExpression(new NumberExpression("0"), new Operator("=="), new NumberExpression("0")));
                 // стэйтмент
                 IfStatement _statement = new IfStatement(conditionalExpressions);
                 // стэйтменты
                 while (!check(TokenType.BRACE)) {
-                    _statement.add(parseStatement());
+                    _statement.add(statement());
                 }
                 // брэйс
                 consume(TokenType.BRACE);
@@ -731,48 +688,7 @@ public class Parser {
         return statement;
     }
 
-    // рефлексированный вызов
-    /*
-    public Statement parseRCall() {
-        // паттерн
-        // ~%object%.%func%
-        // ркол
-        consume(TokenType.RCALL);
-        // экспрешшен
-        String id = parseCallId();
-        // айди функции
-        String funcId = null;
-        // проверяем на объект с помощью точки
-        if (check(TokenType.DOT)) {
-            consume(TokenType.DOT);
-            funcId = consume(TokenType.ID).value;
-        }
-        // брэкет
-        consume(TokenType.BRACKET);
-        // параметры
-        ArrayList<Expression> params = new ArrayList<>();
-        // аргументы
-        int level = 1;
-        while (level != 0) {
-            if (check(TokenType.BRACKET)) {
-                String bracket = consume(TokenType.BRACKET).value;
-                if (bracket.equals("(")) {
-                    level += 1;
-                } else if (bracket.equals(")")) {
-                    level -= 1;
-                }
-            } else if (!check(TokenType.COMMA)) {
-                params.add(parseExpression());
-            } else {
-                consume(TokenType.COMMA);
-            }
-        }
-
-        // рефлексийный вызов
-        return new ReflectCallStatement(id, funcId, params);
-    }*/
-
-    public Statement parseCall() {
+    public Statement call() {
         // паттерн
         // @%func%
         // or
@@ -825,7 +741,7 @@ public class Parser {
         }
 
         // функция не найдена
-        printTrace("Function Not Found: " + tokenInfo());
+        error("Function Not Found: " + tokenInfo());
         // возвращаем
         return null;
     }
@@ -892,7 +808,7 @@ public class Parser {
         return expr;
     }
 
-    // парсинг экспрешенн
+    // парсинг экспрешенна
     public Expression parseExpression() {
         return conditional();
     }
@@ -902,14 +818,8 @@ public class Parser {
 
         // Проверка вызова функции
         if (check(TokenType.CALL)) {
-            return (Expression) parseCall();
+            return (Expression) call();
         }
-        // Проверка вызова рефлекторной функции
-        /*
-        if (check(TokenType.RCALL)) {
-            return (Expression) parseRCall();
-        }
-         */
         // Проверка создания объекта
         if (check(TokenType.NEW)) {
             return objectExpr();
@@ -949,7 +859,7 @@ public class Parser {
         // Обработка контейнерных выражений
         if (check(TokenType.Q_BRACKET)) {
             consume(TokenType.Q_BRACKET);  // Открывающая скобка
-            ArrayList<Expression> expressions = parseContainer();  // Получаем контейнер
+            ArrayList<Expression> expressions = parseList();  // Получаем контейнер
             consume(TokenType.Q_BRACKET);  // Закрывающая скобка
             return new ContainerExpression(expressions);
         }
@@ -974,11 +884,11 @@ public class Parser {
             return new TernaryExpression((ConditionExpression) expr, lExpr, rExpr);
         }
         // Если ни один из случаев не подходит, вызывается ошибка
-        printTrace("Invalid Token While Primary Parse: " + tokenInfo());
+        error("Invalid Token While Primary Parse: " + tokenInfo());
         return null;
     }
 
-    // парсинг мапы
+    // парсинг мапы (словаря)
     public MapContainerExpression parseMap() {
         consume(TokenType.BRACE);  // Открывающая скобка
         HashMap<Expression, Expression> expressions = parseMapContainer(); // Получаем контейнер мапы
@@ -986,10 +896,10 @@ public class Parser {
         return new MapContainerExpression(expressions);
     }
 
-    // парсинг контейнера мапы
+    // парсинг контейнера мапы (словаря)
     public HashMap<Expression, Expression> parseMapContainer() {
         // контейнер
-        HashMap<Expression, Expression> container = new HashMap<Expression, Expression>();
+        HashMap<Expression, Expression> container = new HashMap<>();
 
         // пока нет конца фигурной скобки -> парсим экспрешенн
         if (!match("}")) {
@@ -1022,9 +932,9 @@ public class Parser {
     }
 
     // парсинг списка
-    private ArrayList<Expression> parseContainer() {
+    private ArrayList<Expression> parseList() {
         // контейнер
-        ArrayList<Expression> container = new ArrayList<Expression>();
+        ArrayList<Expression> container = new ArrayList<>();
 
         // пока нет конца квадратной скобки -> парсим экспрешенн
         if (!match("]")) {
@@ -1049,19 +959,9 @@ public class Parser {
         if (check(expectedType)) {
             return tokens.get(current++);
         }
-        // токен
-        Token token = tokens.get(current);
         // ошибка
-        printTrace("Invalid Token " + tokenInfo() + " expected (" + expectedType + ")");
-        return null;
-    }
-
-    // проверка токена с прыжком на 1
-    private boolean next(TokenType expectedType) {
-        if (current+1 >= tokens.size()) {
-            return false;
-        }
-        return tokens.get(current+1).type == expectedType;
+        error("Invalid Token " + tokenInfo() + " expected (" + expectedType + ")");
+        return new Token(TokenType.NIL, "nil", -1);
     }
 
     // проверка следующего токена
@@ -1074,14 +974,11 @@ public class Parser {
 
     // проверка на мэтч строки
     private boolean match(String expected) {
-        if (current < tokens.size() && tokens.get(current).value.equals(expected)) {
-            return true;
-        }
-        return false;
+        return current < tokens.size() && tokens.get(current).value.equals(expected);
     }
 
-    // вызов ошибки
-    public void printTrace(String message) {
+    // вывод ошибки
+    public void error(String message) {
         // токен
         Token token = tokens.get(current);
         // трэйс ошибки
@@ -1096,7 +993,7 @@ public class Parser {
         return "(" + token.type + ", " + token.value + ", "  + token.line + ")" /*+ " №" + current + " L:"*/;
     }
 
-    // загрузка классов библиотеки в кучу
+    // загрузка классов библиотеки
     public void loadClasses()  {
         // классы
         ArrayList<ClassStatement> classes = new ArrayList<>();
@@ -1142,24 +1039,24 @@ public class Parser {
                     // функция
                     if (check(TokenType.FUNC)) {
                         // функция
-                        Statement statement = parseFunction();
+                        Statement statement = function();
                         // добавляем в класс
                         if (statement instanceof FunctionStatement) {
                             classStatement.add((FunctionStatement) statement);
                         }
                         else {
-                            printTrace("Cannot Use Any Statements Except Functions, Mod Function Or Mod Variables In Class: " + tokenInfo());
+                            error("Cannot Use Any Statements Except Functions, Mod Function Or Mod Variables In Class: " + tokenInfo());
                         }
                     }
                     else if (check(TokenType.MOD)) {
                         consume(TokenType.MOD);
                         // модульная функция
                         if (check(TokenType.FUNC)) {
-                            Statement statement = parseFunction();
+                            Statement statement = function();
                             if (statement instanceof FunctionStatement) {
                                 classStatement.addModule((FunctionStatement) statement);
                             } else {
-                                printTrace("Cannot Use Any Statements Except Functions, Mod Function Or Mod Variables In Class: " + tokenInfo());
+                                error("Cannot Use Any Statements Except Functions, Mod Function Or Mod Variables In Class: " + tokenInfo());
                             }
                         }
                         // модульная переменная
@@ -1181,7 +1078,7 @@ public class Parser {
             // стэйтмент функция
             else if (check(TokenType.FUNC)) {
                 // помещаем функцию
-                ((FunctionStatement) parseFunction()).putToFunction();
+                ((FunctionStatement) function()).putToFunction();
             }
             else {
                 // продвигаемся по токенам
@@ -1201,25 +1098,13 @@ public class Parser {
         Classes.getInstance().classes.addAll(classes);
     }
 
-    // установка эвайронмента
+    // установка энвайронмента (путя из окружения)
     public void setEnv(String path) {
         this.environmentPath = path;
     }
 
-    // получение эвайронмента
+    // получение энвайронмента (путя из окружения)
     public String getEnv() {
         return this.environmentPath;
     }
-
-    /*
-    public boolean HasNextClass() {
-        for (Token token: tokens) {
-            if (token.type == TokenType.CLASS) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-     */
 }
