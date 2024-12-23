@@ -21,6 +21,6 @@ public class PolarBuild {
     // в строку
     @Override
     public String toString() {
-        return String.format("%s. %s. %s", major, minor, patch);
+        return String.format("%s.%s.%s", major, minor, patch);
     }
 }

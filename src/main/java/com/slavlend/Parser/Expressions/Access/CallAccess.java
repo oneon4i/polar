@@ -90,6 +90,10 @@ public class CallAccess implements Access {
                 // вызываем
                 ArrayList<PolarValue> _params = parseParameters();
                 StackHistoryWriter.getInstance().pushCall(address, v.clazz.name + "." + funcName);
+                if (!v.classValues.containsKey(funcName)) {
+                    PolarEnv.Crash("Function: " + funcName + " Not Found! ", address);
+                    return null;
+                }
                 checkArgs(v.clazz.name + "." + funcName, v.classValues.get(funcName).asFunc().arguments.size(), _params.size());
                 Storage.getInstance().push();
                 PolarValue res = v.classValues.get(funcName).asFunc().call(previous.asObject(), _params);

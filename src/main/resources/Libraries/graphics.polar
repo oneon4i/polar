@@ -1,34 +1,27 @@
-# abstract class frame #
-class Frame(width, height, title) = {
-    func init() = {
-        this.window = reflect 'com.slavlend.Libraries.graphics.graphics'
-        @this.window.params(
-            this.width,
-            this.height,
-            this.title
-        )
-        @this.window.init()
+class Window() = {
+    func setup(width, height, title, on_init) = {
+        this.provider = reflect 'com.slavlend.Libraries.graphics.window_provider'
+        this.reflected = @this.provider.provide(on_init)
+        @this.provider.setup(title, width, height)
     }
 
-    # функция для того, чтобы показать окно #
-    func show() = {
-        @this.window.show()
+    func load_image(key, path) = {
+        @this.reflected.load_image(key, path)
     }
 
-    # функция для того, чтобы скрыть окно #
-    func hide() = {
-        @this.window.hide()
+    func draw_image(key, x, y) = {
+        @this.reflected.draw_image(key, x, y)
     }
 
-    # функция отрисовки #
-    func draw(x, y, path) = {
-        @this.window.draw_image(
-            x,
-            y,
-            path
-        )
+    func on_update(function) = {
+        @this.reflected.on_update(function)
     }
 
-    # очистка экрана #
-    func clear() = { @this.window.clear() }
+    func clear() = {
+        @this.reflected.clear()
+    }
+
+    func on_key_down(function) = {
+        @this.reflected.on_key_down(function)
+    }
 }

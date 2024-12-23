@@ -39,12 +39,12 @@ public class Parser {
         put("lib.str", "Libraries/str.polar");
         put("lib.math", "Libraries/math.polar");
         put("lib.polar", "Libraries/polar.polar");
-        put("lib.graphics", "Libraries/graphics.polar");
         put("lib.console", "Libraries/console.polar");
         put("lib.time", "Libraries/time.polar");
         put("lib.crypto", "Libraries/crypto.polar");
         put("lib.http", "Libraries/http.polar");
         put("lib.http.server", "Libraries/httpserver.polar");
+        put("lib.graphics", "Libraries/graphics.polar");
     }};
 
     // путь эвайронмента (окружения)

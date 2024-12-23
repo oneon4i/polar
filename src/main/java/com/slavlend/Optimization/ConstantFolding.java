@@ -11,7 +11,7 @@ import com.slavlend.Parser.Expressions.TextExpression;
 public class ConstantFolding implements Optimization {
     @Override
     public Expression optimize(Expression expr) {
-        // оптимизация конкатенации
+        // оптимизация арифметики
         if (expr instanceof ArithmeticExpression _expr) {
             Expression l = optimize(_expr.l);
             Expression r = optimize(_expr.r);

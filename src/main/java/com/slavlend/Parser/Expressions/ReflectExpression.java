@@ -21,7 +21,7 @@ public class ReflectExpression implements Expression {
         try {
             return new PolarValue(new Reflected(address, Class.forName(className)));
         }
-        catch (Exception e) {
+        catch (ClassNotFoundException e) {
             PolarEnv.Crash("Reflection Exception: " + e.toString(), address);
             return null;
         }

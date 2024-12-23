@@ -6,6 +6,7 @@ import com.slavlend.Commands.RunCommand;
 import com.slavlend.Executor.Executor;
 import com.slavlend.Executor.ExecutorSettings;
 import com.slavlend.Parser.Parser;
+import com.slavlend.Ver.PolarVersion;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class App
     public static void main(String[] args) throws Exception {
         // заголовочек
         System.out.println("╭───────────────────╮");
-        System.out.println("│ 🐻‍❄️ Polar v1.0.27     ");
+        System.out.println("│ 🐻‍❄️ Polar v" + PolarVersion.build.toString());
         System.out.println("╰───────────────────╯");
         System.out.println();
         // комманды
