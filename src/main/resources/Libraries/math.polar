@@ -1,100 +1,82 @@
 class Math() = {
     mod PI = 3.141592
     mod E = 2.718281
-
+    mod reflected = reflect 'com.slavlend.Libraries.math'
+    
     mod func pow(a, b) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.pow(a, b))
+        @back(@Math.reflected.pow(a, b))
     }
 
     mod func sqrt(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.sqrt(a))
+        @back(@Math.reflected.sqrt(a))
     }
 
     mod func cbrt(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.cbrt(a))
+        @back(@Math.reflected.cbrt(a))
     }
 
     mod func sin(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.sin(a))
+        @back(@Math.reflected.sin(a))
     }
 
     mod func cos(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.cos(a))
+        @back(@Math.reflected.cos(a))
     }
 
     mod func tan(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.tan(a))
+        @back(@Math.reflected.tan(a))
     }
 
     mod func asin(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.asin(a))
+        @back(@Math.reflected.asin(a))
     }
 
     mod func acos(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.acos(a))
+        @back(@Math.reflected.acos(a))
     }
 
     mod func atan(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.atan(a))
+        @back(@Math.reflected.atan(a))
     }
 
     mod func atan2(a, b) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.atan2(a, b))
+        @back(@Math.reflected.atan2(a, b))
     }
 
     mod func log(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.log(a))
+        @back(@Math.reflected.log(a))
     }
 
     mod func log10(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.log10(a))
+        @back(@Math.reflected.log10(a))
     }
 
     mod func exp(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.exp(a))
+        @back(@Math.reflected.exp(a))
     }
 
     mod func to_rad(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.to_rad(a))
+        @back(@Math.reflected.to_rad(a))
     }
 
     mod func to_deg(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.to_deg(a))
+        @back(@Math.reflected.to_deg(a))
     }
 
     mod func hypot(a, b) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.hypot(a, b))
+        @back(@Math.reflected.hypot(a, b))
     }
 
     mod func sinh(a, b) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.sinh(a, b))
+        @back(@Math.reflected.sinh(a, b))
     }
 
     mod func cosh(a, b) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.cosh(a, b))
+        @back(@Math.reflected.cosh(a, b))
     }
 
     mod func tanh(a, b) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.tanh(a, b))
+        @back(@Math.reflected.tanh(a, b))
     }
 
     mod func factorial(a) = {
@@ -110,12 +92,10 @@ class Math() = {
     }
 
     mod func round(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.round(a))
+        @back(@Math.reflected.round(a))
     }
 
     mod func abs(a) = {
-        mathReflect = reflect 'com.slavlend.Libraries.math'
-        @back(@mathReflect.abs(a))
+        @back(@Math.reflected.abs(a))
     }
 }

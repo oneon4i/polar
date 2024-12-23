@@ -38,7 +38,7 @@ public class Parser {
         put("lib.tasks", "Libraries/tasks.polar");
         put("lib.str", "Libraries/str.polar");
         put("lib.math", "Libraries/math.polar");
-        put("lib.ant", "Libraries/ant.polar");
+        put("lib.polar", "Libraries/polar.polar");
         put("lib.graphics", "Libraries/graphics.polar");
         put("lib.console", "Libraries/console.polar");
         put("lib.time", "Libraries/time.polar");
@@ -87,6 +87,7 @@ public class Parser {
             case BIGGER -> new Operator(consume(TokenType.BIGGER).value);
             case LOWER_EQUAL -> new Operator(consume(TokenType.LOWER_EQUAL).value);
             case BIGGER_EQUAL -> new Operator(consume(TokenType.BIGGER_EQUAL).value);
+            case IS -> new Operator(consume(TokenType.IS).value);
             default -> {
                 PolarEnv.Crash("Invalid Conditional Operator: " + tokenInfo(), new Address(tokens.get(current).line));
                 yield null;

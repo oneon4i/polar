@@ -26,7 +26,7 @@ public class tasks {
                 Storage.getInstance().push();
                 // аргументы для функции
                 ArrayList<PolarValue> _args = new ArrayList<>();
-                _args.add(args);
+                _args.addAll(args.asList());
                 // вызываем функцию
                 func.call(o, _args);
                 // удаляем фрейм из стека

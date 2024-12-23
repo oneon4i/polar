@@ -1,17 +1,15 @@
 use 'lib.array'
 
 class Str() = {
+    mod reflected = reflect 'com.slavlend.Libraries.str'
     mod func replace(str, what, to) = {
-        reflectedStr = reflect 'com.slavlend.Libraries.str'
-        @back(@reflectedStr.replace(str, what, to))
+        @back(@Str.reflected.replace(str, what, to))
     }
     mod func split(str, delim) = {
-        reflectedStr = reflect 'com.slavlend.Libraries.str'
-        @back(@reflectedStr.split(str, delim))
+        @back(@Str.reflected.split(str, delim))
     }
     mod func at(str, index) = {
-        reflectedStr = reflect 'com.slavlend.Libraries.str'
-        @back(@reflectedStr.at(str, index))
+        @back(@Str.reflected.at(str, index))
     }
     mod func format(str, arr) = {
         formatted = str
@@ -22,11 +20,9 @@ class Str() = {
         @back(formatted)
     }
     mod func upper(str) = {
-        reflectedStr = reflect 'com.slavlend.Libraries.str'
-        @back(@reflectedStr.upper(str))
+        @back(@Str.reflected.upper(str))
     }
     mod func lower(str) = {
-        reflectedStr = reflect 'com.slavlend.Libraries.str'
-        @back(@reflectedStr.lower(str))
+        @back(@Str.reflected.lower(str))
     }
 }

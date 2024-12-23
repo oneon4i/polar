@@ -23,8 +23,6 @@ public class EachStatement implements Statement {
     private String variable;
     // имя переменной списка
     private AccessExpression listVariable;
-    // текущий индекс
-    private int index;
 
     @Override
     public void optimize() {
@@ -37,7 +35,7 @@ public class EachStatement implements Statement {
         optimize();
         // создаём темповую переменную
         ArrayList<PolarValue> arr = listVariable.evaluate().asList();
-        index = 0;
+        int index = 0;
         if (arr.size() > index) { Storage.getInstance().put(variable, arr.get(index)); }
         else { return; }
 

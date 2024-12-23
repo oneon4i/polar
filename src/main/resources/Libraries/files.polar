@@ -1,16 +1,14 @@
 class Files() = {
+    mod reflected = reflect 'com.slavlend.Libraries.files'
     mod func read(name) = {
-        file_writer = reflect 'com.slavlend.Libraries.files'
-        @back(@file_writer.read(name))
+        @back(@Files.reflected.read(name))
     }
 
     mod func write(name, obj) = {
-        file_writer = reflect 'com.slavlend.Libraries.files'
-        @file_writer.write(name, @string(obj))
+        @Files.reflected.write(name, @string(obj))
     }
 
     mod func files(path) = {
-        file_writer = reflect 'com.slavlend.Libraries.files'
-        @back(@file_writer.files(path))
+        @back(@Files.reflected.files(path))
     }
 }

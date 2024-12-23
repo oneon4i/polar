@@ -1,4 +1,4 @@
-use 'lib.ant'
+use 'lib.polar'
 use 'lib.tests'
 use 'lib.array'
 use 'lib.console'
@@ -25,9 +25,9 @@ func convert_test() = {
     b = true
     c = '1'
 
-    assert(@Ant.name(@string(1)) == 'string')
-    assert(@Ant.name(@string(b)) == 'string')
-    assert(@Ant.name(@num(c)) == 'num')
+    assert(@Polar.name(@string(1)) == 'string')
+    assert(@Polar.name(@string(b)) == 'string')
+    assert(@Polar.name(@num(c)) == 'num')
 
     @put('Test passed')
 }
@@ -140,7 +140,7 @@ class A()  = {
 }
 
 func class_by_name_test() = {
-    o = @Ant.from('A', [])
+    o = @Polar.from('A', [])
     assert(o != nil)
 }
 

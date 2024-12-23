@@ -128,21 +128,6 @@ public class PolarValue extends RuntimeException {
         }
     }
 
-    // возвращает объект как брэйк цикла
-    /*
-    public BreakStatement asBreak() {
-        try {
-            // если объект - объект брэйк, возвращаем
-            return (BreakStatement) data;
-        } catch (Exception e) {
-            // в ином случае вызываем
-            // ошибку
-            ANT.Crash("Cannot Parse " + data + " To While Break", address);
-            return null;
-        }
-    }
-    */
-
     // возвращает объект как класс
     public ClassStatement asClass() {
         try {

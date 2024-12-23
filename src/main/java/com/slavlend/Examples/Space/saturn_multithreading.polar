@@ -2,7 +2,9 @@
 use 'lib.console'
 use 'lib.array'
 use 'lib.str'
-use 'lib.ant'
+use 'lib.polar'
+use 'lib.tasks'
+use 'lib.map'
 
 # Основной шаблон кадра #
 base_frame = [
@@ -57,27 +59,53 @@ func rotate_row(row, i) = {
     @back(@result.stringify())
 }
 
-# Процесс анимирования #
-for (i = 0, i < 100) {
+# анимирование кадра #
+func animate_frame(i) = {
     @put('frame: ' + i)
     frame_rot = []
     each(row, base_frame) {
         @frame_rot.add(@rotate_row(row, i))
     }
+    frame_rot = {'frame': frame_rot, 'id': i}
     @frames.add(frame_rot)
+}
+
+# Процесс анимирования #
+for (i = 0, i < 100) {
+    @Tasks.exec(nil, animate_frame, [i])
     i += 1
 }
 
-# Вывод анимации в консоли #
-while ((1 == 1)) {
-    each(frame, frames) {
-        for (i = 0, i < @frame.size()+1) {
-            @put('')
-            i += 1
+@Tasks.exec(nil, animate, [])
+
+func animate() = {
+    # Ждём пока кадры обработаются #
+    while (frames.size() != 100) {
+        # waiting #
+    }
+    # Сортируем #
+    new_frames = []
+    for (i = 0, i < 100) {
+        each(_frame, frames) {
+            if (_frame.get('id') == i) {
+                @new_frames.add(_frame.get('frame'))
+            }
         }
-        each (row, frame) {
-            @put(row)  # Печать текущего кадра #
+
+        i += 1
+    }
+    frames = new_frames
+    # Вывод анимации в консоли #
+    while ((1 == 1)) {
+        each(frame, frames) {
+            for (i = 0, i < @frame.size()+1) {
+                @put('')
+                i += 1
+            }
+            each (row, frame) {
+                @put(row)  # Печать текущего кадра #
+            }
+            @sleep(100)  # Задержка между кадрами #
         }
-        @sleep(100)  # Задержка между кадрами #
     }
 }

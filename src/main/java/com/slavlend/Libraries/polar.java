@@ -10,7 +10,7 @@ import com.slavlend.Parser.Statements.ClassStatement;
 Библиотека ant, необходима для более глубокого
 понимания типизации и рефлексии.
  */
-public class ant {
+public class polar {
     // получение имени класса
     public PolarValue name(PolarValue o) {
         if (o.isNumber()) { return new PolarValue("num"); }
