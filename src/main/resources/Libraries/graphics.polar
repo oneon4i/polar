@@ -24,4 +24,8 @@ class Window() = {
     func on_key_down(function) = {
         @this.reflected.on_key_down(function)
     }
+
+    func on_key_hold(function) = {
+        @this.reflected.on_key_hold(function)
+    }
 }

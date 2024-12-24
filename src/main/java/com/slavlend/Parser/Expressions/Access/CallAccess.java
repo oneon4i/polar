@@ -128,7 +128,10 @@ public class CallAccess implements Access {
                     try {
                         result = method.invoke(r.o, javaLikeParams.toArray());
                     } catch (InvocationTargetException e) {
-                        PolarEnv.Crash("Invocation Target Exception (Java): " + e.getCause().getMessage(), address);
+                        PolarEnv.Crash(
+                                "Invocation Target Exception (Java): " + e.getCause().getMessage()
+                                        + " on: " + e.getStackTrace().toString(),
+                                address);
                     }
                     // в зависимости от типа создаем переменную
                     if (result instanceof Integer) {

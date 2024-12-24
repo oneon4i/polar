@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.slavlend.Parser.Statements.FunctionStatement;
 import com.slavlend.Polar.PolarValue;
+import org.jetbrains.kotlin.types.ConstantValueKind;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -144,6 +145,8 @@ public class window extends ApplicationAdapter implements InputProcessor {
     private FunctionStatement on_initialized;
     private FunctionStatement on_updated;
     private FunctionStatement on_key_downed;
+    private FunctionStatement on_key_holded;
+    private ArrayList<Integer> holdings_keys = new ArrayList<Integer>();
 
     public window() {
 
@@ -166,6 +169,14 @@ public class window extends ApplicationAdapter implements InputProcessor {
     public void render() {
         super.render();
         on_updated.call(null, new ArrayList<>());
+
+        for (Integer i : holdings_keys) {
+            ArrayList<PolarValue> list = new ArrayList<>();
+            list.add(new PolarValue(i.floatValue()));
+            if (on_key_holded != null) {
+                on_key_holded.call(null, list);
+            }
+        }
     }
 
     public void on_init(FunctionStatement func) {
@@ -176,6 +187,9 @@ public class window extends ApplicationAdapter implements InputProcessor {
     }
     public void on_key_down(FunctionStatement func) {
         this.on_key_downed = func;
+    }
+    public void on_key_hold(FunctionStatement func) {
+        this.on_key_holded = func;
     }
     public void load_image(String key, String path) {
         textures.put(key, new Texture(path));
@@ -196,12 +210,18 @@ public class window extends ApplicationAdapter implements InputProcessor {
     public boolean keyDown(int i) {
         ArrayList<PolarValue> params = new ArrayList<>();
         params.add(new PolarValue(((Integer) i).floatValue()));
-        on_key_downed.call(null, params);
+        if (on_key_downed != null) {
+            on_key_downed.call(null, params);
+        }
+        holdings_keys.add(i);
         return false;
     }
 
     @Override
     public boolean keyUp(int i) {
+        if (holdings_keys.contains((Integer) i)) {
+            holdings_keys.remove((Integer) i);
+        }
         return false;
     }
 
