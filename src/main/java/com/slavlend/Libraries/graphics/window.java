@@ -3,10 +3,19 @@ package com.slavlend.Libraries.graphics;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.*;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
+import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Quaternion;
+import com.badlogic.gdx.math.Vector3;
 import com.slavlend.Parser.Statements.FunctionStatement;
+import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import org.jetbrains.kotlin.types.ConstantValueKind;
 
@@ -139,6 +148,7 @@ public class window extends ApplicationAdapter implements InputProcessor {
      */
 
     private HashMap<String, Texture> textures = new HashMap<>();
+    private HashMap<String, ModelInstance> models = new HashMap<>();
     private String title;
     private int height;
     private int width;
@@ -147,6 +157,11 @@ public class window extends ApplicationAdapter implements InputProcessor {
     private FunctionStatement on_key_downed;
     private FunctionStatement on_key_holded;
     private ArrayList<Integer> holdings_keys = new ArrayList<Integer>();
+    private PerspectiveCamera camera;
+    private Environment environment;
+    public PolarObject settings_3d;
+    public ModelBatch modelBatch;
+    private String following;
 
     public window() {
 
@@ -161,12 +176,23 @@ public class window extends ApplicationAdapter implements InputProcessor {
     @Override
     public void create() {
         super.create();
-        Gdx.input.setInputProcessor(this); // Устанавливаем обработчик ввода
+        modelBatch = new ModelBatch();
+        if (settings_3d != null) {
+            setup_3d(settings_3d);
+        }
+
+        // Настройка управления камерой
+        // Gdx.input.setInputProcessor(new CameraInputController(camera));
+        Gdx.input.setInputProcessor(this);
         on_initialized.call(null, new ArrayList<>());
     }
 
     @Override
     public void render() {
+        if (following != null && !following.equals("")) {
+            camera.position.set(models.get(following).transform.getTranslation(new Vector3()).add(new Vector3(50, 50, 50)));
+            camera.update();
+        }
         super.render();
         on_updated.call(null, new ArrayList<>());
 
@@ -182,15 +208,19 @@ public class window extends ApplicationAdapter implements InputProcessor {
     public void on_init(FunctionStatement func) {
         this.on_initialized = func;
     }
+
     public void on_update(FunctionStatement func) {
         this.on_updated = func;
     }
+
     public void on_key_down(FunctionStatement func) {
         this.on_key_downed = func;
     }
+
     public void on_key_hold(FunctionStatement func) {
         this.on_key_holded = func;
     }
+
     public void load_image(String key, String path) {
         textures.put(key, new Texture(path));
     }
@@ -203,7 +233,9 @@ public class window extends ApplicationAdapter implements InputProcessor {
     }
 
     public void clear() {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(1, 1, 1, 1); // Устанавливает цвет фона в белый
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
     }
 
     @Override
@@ -258,5 +290,65 @@ public class window extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean scrolled(float v, float v1) {
         return false;
+    }
+
+    // установка 3д среды
+    public void setup_3d(PolarObject settings) {
+        // камера
+        camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.position.set(
+                settings.classValues.get("x").asNumber(),
+                settings.classValues.get("y").asNumber(),
+                settings.classValues.get("z").asNumber()
+        );
+        camera.lookAt(0, 0, 0);
+        camera.near = settings.classValues.get("near").asNumber();
+        camera.far = settings.classValues.get("far").asNumber();
+        camera.update();
+
+        // куб
+        ModelBuilder modelBuilder = new ModelBuilder();
+        Model box = modelBuilder.createBox(5f, 5f, 5f,
+                new Material(ColorAttribute.createDiffuse(Color.BLUE)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        ModelInstance boxInstance = new ModelInstance(box);
+        models.put("box", boxInstance);
+
+        // окружение
+        environment = new Environment();
+    }
+
+    // установка света
+    public void add_light(PolarObject color, float x, float y, float z)
+    {
+        float r = color.classValues.get("r").asNumber();
+        float g = color.classValues.get("g").asNumber();
+        float b = color.classValues.get("b").asNumber();
+
+        environment.add(new DirectionalLight().set(r, g, b, x, y, z));
+    }
+
+    // добавление модели
+    public void add_model(String key, String path) {
+        // объект
+        ObjLoader loader = new ObjLoader();
+        // модель
+        Model model = loader.loadModel(Gdx.files.internal(path));
+        ModelInstance modelInstance = new ModelInstance(model);
+        // помещаем модель
+        models.put(key, modelInstance);
+    }
+
+    // отрисовка модели
+    public void draw_model(String key, int x, int y, int z, int xS, int yS, int zS) {
+        modelBatch.begin(camera);
+        models.get(key).transform.setToTranslationAndScaling(new Vector3(x, y, z), new Vector3(xS, yS, zS));
+        modelBatch.render(models.get(key), environment);
+        modelBatch.end();
+    }
+
+    // слежка камеры
+    public void follow(String key) {
+        following = key;
     }
 }

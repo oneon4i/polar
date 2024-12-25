@@ -201,6 +201,12 @@ public class CallAccess implements Access {
             else if (_clazz == int.class) {
                 values.add((Integer) ((int) ((double)v.asNumber())));
             }
+            else if (_clazz == Float.class) {
+                values.add((v.asNumber()));
+            }
+            else if (_clazz == float.class) {
+                values.add((v.asNumber()));
+            }
             // символы
             else if (_clazz == String.class) {
                 values.add(v.asString());
@@ -235,7 +241,7 @@ public class CallAccess implements Access {
                     values.add(_clazz.cast(v.asReflected().o));
                 }
                 else {
-                    PolarEnv.Crash("Impossible To Convert Not Reflected Types To Java Like Classes", address);
+                    PolarEnv.Crash("Impossible To Convert Not Reflected Types To Java Like Classes: " + _clazz, address);
                 }
             }
         }
