@@ -3,6 +3,7 @@ package com.slavlend.Polar.Stack;
 import com.slavlend.Env.PolarEnv;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Statements.ClassStatement;
+import com.slavlend.Polar.PolarClass;
 
 import java.util.ArrayList;
 
@@ -17,11 +18,11 @@ public class Classes {
     }
 
     // список классов
-    public ArrayList<ClassStatement> classes = new ArrayList<>();
+    public ArrayList<PolarClass> classes = new ArrayList<>();
 
     // получение класса из списка по имени
-    public ClassStatement getClass(String name) {
-        for (ClassStatement clazz : classes) {
+    public PolarClass getClass(String name) {
+        for (PolarClass clazz : classes) {
             if (clazz.name.equals(name)) {
                 return clazz;
             }
@@ -33,7 +34,7 @@ public class Classes {
 
     // проверка на наличие класса по имени
     public boolean hasClass(String name) {
-        for (ClassStatement clazz : classes) {
+        for (PolarClass clazz : classes) {
             if (clazz.name.equals(name)) {
                 return true;
             }
@@ -43,8 +44,8 @@ public class Classes {
     }
 
     // получение класса из списка по имени и адрессу
-    public ClassStatement getClassByAddress(Address address, String name) {
-        for (ClassStatement clazz : classes) {
+    public PolarClass getClassByAddress(Address address, String name) {
+        for (PolarClass clazz : classes) {
             if (clazz.name.equals(name)) {
                 return clazz;
             }

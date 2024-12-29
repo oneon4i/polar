@@ -15,20 +15,20 @@ import java.util.HashMap;
 public class PolarObject {
 
     // класс, чей мы инстанс
-    public ClassStatement clazz;
+    public PolarClass clazz;
     // конструктор/аргументы
     public ArrayList<Expression> constructorArgs;
     public HashMap<String, PolarValue> classValues = new HashMap<>();
 
     // конструктор
-    public PolarObject(ClassStatement clazz, ArrayList<Expression> constructorArgs) {
+    public PolarObject(PolarClass clazz, ArrayList<Expression> constructorArgs) {
         this.clazz = clazz;
         this.constructorArgs = constructorArgs;
     }
 
     // создаём объект сразу с передачей
     // значений в виде переменных, а не экспрешеннов
-    public static PolarObject create(ClassStatement clazz, ArrayList<PolarValue> values) {
+    public static PolarObject create(PolarClass clazz, ArrayList<PolarValue> values) {
         // объект
         PolarObject o = new PolarObject(clazz, new ArrayList<>());
 

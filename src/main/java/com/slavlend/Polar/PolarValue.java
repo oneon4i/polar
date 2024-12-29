@@ -129,10 +129,10 @@ public class PolarValue extends RuntimeException {
     }
 
     // возвращает объект как класс
-    public ClassStatement asClass() {
+    public PolarClass asClass() {
         try {
             // если объект - объект класса, возвращаем
-            return (ClassStatement) data;
+            return (PolarClass) data;
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку

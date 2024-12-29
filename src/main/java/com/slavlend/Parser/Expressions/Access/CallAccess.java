@@ -1,10 +1,7 @@
 package com.slavlend.Parser.Expressions.Access;
 
-import com.slavlend.Polar.PolarObject;
-import com.slavlend.Polar.PolarValue;
-import com.slavlend.Polar.Reflected;
+import com.slavlend.Polar.*;
 import com.slavlend.Polar.Stack.Storage;
-import com.slavlend.Polar.StackHistoryWriter;
 import com.slavlend.Env.PolarEnv;
 import com.slavlend.Functions.BuiltInFunctions;
 import com.slavlend.Parser.Address;
@@ -166,7 +163,7 @@ public class CallAccess implements Access {
             // если предыдущий класс
             else {
                 // получаем функцию
-                ClassStatement v = previous.asClass();
+                PolarClass v = previous.asClass();
                 // вызываем
                 ArrayList<PolarValue> _params = parseParameters();
                 StackHistoryWriter.getInstance().pushCall(address, v.name + "." + funcName);

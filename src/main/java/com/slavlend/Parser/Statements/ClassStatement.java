@@ -1,6 +1,7 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
+import com.slavlend.Polar.PolarClass;
 import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ArgumentExpression;
@@ -11,18 +12,15 @@ import java.util.HashMap;
 
 // стэтймент класса
 public class ClassStatement implements Statement {
-    // функции
-    public HashMap<String, FunctionStatement> statements = new HashMap<>();
-    // модульные функции ( статические )
-    public HashMap<String, FunctionStatement> module_statements = new HashMap<>();
-    // модульные переменные ( статические )
-    public HashMap<String, Expression> module_values = new HashMap<>();
-    // конструктор
-    public ArrayList<ArgumentExpression> constructor = new ArrayList<ArgumentExpression>();
-    // имя
-    public String name;
+    // класс
+    private PolarClass polarClass;
     // адресс
     private Address address = App.parser.address();
+
+    // получение класса
+    public PolarClass getPolarClass() {
+        return polarClass;
+    }
 
     @Override
     public void optimize() {
@@ -31,39 +29,27 @@ public class ClassStatement implements Statement {
 
     // конструктор
     public ClassStatement(String name, ArrayList<ArgumentExpression> constructor) {
-        this.name = name;
-        this.constructor = constructor;
-        Classes.getInstance().classes.add(this);
+        this.polarClass = new PolarClass(name, constructor, address);
+        Classes.getInstance().classes.add(this.polarClass);
     }
 
     // эддеры функций
     public void add(FunctionStatement statement) {
-        statements.put(statement.name, statement);
+        polarClass.add(statement);
     }
     public void addModule(FunctionStatement statement) {
-        module_statements.put(statement.name, statement);
+        polarClass.addModule(statement);
     }
 
     // эддер переменной
     public void addModuleVariable(String name, Expression expr) {
-        module_values.put(name, expr);
+        polarClass.addModuleVariable(name, expr);
     }
 
 
     @Override
     public void execute() {
 
-    }
-
-    // геттер функций -> возвращает скопированные функции
-    public HashMap<String, FunctionStatement> getFunctions() {
-        HashMap<String, FunctionStatement> copy = new HashMap<String, FunctionStatement>();
-
-        for (String key : statements.keySet()) {
-            copy.put(key, (FunctionStatement) statements.get(key).copy());
-        }
-
-        return copy;
     }
 
     @Override
@@ -73,7 +59,7 @@ public class ClassStatement implements Statement {
 
     @Override
     public Statement copy() {
-        return new ClassStatement(name, constructor);
+        return new ClassStatement(polarClass.name, polarClass.constructor);
     }
 
     @Override

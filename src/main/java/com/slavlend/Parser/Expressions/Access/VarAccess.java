@@ -1,5 +1,6 @@
 package com.slavlend.Parser.Expressions.Access;
 
+import com.slavlend.Polar.PolarClass;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Reflected;
@@ -111,7 +112,7 @@ public class VarAccess implements Access {
             // если предыдущий класс
             else {
                 // получаем класс
-                ClassStatement v = previous.asClass();
+                PolarClass v = previous.asClass();
                 // получаем переменную
                 PolarValue res = v.module_values.get(varName).evaluate();
 

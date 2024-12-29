@@ -1,5 +1,6 @@
 package com.slavlend.Parser;
 
+import com.slavlend.Polar.PolarClass;
 import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Lexer.TokenType;
 import com.slavlend.Parser.Expressions.*;
@@ -100,7 +101,8 @@ public class Parser {
         Expression _l = additive();
         // если это кондишенал то парсим
         if (check(TokenType.LOWER_EQUAL) || check(TokenType.BIGGER_EQUAL) || check(TokenType.EQUAL) ||
-            check(TokenType.NOT_EQUAL) || check(TokenType.BIGGER_EQUAL) || check(TokenType.LOWER) || check(TokenType.IS)) {
+            check(TokenType.NOT_EQUAL) || check(TokenType.BIGGER_EQUAL) || check(TokenType.LOWER) || check(TokenType.BIGGER) ||
+                check(TokenType.IS)) {
             // оператор
             Operator _o = condOperator();
             // правый экспрешен
@@ -997,7 +999,7 @@ public class Parser {
     // загрузка классов библиотеки
     public void loadClasses()  {
         // классы
-        ArrayList<ClassStatement> classes = new ArrayList<>();
+        ArrayList<PolarClass> classes = new ArrayList<>();
         // класс
         while (current < tokens.size()) {
             // стэйтмент юз
@@ -1072,9 +1074,9 @@ public class Parser {
                 // брэйс
                 consume(TokenType.BRACE);
                 // удаляем если там такой класс есть
-                classes.removeIf(_clazz -> _clazz.name.equals(classStatement.name));
+                classes.removeIf(_clazz -> _clazz.name.equals(classStatement.getPolarClass().name));
                 // добавляем
-                classes.add(classStatement);
+                classes.add(classStatement.getPolarClass());
             }
             // стэйтмент функция
             else if (check(TokenType.FUNC)) {
@@ -1087,9 +1089,9 @@ public class Parser {
             }
         }
         // добавляем найденные классы в кучу
-        List<ClassStatement> forRemove = new ArrayList<>();
-        for (ClassStatement st: classes) {
-            for (ClassStatement _st: Classes.getInstance().classes) {
+        List<PolarClass> forRemove = new ArrayList<>();
+        for (PolarClass st: classes) {
+            for (PolarClass _st: Classes.getInstance().classes) {
                 if (_st.name.equals(st.name)) {
                     forRemove.add(st);
                 }

@@ -21,11 +21,11 @@ class Handler() = {
         this.new_line = '                                                                 '
     }
 
-    func a(args) = {
+    func a(chat_id) = {
         times = 0
 
         while (times != 5) {
-            @this.tg.send_message(@args.get(0), 'Треда')
+            @this.tg.send_message(chat_id, 'Треда')
             @sleep(500)
             times += 1
         }

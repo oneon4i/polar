@@ -1,5 +1,6 @@
 package com.slavlend.Libraries;
 
+import com.slavlend.Polar.PolarClass;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Classes;
@@ -27,10 +28,10 @@ public class polar {
     // создание класса из объекта
     public PolarValue from(PolarValue name, PolarValue args) {
         // класс
-        ClassStatement _clazz = null;
+        PolarClass _clazz = null;
 
         // ищем
-        for (ClassStatement clazz : Classes.getInstance().classes) {
+        for (PolarClass clazz : Classes.getInstance().classes) {
             if (clazz.name.equals(name.asString())) {
                 _clazz = clazz;
             }
