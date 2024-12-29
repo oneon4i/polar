@@ -31,8 +31,8 @@ class Window() = {
         @this.reflected.add_light(color, x, y, z)
     }
 
-    func draw_image(key, x, y) = {
-        @this.reflected.draw_image(key, x, y)
+    func draw_image(key, x, y, w, h) = {
+        @this.reflected.draw_image(key, x, y, w, h)
     }
 
     func on_update(function) = {
@@ -53,5 +53,13 @@ class Window() = {
 
     func follow(key) = {
         @this.reflected.follow(key)
+    }
+
+    func set_default_input() = {
+        @this.reflected.set_default_input()
+    }
+
+    func set_camera_input() = {
+        @this.reflected.set_camera_input()
     }
 }

@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.slavlend.Env.PolarEnv;
+import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Statements.FunctionStatement;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
@@ -147,44 +149,79 @@ public class window extends ApplicationAdapter implements InputProcessor {
 
      */
 
+    // список изображений
     private HashMap<String, Texture> textures = new HashMap<>();
+    // список моделей
     private HashMap<String, ModelInstance> models = new HashMap<>();
+    // заголовок
     private String title;
+    // высота
     private int height;
+    // ширина
     private int width;
+    // хэндлеры
     private FunctionStatement on_initialized;
     private FunctionStatement on_updated;
     private FunctionStatement on_key_downed;
     private FunctionStatement on_key_holded;
+    private FunctionStatement on_key_up;
+    // зажатые клавиши
     private ArrayList<Integer> holdings_keys = new ArrayList<Integer>();
+    // 3д камера
     private PerspectiveCamera camera;
+    // 3д окружение
     private Environment environment;
+    // 3д настройки
     public PolarObject settings_3d;
+    // 3д модельный батч для 3д отрисовки
     public ModelBatch modelBatch;
+    // 2д модельный батч для 2д отрисовки
+    public SpriteBatch spriteBatch;
+    // слежка
     private String following;
 
+    // конструктор
     public window() {
 
     }
 
+    // инициализация окна
     public void init(int width, int height, String title) {
         this.width = width;
         this.height = height;
         this.title = title;
     }
 
+    // при создании окна
     @Override
     public void create() {
         super.create();
+        // создаем батчи
         modelBatch = new ModelBatch();
+        spriteBatch = new SpriteBatch();
+        // если есть 3д настройки -> иницализируем
         if (settings_3d != null) {
             setup_3d(settings_3d);
         }
 
         // Настройка управления камерой
         // Gdx.input.setInputProcessor(new CameraInputController(camera));
+        // устанавливаем инпут процессор на текущий
         Gdx.input.setInputProcessor(this);
-        on_initialized.call(null, new ArrayList<>());
+        // вызываем функцию
+        if (on_initialized != null) {
+            on_initialized.call(null, new ArrayList<>());
+        } else {
+            PolarEnv.Warning("Initialization Method Is Not Set", -1);
+        }
+    }
+
+    public void set_camera_input() {
+        Gdx.input.setInputProcessor(new CameraInputController(camera));
+    }
+
+    public void set_default_input() {
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -225,11 +262,10 @@ public class window extends ApplicationAdapter implements InputProcessor {
         textures.put(key, new Texture(path));
     }
 
-    public void draw_image(String key, int x, int y) {
-        SpriteBatch batch = new SpriteBatch();
-        batch.begin();
-        batch.draw(textures.get(key), x, y);
-        batch.end();
+    public void draw_image(String key, int x, int y, int w, int h) {
+        spriteBatch.begin();
+        spriteBatch.draw(textures.get(key), x, y, w, h);
+        spriteBatch.end();
     }
 
     public void clear() {

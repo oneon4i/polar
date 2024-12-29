@@ -28,5 +28,5 @@ func key_handler(code) = {
 
 func update() = {
     @window.clear()
-    @window.draw_image('test', x, y)
+    @window.draw_image('test', x, y, 148, 147)
 }
