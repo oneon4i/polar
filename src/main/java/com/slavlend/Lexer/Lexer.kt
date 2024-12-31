@@ -1,6 +1,6 @@
 package com.slavlend.Lexer
 
-import com.slavlend.Env.PolarEnv
+import com.slavlend.Logger.PolarLogger
 import com.slavlend.Parser.Address
 
 /*
@@ -26,11 +26,8 @@ class Lexer // конструктор
         "back",
         "if",
         //"scan",
-        "num",
-        "string",
         "true",
         "false",
-        "bool",
         "while",
         "class",
         "new",
@@ -64,11 +61,8 @@ class Lexer // конструктор
             put("back", TokenType.BACK)
             put("if", TokenType.IF)
             //put("scan", TokenType.SCAN)
-            put("num", TokenType.TONUM)
-            put("string", TokenType.TOSTR)
             put("true", TokenType.BOOL)
             put("false", TokenType.BOOL)
-            put("bool", TokenType.TOBOOL)
             put("while", TokenType.WHILE)
             put("class", TokenType.CLASS)
             put("new", TokenType.NEW)
@@ -161,7 +155,7 @@ class Lexer // конструктор
 
                         while (Character.isDigit(Peek(i)) || Peek(i) == '.') {
                             if (!isInt && Peek(i) == '.') {
-                                PolarEnv.Crash("Cannot Parse Num With Two Dots.", Address(line + 1))
+                                PolarLogger.Crash("Cannot Parse Num With Two Dots.", Address(line + 1))
                             }
                             isInt = Peek(i) != '.'
                             builder.append(Peek(i))
@@ -251,7 +245,7 @@ class Lexer // конструктор
                         Next(2)
                         continue
                     } else {
-                        PolarEnv.Crash("Invalid Operator % For Assigning Value", Address(line))
+                        PolarLogger.Crash("Invalid Operator % For Assigning Value", Address(line))
                     }
                 }
             } else if (cur == ',') {
@@ -318,7 +312,7 @@ class Lexer // конструктор
 
                 while (Character.isDigit(Peek(i)) || Peek(i) == '.') {
                     if (!isInt && Peek(i) == '.') {
-                        PolarEnv.Crash("Cannot Parse Num With Two Dots.", Address(line + 1))
+                        PolarLogger.Crash("Cannot Parse Num With Two Dots.", Address(line + 1))
                     }
                     if (Peek(i) == '.') { isInt = false }
                     builder.append(Peek(i))

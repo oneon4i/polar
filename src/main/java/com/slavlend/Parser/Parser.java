@@ -10,8 +10,7 @@ import com.slavlend.Parser.Statements.*;
 import com.slavlend.Parser.Statements.Match.CaseStatement;
 import com.slavlend.Parser.Statements.Match.DefaultStatement;
 import com.slavlend.Parser.Statements.Match.MatchStatement;
-import com.slavlend.Parser.Statements.Mutable.*;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,7 +74,7 @@ public class Parser {
             // экзекьютим
             statement.execute();
         } catch (Exception e) {
-            PolarEnv.Crash("Parsing Error: " + e.getMessage(), address());
+            PolarLogger.Crash("Parsing Error: " + e.getMessage(), address());
         }
     }
 
@@ -90,7 +89,7 @@ public class Parser {
             case BIGGER_EQUAL -> new Operator(consume(TokenType.BIGGER_EQUAL).value);
             case IS -> new Operator(consume(TokenType.IS).value);
             default -> {
-                PolarEnv.Crash("Invalid Conditional Operator: " + tokenInfo(), new Address(tokens.get(current).line));
+                PolarLogger.Crash("Invalid Conditional Operator: " + tokenInfo(), new Address(tokens.get(current).line));
                 yield null;
             }
         };
@@ -209,9 +208,13 @@ public class Parser {
 
     // парсим стэйтмент
     public Statement statement() {
-        // вызов функции
-        if (check(TokenType.CALL)) {
-            return call();
+        // стэйтмент back
+        if (check(TokenType.BACK)) {
+            consume(TokenType.BACK);
+            consume(TokenType.BRACKET);
+            Expression e = parseExpression();
+            consume(TokenType.BRACKET);
+            return new BackStatement(e);
         }
         // стэйтмент if
         if (check(TokenType.IF)) {
@@ -300,9 +303,9 @@ public class Parser {
             }
             else {
                 // неизвестный оператор кондишена
-                error("Cannot Use Id Like Statement If Its Not For Assignment Or Call: " + tokenInfo());
+                // error("Cannot Use Id Like Statement If Its Not For Assignment Or Call: " + tokenInfo());
 
-                return null;
+                return id;
             }
 
             return id;
@@ -691,64 +694,6 @@ public class Parser {
         return statement;
     }
 
-    public Statement call() {
-        // паттерн
-        // @%func%
-        // or
-        // @%object%.%func%
-        // колл
-        // колл
-        consume(TokenType.CALL);
-        // айди или new (юзер дефайнед функции)
-        if (check(TokenType.ID) || check(TokenType.NEW)) {
-            return parseAccess();
-        }
-        // системные функции
-        else {
-            // back
-            if (check(TokenType.BACK)) {
-                // паттерн @back(expr)
-                consume(TokenType.BACK);
-                consume(TokenType.BRACKET);
-                Expression e = parseExpression();
-                consume(TokenType.BRACKET);
-                return new BackStatement(e);
-            }
-            // to int
-            if (check(TokenType.TONUM)) {
-                // паттерн @int(expr)
-                consume(TokenType.TONUM);
-                consume(TokenType.BRACKET);
-                Expression e = parseExpression();
-                consume(TokenType.BRACKET);
-                return new NumStatement(e);
-            }
-            // to str
-            if (check(TokenType.TOSTR)) {
-                // паттерн @string(expr)
-                consume(TokenType.TOSTR);
-                consume(TokenType.BRACKET);
-                Expression e = parseExpression();
-                consume(TokenType.BRACKET);
-                return new StrStatement(e);
-            }
-            // to bool
-            if (check(TokenType.TOBOOL)) {
-                // паттерн @bool(expr)
-                consume(TokenType.TOBOOL);
-                consume(TokenType.BRACKET);
-                Expression e = parseExpression();
-                consume(TokenType.BRACKET);
-                return new BoolStatement(e);
-            }
-        }
-
-        // функция не найдена
-        error("Function Not Found: " + tokenInfo());
-        // возвращаем
-        return null;
-    }
-
     // парсинг создания объекта
     public Expression objectExpr() {
         // паттерн
@@ -818,11 +763,6 @@ public class Parser {
 
     // парсинг праймари экспрешенна
     public Expression parsePrimary() {
-
-        // Проверка вызова функции
-        if (check(TokenType.CALL)) {
-            return (Expression) call();
-        }
         // Проверка создания объекта
         if (check(TokenType.NEW)) {
             return objectExpr();
@@ -985,7 +925,7 @@ public class Parser {
         // токен
         Token token = tokens.get(current);
         // трэйс ошибки
-        PolarEnv.Crash(message, new Address(token.line));
+        PolarLogger.Crash(message, new Address(token.line));
     }
 
     // токен инфо

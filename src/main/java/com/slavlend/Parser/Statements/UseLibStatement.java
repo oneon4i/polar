@@ -1,7 +1,7 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Lexer.Lexer;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.TextExpression;
@@ -54,7 +54,7 @@ public class UseLibStatement implements Statement{
             sc = new Scanner(is);
         }
         else {
-            PolarEnv.Crash("Cannot Load: " + libName.data + " (Not Found)", address);
+            PolarLogger.Crash("Cannot Load: " + libName.data + " (Not Found)", address);
         }
 
         // линии кода

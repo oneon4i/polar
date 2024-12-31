@@ -4,13 +4,13 @@ class Random() = {
     }
 
     func number(min, max) = {
-        @back(@this.javaRandom.nextInt(min, max))
+        back(this.javaRandom.nextInt(min, max))
     }
 }
 
 
 #
 random = new Random()
-num = @random.number(0, 125)
-@put(num)
+num = random.number(0, 125)
+put(num)
 #

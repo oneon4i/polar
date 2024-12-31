@@ -11,15 +11,11 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.slavlend.Env.PolarEnv;
-import com.slavlend.Parser.Address;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Statements.FunctionStatement;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
-import org.jetbrains.kotlin.types.ConstantValueKind;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -212,7 +208,7 @@ public class window extends ApplicationAdapter implements InputProcessor {
         if (on_initialized != null) {
             on_initialized.call(null, new ArrayList<>());
         } else {
-            PolarEnv.Warning("Initialization Method Is Not Set", -1);
+            PolarLogger.Warning("Initialization Method Is Not Set", -1);
         }
     }
 

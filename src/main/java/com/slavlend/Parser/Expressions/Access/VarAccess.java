@@ -6,9 +6,8 @@ import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Reflected;
 import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Polar.Stack.Storage;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Statements.ClassStatement;
 
 import java.lang.reflect.Field;
 
@@ -46,7 +45,7 @@ public class VarAccess implements Access {
                     res = new PolarValue(Classes.getInstance().getClassByAddress(address, varName));
                 }
                 else {
-                    PolarEnv.Crash("Not Found: " + varName, address);
+                    PolarLogger.Crash("Not Found: " + varName, address);
                 }
             }
 
@@ -97,9 +96,9 @@ public class VarAccess implements Access {
                         res = new PolarValue(new Reflected(address, result.getClass(), result));
                     }
                 } catch (IllegalAccessException e) {
-                    PolarEnv.Crash("Illegal Access Exception (Java): " + e.getMessage(), address);
+                    PolarLogger.Crash("Illegal Access Exception (Java): " + e.getMessage(), address);
                 } catch (NoSuchFieldException e) {
-                    PolarEnv.Crash("No Such Field Exception (Java): " + e.getMessage(), address);
+                    PolarLogger.Crash("No Such Field Exception (Java): " + e.getMessage(), address);
                 }
 
                 // если нет следующего

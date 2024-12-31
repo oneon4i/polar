@@ -1,10 +1,10 @@
-package com.slavlend.Env;
+package com.slavlend.Logger;
 
 import com.slavlend.Polar.StackHistoryWriter;
 import com.slavlend.Colors;
 import com.slavlend.Parser.Address;
 
-public class PolarEnv {
+public class PolarLogger {
     /*
     Крашит выполнение, выводя сообщение
     об ошибке вместе с линией ошибки.

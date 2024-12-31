@@ -4,8 +4,7 @@ import com.slavlend.Polar.PolarClass;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Classes;
-import com.slavlend.Env.PolarEnv;
-import com.slavlend.Parser.Statements.ClassStatement;
+import com.slavlend.Logger.PolarLogger;
 
 /*
 Библиотека ant, необходима для более глубокого
@@ -39,7 +38,7 @@ public class polar {
 
         // проверяем класс на нулл
         if (_clazz == null) {
-            PolarEnv.Crash("Class Not Found: " + name, name.instantiateAddress);
+            PolarLogger.Crash("Class Not Found: " + name, name.instantiateAddress);
         }
 
         PolarObject obj = PolarObject.create(_clazz, args.asList());

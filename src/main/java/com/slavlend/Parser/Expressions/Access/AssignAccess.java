@@ -4,7 +4,7 @@ import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Reflected;
 import com.slavlend.Polar.Stack.Storage;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
@@ -90,9 +90,9 @@ public class AssignAccess implements Access {
                 Object value = convertToJavaValue(field, _value);
                 field.set(r.o, field.getType().cast(value));
             } catch (IllegalAccessException e) {
-                PolarEnv.Crash("Illegal Access Exception (Java): " + e.getMessage(), address);
+                PolarLogger.Crash("Illegal Access Exception (Java): " + e.getMessage(), address);
             } catch (NoSuchFieldException e) {
-                PolarEnv.Crash("No Such Field Exception (Java): " + e.getMessage(), address);
+                PolarLogger.Crash("No Such Field Exception (Java): " + e.getMessage(), address);
             }
 
             // если нет следующего
@@ -183,7 +183,7 @@ public class AssignAccess implements Access {
                 result = (_clazz.cast(v.asReflected().o));
             }
             else {
-                PolarEnv.Crash("Impossible To Convert Not Reflected Types To Java Like Classes", address);
+                PolarLogger.Crash("Impossible To Convert Not Reflected Types To Java Like Classes", address);
             }
         }
 

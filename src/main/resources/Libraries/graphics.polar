@@ -5,61 +5,61 @@ class Color(r, g, b) = {}
 class Window() = {
     func setup(width, height, title, on_init) = {
         this.provider = reflect 'com.slavlend.Libraries.graphics.window_provider'
-        this.reflected = @this.provider.provide(on_init)
-        @this.provider.setup(title, width, height)
+        this.reflected = this.provider.provide(on_init)
+        this.provider.setup(title, width, height)
     }
 
     func setup_3d(width, height, title, on_init, camera_settings) = {
         this.provider = reflect 'com.slavlend.Libraries.graphics.window_provider'
-        this.reflected = @this.provider.provide(on_init)
-        @this.provider.setup_3d(title, width, height, camera_settings)
+        this.reflected = this.provider.provide(on_init)
+        this.provider.setup_3d(title, width, height, camera_settings)
     }
 
     func load_image(key, path) = {
-        @this.reflected.load_image(key, path)
+        this.reflected.load_image(key, path)
     }
 
     func add_model(key, path) = {
-        @this.reflected.add_model(key, path)
+        this.reflected.add_model(key, path)
     }
 
     func draw_model(key, x, y, z, xS, yS, zS) = {
-        @this.reflected.draw_model(key, x, y, z, xS, yS, zS)
+        this.reflected.draw_model(key, x, y, z, xS, yS, zS)
     }
 
     func add_light(color, x, y, z) =  {
-        @this.reflected.add_light(color, x, y, z)
+        this.reflected.add_light(color, x, y, z)
     }
 
     func draw_image(key, x, y, w, h) = {
-        @this.reflected.draw_image(key, x, y, w, h)
+        this.reflected.draw_image(key, x, y, w, h)
     }
 
     func on_update(function) = {
-        @this.reflected.on_update(function)
+        this.reflected.on_update(function)
     }
 
     func clear() = {
-        @this.reflected.clear()
+        this.reflected.clear()
     }
 
     func on_key_down(function) = {
-        @this.reflected.on_key_down(function)
+        this.reflected.on_key_down(function)
     }
 
     func on_key_hold(function) = {
-        @this.reflected.on_key_hold(function)
+        this.reflected.on_key_hold(function)
     }
 
     func follow(key) = {
-        @this.reflected.follow(key)
+        this.reflected.follow(key)
     }
 
     func set_default_input() = {
-        @this.reflected.set_default_input()
+        this.reflected.set_default_input()
     }
 
     func set_camera_input() = {
-        @this.reflected.set_camera_input()
+        this.reflected.set_camera_input()
     }
 }

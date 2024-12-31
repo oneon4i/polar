@@ -5,7 +5,7 @@ import com.slavlend.App;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Operator;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 
 /*
 Арифмитическое выражение
@@ -70,12 +70,12 @@ public class ArithmeticExpression implements Expression {
                 return new PolarValue(right.asNumber() % left.asNumber());
             }
             else {
-                PolarEnv.Crash("Cannot Concat: " + right.data + " and " + left.data, address);
+                PolarLogger.Crash("Cannot Concat: " + right.data + " and " + left.data, address);
                 return null;
             }
         }
 
-        PolarEnv.Crash("Cannot Concat: " + right.data + " and " + left.data, address);
+        PolarLogger.Crash("Cannot Concat: " + right.data + " and " + left.data, address);
         return null;
     }
 

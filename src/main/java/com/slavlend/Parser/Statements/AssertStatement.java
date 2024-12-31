@@ -1,7 +1,7 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ConditionExpression;
@@ -36,7 +36,7 @@ public class AssertStatement implements Statement {
         optimize();
         // проверяем условие
         if (!expr.evaluate().asBool()) {
-            PolarEnv.Crash("Assertion Error", address);
+            PolarLogger.Crash("Assertion Error", address);
         }
     }
 

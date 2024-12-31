@@ -1,7 +1,7 @@
 package com.slavlend.Functions;
 
 import com.slavlend.Polar.PolarValue;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
 
 import java.util.List;
@@ -19,7 +19,11 @@ public class BuiltInFunctions {
             "scan", new ScanFunction(),
             "warning", new WarningFunction(),
             "panic", new PanicFunction(),
-            "sleep", new SleepFunction()
+            "sleep", new SleepFunction(),
+            "string", new StringFunction(),
+            "num", new NumberFunction(),
+            "number", new NumberFunction(),
+            "bool", new BoolFunction()
     );
 
     // put
@@ -75,7 +79,7 @@ public class BuiltInFunctions {
         @Override
         public PolarValue execute(Address address, List<PolarValue> args) {
             // действуем
-            PolarEnv.Warning(args.get(0).asString(), address.line);
+            PolarLogger.Warning(args.get(0).asString(), address.line);
             // возвращаем
             return new PolarValue(null);
         }
@@ -92,7 +96,7 @@ public class BuiltInFunctions {
         @Override
         public PolarValue execute(Address address, List<PolarValue> args) {
             // действуем
-            PolarEnv.Crash(args.get(0).asString(), address);
+            PolarLogger.Crash(args.get(0).asString(), address);
             // возвращаем
             return new PolarValue(null);
         }
@@ -112,10 +116,71 @@ public class BuiltInFunctions {
             try {
                 Thread.sleep(args.get(0).asNumber().longValue());
             } catch (InterruptedException e) {
-                PolarEnv.Crash("Error In Thread (Java): " + Thread.currentThread().toString() + ": " + e.getMessage(), address);
+                PolarLogger.Crash("Error In Thread (Java): " + Thread.currentThread().toString() + ": " + e.getMessage(), address);
             }
             // возвращаем
             return new PolarValue(null);
+        }
+
+        @Override
+        public int argsAmount() {
+            return 1;
+        }
+    }
+
+    // string
+    public static class StringFunction implements BuiltInFunction {
+
+        @Override
+        public PolarValue execute(Address address, List<PolarValue> args) {
+            // возвращаем
+            return new PolarValue(String.valueOf(args.get(0).data));
+        }
+
+        @Override
+        public int argsAmount() {
+            return 1;
+        }
+    }
+
+    // number
+    public static class NumberFunction implements BuiltInFunction {
+
+        @Override
+        public PolarValue execute(Address address, List<PolarValue> args) {
+            // возвращаем
+            return new PolarValue(Float.parseFloat(args.get(0).asString()));
+        }
+
+        @Override
+        public int argsAmount() {
+            return 1;
+        }
+    }
+
+    // bool
+    public static class BoolFunction implements BuiltInFunction {
+
+        @Override
+        public PolarValue execute(Address address, List<PolarValue> args) {
+            // возвращаем
+            if (args.get(0).isBool()) {
+                return new PolarValue(args.get(0).asBool());
+            }
+            if (args.get(0).isString()) {
+                return new PolarValue(Boolean.parseBoolean(args.get(0).asString()));
+            }
+            if (args.get(0).isNumber()) {
+                if (args.get(0).asNumber() == 1) {
+                    return new PolarValue(true);
+                }
+                else {
+                    return new PolarValue(false);
+                }
+            }
+
+            // в другом случае выводим false
+            return new PolarValue(false);
         }
 
         @Override

@@ -1,6 +1,6 @@
 package com.slavlend.Polar;
 
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
 
 /*
@@ -22,7 +22,7 @@ public class Reflected {
             this.o = clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             // кэтчим эксцепшены
-            PolarEnv.Crash("Reflection object creation error (Java):  " + e.getMessage(), address);
+            PolarLogger.Crash("Reflection object creation error (Java):  " + e.getMessage(), address);
         }
     }
 

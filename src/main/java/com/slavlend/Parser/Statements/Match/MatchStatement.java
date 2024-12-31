@@ -1,7 +1,7 @@
 package com.slavlend.Parser.Statements.Match;
 
 import com.slavlend.App;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;
@@ -50,7 +50,7 @@ public class MatchStatement implements Statement {
                 defaultStatement = (DefaultStatement) statement;
             }
             else {
-                PolarEnv.Crash("Cannot Use Any Statement Except Default | Case In Match!", address);
+                PolarLogger.Crash("Cannot Use Any Statement Except Default | Case In Match!", address);
             }
         }
 

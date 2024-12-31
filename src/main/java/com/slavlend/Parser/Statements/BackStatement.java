@@ -1,11 +1,10 @@
-package com.slavlend.Parser.Statements.Mutable;
+package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
-import com.slavlend.Parser.Statements.Statement;
 
 /*
 Стэйтмент бэк - возвращает значение переданное

@@ -8,6 +8,6 @@ class HttpRequestType() = {
 class Http() = {
     mod reflected = reflect 'com.slavlend.Libraries.http'
     mod func send(url, type, headers) = {
-        @back(@Http.reflected.send(url, type, headers))
+        back(Http.reflected.send(url, type, headers))
     }
 }

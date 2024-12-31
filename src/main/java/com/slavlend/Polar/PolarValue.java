@@ -7,7 +7,7 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Statements.BreakStatement;
 import com.slavlend.Parser.Statements.ClassStatement;
 import com.slavlend.Parser.Statements.FunctionStatement;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Statements.NextStatement;
 
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class PolarValue extends RuntimeException {
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку
-            PolarEnv.Crash("Cannot Parse " + data + " To Num", instantiateAddress);
+            PolarLogger.Crash("Cannot Parse " + data + " To Num", instantiateAddress);
             return null;
         }
 
@@ -84,7 +84,7 @@ public class PolarValue extends RuntimeException {
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку
-            PolarEnv.Crash("Cannot Parse " + data + " To Bool", instantiateAddress);
+            PolarLogger.Crash("Cannot Parse " + data + " To Bool", instantiateAddress);
             return null;
         }
     }
@@ -97,7 +97,7 @@ public class PolarValue extends RuntimeException {
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку
-            PolarEnv.Crash("Cannot Parse " + data + " To Reflected", instantiateAddress);
+            PolarLogger.Crash("Cannot Parse " + data + " To Reflected", instantiateAddress);
             return null;
         }
     }
@@ -110,7 +110,7 @@ public class PolarValue extends RuntimeException {
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку
-            PolarEnv.Crash("Cannot Parse " + data + " To Egg Object", instantiateAddress);
+            PolarLogger.Crash("Cannot Parse " + data + " To Egg Object", instantiateAddress);
             return null;
         }
     }
@@ -123,7 +123,7 @@ public class PolarValue extends RuntimeException {
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку
-            PolarEnv.Crash("Cannot Parse " + data + " To Function", instantiateAddress);
+            PolarLogger.Crash("Cannot Parse " + data + " To Function", instantiateAddress);
             return null;
         }
     }
@@ -136,7 +136,7 @@ public class PolarValue extends RuntimeException {
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку
-            PolarEnv.Crash("Cannot Parse " + data + " To Class", instantiateAddress);
+            PolarLogger.Crash("Cannot Parse " + data + " To Class", instantiateAddress);
             return null;
         }
     }
@@ -207,7 +207,7 @@ public class PolarValue extends RuntimeException {
             return asClass().equals(obj.asClass());
         }
         else {
-            PolarEnv.Crash("Cannot Compare: "
+            PolarLogger.Crash("Cannot Compare: "
                     + obj.data.getClass().getSimpleName()
                     + " and "
                     + this.data.getClass().getSimpleName(),
@@ -253,7 +253,7 @@ public class PolarValue extends RuntimeException {
         else {
             String first = obj.data != null ? obj.data.getClass().getSimpleName() : null;
             String second = this.data != null ? this.data.getClass().getSimpleName() : null;
-            PolarEnv.Crash("Cannot Compare: "
+            PolarLogger.Crash("Cannot Compare: "
                             + first
                             + " and "
                             + second,

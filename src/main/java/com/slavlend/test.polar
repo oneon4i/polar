@@ -7,7 +7,7 @@ use 'lib.map'
 class RandomResult() = {
     mod func result() = {
         rnd = new Random()
-        @back('Результат ❄️: ' + @string(@rnd.number(0, 100)))
+        back('Результат ❄️: ' + string(rnd.number(0, 100)))
     }
 }
 
@@ -25,79 +25,79 @@ class Handler() = {
         times = 0
 
         while (times != 5) {
-            @this.tg.send_message(chat_id, 'Треда')
-            @sleep(500)
+            this.tg.send_message(chat_id, 'Треда')
+            sleep(500)
             times += 1
         }
     }
 
     func threads(chat_id) = {
-        @Tasks.exec(this, this.a, [chat_id])
+        Tasks.exec(this, this.a, [chat_id])
     }
 
     func start_bot() = {
-        @put('starting bot')
-        @this.tg.start('5742807524:AAH3oScbSFmqLQQgo6r6xRRaF6S6DgAPkl4')
-        @this.tg.on_message(this, this.on_message)
-        @this.tg.on_quiz_answer(this, this.on_quiz_answer)
+        put('starting bot')
+        this.tg.start('5742807524:AAH3oScbSFmqLQQgo6r6xRRaF6S6DgAPkl4')
+        this.tg.on_message(this, this.on_message)
+        this.tg.on_quiz_answer(this, this.on_quiz_answer)
     }
 
     func on_quiz_answer(chat_id, correct) = {
-        if (correct == @this.quizes.get(chat_id).get('correct')) {
-            @this.tg.send_message(chat_id, 'Правильно! ✅')
+        if (correct == this.quizes.get(chat_id).get('correct')) {
+            this.tg.send_message(chat_id, 'Правильно! ✅')
         }
         else {
-            @this.tg.send_message(chat_id, 'Не правильно! ❌')
+            this.tg.send_message(chat_id, 'Не правильно! ❌')
         }
     }
 
     func on_message(chat_id, msg) = {
         if (msg == '/start') {
-            if (@this.array.contains(chat_id) == false) {
-                @this.array.add(chat_id)
-                @this.tg.send_message(chat_id, 'Вы зарегестрированы успешно! 🏗️')
+            if (this.array.contains(chat_id) == false) {
+                this.array.add(chat_id)
+                this.tg.send_message(chat_id, 'Вы зарегестрированы успешно! 🏗️')
             }
             else {
-                @this.tg.send_message(chat_id, 'Вы уже зарегестрировались! 🍧')
+                this.tg.send_message(chat_id, 'Вы уже зарегестрировались! 🍧')
             }
         }
         if (msg == '/registered') {
-            @this.tg.send_message(chat_id, 'Список зарегестрированных ' + this.new_line + ' пользователей (' + @string(@this.array.size()) + ')! ⏲️' + this.new_line + @this.array.to_string())
+            this.tg.send_message(chat_id, 'Список зарегестрированных ' + this.new_line + ' пользователей (' + string(this.array.size()) + ')! ⏲️' + this.new_line + this.array.to_string())
         }
         if (msg == '/warning') {
-            @warning('Warning test')
-            @this.tg.send_message(chat_id, 'Варнинг ⚠️!')
+            warning('Warning test')
+            this.tg.send_message(chat_id, 'Варнинг ⚠️!')
         }
         if (msg == '/random') {
-            if (@this.array.contains(chat_id) == true) {
-                @this.tg.send_message(chat_id, @RandomResult.result())
+            if (this.array.contains(chat_id) == true) {
+                this.tg.send_message(chat_id, RandomResult.result())
             }
             else {
-                @this.tg.send_message(chat_id, 'Нельзя получить число не зарегестри-' + this.new_line + 'ровавшись через /start 🐊')
+                this.tg.send_message(chat_id, 'Нельзя получить число не зарегестри-' + this.new_line + 'ровавшись через /start 🐊')
             }
         }
         if (msg == '/threads') {
-            if (@this.array.contains(chat_id) == true) {
-                @this.threads(chat_id)
+            if (this.array.contains(chat_id) == true) {
+                this.threads(chat_id)
             }
             else {
-                @this.tg.send_message(chat_id, 'Нельзя получить треды не зарегестри-' + this.new_line + 'ровавшись через /start 🧵')
+                this.tg.send_message(chat_id, 'Нельзя получить треды не зарегестри-' + this.new_line + 'ровавшись через /start 🧵')
             }
         }
         if (msg == '/poll') {
-            if (@this.array.contains(chat_id) == true) {
-                @this.tg.send_quiz(chat_id, 'Тестовый вопрос', 1, ['A', 'B', 'C'])
-                @this.quizes.add(chat_id, {'correct': 1})
+            if (this.array.contains(chat_id) == true) {
+                this.tg.send_quiz(chat_id, 'Тестовый вопрос', 1, ['A', 'B', 'C'])
+                this.quizes.add(chat_id, {'correct': 1})
             }
             else {
-                @this.tg.send_message(chat_id, 'Нельзя получить квиз не зарегестри-' + this.new_line + 'ровавшись через /start 🧵')
+                this.tg.send_message(chat_id, 'Нельзя получить квиз не зарегестри-' + this.new_line + 'ровавшись через /start 🧵')
             }
         }
     }
 }
 
 handler = new Handler()
-@handler.start_bot()
+handler.start_bot()
 
 
 # тест вложенных функций #
@@ -111,7 +111,7 @@ class E() = {
 class D() = {
     func print() = {
         e = new E()
-        @back(e)
+        back(e)
     }
 }
 
@@ -123,7 +123,7 @@ class C() = {
 
 class B() = {
     func b() = {
-        @back(new C())
+        back(new C())
     }
 }
 
@@ -134,52 +134,52 @@ class A() = {
 }
 
 a = new A()
-@put(@a.a.b().a.print().a)
+put(a.a.b().a.print().a)
 #
 #
 a = 5
-@put(@string(a) + ' before')
+put(string(a) + ' before')
 a += 5
-@put(@string(a) + ' part 1')
+put(string(a) + ' part 1')
 a /= 3
-@put(@string(a) + ' part 2')
+put(string(a) + ' part 2')
 a *= 3
-@put(@string(a) + ' part 3')
+put(string(a) + ' part 3')
 a -= 7
-@put(@string(a) + ' after')
+put(string(a) + ' after')
 #
 #
 class A() = {
     func a() = {
-        @back(5)
+        back(5)
     }
 }
 
 class B() = {
     mod func a() = {
         _a = new A()
-        @back(_a)
+        back(_a)
     }
 }
 
-@put(@B.a().a())#
+put(B.a().a())#
 # тест вложенных функций #
 #class A() = {
     func a() = {
         func b() = {
             func c() = {
-                @back(4)
+                back(4)
             }
 
-            @back(@c())
+            back(c())
         }
 
-        @put(@b())
+        put(b())
     }
 }
 
 a = new A()
-@a.a()#
+a.a()#
 
 # egg - F:\egg lang\language\src\main\java\com\slavlend\test.eg ##
 class A(text) = {
@@ -188,10 +188,10 @@ class A(text) = {
     }
 
     func a() = {
-        @back('11111')
+        back('11111')
     }
 }
 
-a = @new A('testik').a()
-@put(new A('testik').b)
+a = new A('testik').a()
+put(new A('testik').b)
 #

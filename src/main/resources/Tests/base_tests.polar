@@ -10,14 +10,14 @@ use 'lib.map'
 use 'lib.json'
 
 func hello_world_test() = {
-    @put('Hello World!')
-    @put('Test passed')
+    put('Hello World!')
+    put('Test passed')
 }
 
 func variable_test() = {
     a = 1
     assert (a == 1)
-    @put('Test passed')
+    put('Test passed')
 }
 
 func convert_test() = {
@@ -25,11 +25,11 @@ func convert_test() = {
     b = true
     c = '1'
 
-    assert(@Polar.name(@string(1)) == 'string')
-    assert(@Polar.name(@string(b)) == 'string')
-    assert(@Polar.name(@num(c)) == 'num')
+    assert(Polar.name(string(1)) == 'string')
+    assert(Polar.name(string(b)) == 'string')
+    assert(Polar.name(num(c)) == 'num')
 
-    @put('Test passed')
+    put('Test passed')
 }
 
 func for_statement_continue_test() = {
@@ -46,7 +46,7 @@ func for_statement_continue_test() = {
     }
 
     assert(value == 4)
-    @put('Test passed')
+    put('Test passed')
 }
 
 func logical_operators_test() = {
@@ -55,7 +55,7 @@ func logical_operators_test() = {
 
     assert(a == true)
     assert(b == false)
-    @put('Test passed')
+    put('Test passed')
 }
 
 func if_test() = {
@@ -63,7 +63,7 @@ func if_test() = {
     b = 4 + 1
 
     if ((a == b)) {
-        @put('Test passed')
+        put('Test passed')
     }
     else {
         assert(1 == 2)
@@ -73,10 +73,10 @@ func if_test() = {
 func each_statement() = {
     lst = [5, 3, 1]
     each (elem, lst) {
-        @put(elem)
+        put(elem)
         next
     }
-    @put('Test passed')
+    put('Test passed')
 }
 
 func nested_test() = {
@@ -104,7 +104,7 @@ func nested_test() = {
     }
 
     assert(total_sum == 20)
-    @put('Test passed')
+    put('Test passed')
 }
 
 func while_test() = {
@@ -115,14 +115,14 @@ func while_test() = {
     }
 
     assert(index == 5)
-    @put('Test passed')
+    put('Test passed')
 }
 
 func optimization_test() = {
     a = 2 + 2 * 2
 
     assert(a == 6)
-    @put('Test passed')
+    put('Test passed')
 }
 
 func float_math_test() = {
@@ -130,24 +130,24 @@ func float_math_test() = {
     a = a + 1.78
 
     assert(a == 6.892232)
-    @put('Test passed')
+    put('Test passed')
 }
 
 class A()  = {
     func init() = {
-        @put('Test passed')
+        put('Test passed')
     }
 }
 
 func class_by_name_test() = {
-    o = @Polar.from('A', [])
+    o = Polar.from('A', [])
     assert(o != nil)
 }
 
 class Phrase(text, character) = {
 	func print() = {
-		@Console.cls()
-		@put(
+		Console.cls()
+		put(
 			this.character +
 			': ' +
 			this.text
@@ -157,51 +157,51 @@ class Phrase(text, character) = {
 
 func console_lib_test() = {
     phrase = new Phrase('Привет', 'Я')
-    @phrase.print()
+    phrase.print()
 }
 
 func len_test() = {
-    length = @len('aaaa')
+    length = len('aaaa')
     assert(length == 4)
-    @put('Test passed')
+    put('Test passed')
 }
 
 func warning_test() = {
-    @warning('Test warning')
-    @put('Test passed')
+    warning('Test warning')
+    put('Test passed')
 }
 
 func test_format() = {
     name = 'Вячеслав'
     age = 13
-    formatted = @Str.format('Привет, {0.0}, возрастом в {1.0} лет', [name, @string(age)])
+    formatted = Str.format('Привет, {0.0}, возрастом в {1.0} лет', [name, string(age)])
     assert(formatted == 'Привет, Вячеслав, возрастом в 13.0 лет')
-    @put('Test passed')
+    put('Test passed')
 }
 
 func files_test() = {
     assert(Files.files('D:\Docs').dumps() != nil)
-    @put('Test passed')
+    put('Test passed')
 }
 
 func crypto_test() = {
     for_crypto = 'Hello World'
     secret_key = 'SecretKey'
-    encrypted = @Crypto.encrypt(for_crypto, secret_key)
+    encrypted = Crypto.encrypt(for_crypto, secret_key)
     assert(
-        @Crypto.decrypt(encrypted, secret_key)
+        Crypto.decrypt(encrypted, secret_key)
         == 'Hello World'
     )
-    @put('Test passed')
+    put('Test passed')
 }
 
 func http_test() = {
-    response = @Http.send('https://httpbin.org/get', HttpRequestType.GET, {})
-    assert(@Json.read(response).get('url') == 'https://httpbin.org/get')
-    @put('Test passed')
+    response = Http.send('https://httpbin.org/get', HttpRequestType.GET, {})
+    assert(Json.read(response).get('url') == 'https://httpbin.org/get')
+    put('Test passed')
 }
 
-@Tests.test(
+Tests.test(
     [
      hello_world_test,
      variable_test,

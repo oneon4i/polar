@@ -1,7 +1,7 @@
 package com.slavlend.Parser.Expressions.Access;
 
 import com.slavlend.Polar.PolarValue;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ObjectExpression;
 
@@ -41,7 +41,7 @@ public class TempAccess implements Access {
         }
         // если есть
         else {
-            PolarEnv.Crash("Cannot Use Temp Access Not First Of Call Chain", address);
+            PolarLogger.Crash("Cannot Use Temp Access Not First Of Call Chain", address);
 
             return null;
         }

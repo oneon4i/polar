@@ -4,7 +4,7 @@ import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Storage;
 import com.slavlend.Colors;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Libraries.json;
 import com.slavlend.Parser.Statements.FunctionStatement;
 
@@ -35,7 +35,7 @@ public class httpserver {
             requestHandlerList.put(path.asString(), func.asFunc());
         }
         else {
-            PolarEnv.Crash("Http Server Error. Not A Function: ", func.instantiateAddress);
+            PolarLogger.Crash("Http Server Error. Not A Function: ", func.instantiateAddress);
         }
     }
 

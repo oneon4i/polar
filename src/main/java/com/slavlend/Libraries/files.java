@@ -2,7 +2,7 @@ package com.slavlend.Libraries;
 
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.Stack.Classes;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Polar.PolarValue;
 
 import java.io.BufferedWriter;
@@ -42,7 +42,7 @@ public class files {
             return new PolarValue(text.toString());
         } catch (Exception e) {
             // ошибка
-            PolarEnv.Crash("Cannot Read: " + name + ", (Java) " + e.getMessage(), name.instantiateAddress);
+            PolarLogger.Crash("Cannot Read: " + name + ", (Java) " + e.getMessage(), name.instantiateAddress);
 
             return null;
         }
@@ -59,7 +59,7 @@ public class files {
             writer.close();
         } catch (Exception e) {
             // ошибка
-            PolarEnv.Crash("Cannot Write: " + name + ", (Java): " + e.getMessage(), name.instantiateAddress);
+            PolarLogger.Crash("Cannot Write: " + name + ", (Java): " + e.getMessage(), name.instantiateAddress);
         }
     }
 
@@ -79,7 +79,7 @@ public class files {
 
             return new PolarValue(_array);
         } catch (IOException e) {
-            PolarEnv.Crash(
+            PolarLogger.Crash(
                     "Io Exception (Java): " + e.getCause().getMessage(), path.instantiateAddress
             );
             return null;

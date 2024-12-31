@@ -1,9 +1,9 @@
 class Utils() = {
     func print_something() = {
-        @put('something')
+        put('something')
     }
 }
 
 func utils() = {
-    @put('function import success')
+    put('function import success')
 }

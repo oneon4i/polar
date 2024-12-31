@@ -3,7 +3,7 @@ package com.slavlend.Parser.Expressions;
 import com.slavlend.App;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Reflected;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
 
 /*
@@ -22,7 +22,7 @@ public class ReflectExpression implements Expression {
             return new PolarValue(new Reflected(address, Class.forName(className)));
         }
         catch (ClassNotFoundException e) {
-            PolarEnv.Crash("Reflection Exception: " + e.toString(), address);
+            PolarLogger.Crash("Reflection Exception: " + e.toString(), address);
             return null;
         }
     }

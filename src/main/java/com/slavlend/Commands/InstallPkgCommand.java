@@ -1,7 +1,7 @@
 package com.slavlend.Commands;
 
 import com.slavlend.App;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Repo.RepoDownloader;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class InstallPkgCommand implements Command {
         // имя пакета
         String gitPkg = args[0];
         // скачиваем пакет
-        RepoDownloader.download(args[0], PolarEnv.getPolarPath() + "\\temp.rar");
+        RepoDownloader.download(args[0], PolarLogger.getPolarPath() + "\\temp.rar");
         // показываем меню
         App.showCommandMenu();
     }

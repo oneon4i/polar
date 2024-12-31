@@ -3,11 +3,9 @@ package com.slavlend.Polar.Stack;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.StackHistoryWriter;
 import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Expressions.Expression;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /*
 Хранилище - набор функций
@@ -52,7 +50,7 @@ public class Storage {
         }
 
         // крашим
-        PolarEnv.Crash("Cannot Find Variable: " + name, reqAddress);
+        PolarLogger.Crash("Cannot Find Variable: " + name, reqAddress);
         return null;
     }
 

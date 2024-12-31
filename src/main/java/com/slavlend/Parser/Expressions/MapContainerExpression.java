@@ -1,7 +1,7 @@
 package com.slavlend.Parser.Expressions;
 
 import com.slavlend.App;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Classes;
@@ -44,7 +44,7 @@ public class MapContainerExpression implements Expression {
             return new PolarValue(array);
         }
         else {
-            PolarEnv.Crash("Cannot Find Map Class. Did You Forgot To Import 'lib.map'?", address);
+            PolarLogger.Crash("Cannot Find Map Class. Did You Forgot To Import 'lib.map'?", address);
             return new PolarValue(null);
         }
     }

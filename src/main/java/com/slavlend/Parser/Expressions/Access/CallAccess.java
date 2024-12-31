@@ -2,11 +2,10 @@ package com.slavlend.Parser.Expressions.Access;
 
 import com.slavlend.Polar.*;
 import com.slavlend.Polar.Stack.Storage;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Functions.BuiltInFunctions;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
-import com.slavlend.Parser.Statements.ClassStatement;
 import com.slavlend.Parser.Statements.FunctionStatement;
 
 import java.lang.reflect.InvocationTargetException;
@@ -88,7 +87,7 @@ public class CallAccess implements Access {
                 ArrayList<PolarValue> _params = parseParameters();
                 StackHistoryWriter.getInstance().pushCall(address, v.clazz.name + "." + funcName);
                 if (!v.classValues.containsKey(funcName)) {
-                    PolarEnv.Crash("Function: " + funcName + " Not Found! ", address);
+                    PolarLogger.Crash("Function: " + funcName + " Not Found! ", address);
                     return null;
                 }
                 checkArgs(v.clazz.name + "." + funcName, v.classValues.get(funcName).asFunc().arguments.size(), _params.size());
@@ -117,7 +116,7 @@ public class CallAccess implements Access {
                             method = _method;
                         }
                     }
-                    if (method == null) PolarEnv.Crash("Java Method With Name: " + funcName + " Not Found In: " + r.clazz.getSimpleName(), address);
+                    if (method == null) PolarLogger.Crash("Java Method With Name: " + funcName + " Not Found In: " + r.clazz.getSimpleName(), address);
                     // конвертируем аргументы в java-like
                     ArrayList<Object> javaLikeParams = convertToJavaParams(method);
                     // вызываем метод
@@ -125,7 +124,7 @@ public class CallAccess implements Access {
                     try {
                         result = method.invoke(r.o, javaLikeParams.toArray());
                     } catch (InvocationTargetException e) {
-                        PolarEnv.Crash(
+                        PolarLogger.Crash(
                                 "Invocation Target Exception (Java): " + e.getCause().getMessage()
                                         + " on: " + e.getStackTrace().toString(),
                                 address);
@@ -150,7 +149,7 @@ public class CallAccess implements Access {
                         }
                     }
                 } catch (IllegalAccessException e) {
-                    PolarEnv.Crash("Illegal Access Exception (Java): " + e.getMessage(), address);
+                    PolarLogger.Crash("Illegal Access Exception (Java): " + e.getMessage(), address);
                 }
 
                 // если нет следующего
@@ -238,7 +237,7 @@ public class CallAccess implements Access {
                     values.add(_clazz.cast(v.asReflected().o));
                 }
                 else {
-                    PolarEnv.Crash("Impossible To Convert Not Reflected Types To Java Like Classes: " + _clazz, address);
+                    PolarLogger.Crash("Impossible To Convert Not Reflected Types To Java Like Classes: " + _clazz, address);
                 }
             }
         }
@@ -251,7 +250,7 @@ public class CallAccess implements Access {
         if (fSize != sSize) {
             // ошибка если колличество
             // аргументов не совпадает
-            PolarEnv.Crash(
+            PolarLogger.Crash(
                     "Arguments & Parameters Size Doesn't Match ("
                             + name
                             + ")"

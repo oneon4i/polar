@@ -1,8 +1,7 @@
 package com.slavlend.Polar.Stack;
 
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Statements.ClassStatement;
 import com.slavlend.Polar.PolarClass;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class Classes {
             }
         }
 
-        PolarEnv.Crash("Class Not Found (" + name + ")", new Address(-1));
+        PolarLogger.Crash("Class Not Found (" + name + ")", new Address(-1));
         return null;
     }
 
@@ -51,7 +50,7 @@ public class Classes {
             }
         }
 
-        PolarEnv.Crash("Class Not Found (" + name + ")", address);
+        PolarLogger.Crash("Class Not Found (" + name + ")", address);
         return null;
     }
 

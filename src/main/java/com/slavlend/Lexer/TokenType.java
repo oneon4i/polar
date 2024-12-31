@@ -13,15 +13,11 @@ public enum TokenType {
     NOT_EQUAL, // !=
     TEXT, // 'text'
     NUM, // 1234567890.0123456789
-    FLOAT, // Deprecated float type
     ASSIGN, // =
     ID, // variable id
     COMMA, // ,
     BACK, // back
     IF, // if
-    TONUM, // to int
-    TOSTR, // to str
-    TOBOOL, // to bool
     BOOL, // bool
     WHILE, // while
     CLASS, // class

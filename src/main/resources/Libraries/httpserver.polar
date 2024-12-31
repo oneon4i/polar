@@ -8,12 +8,12 @@ class HttpServer(port) = {
 
     func start() = {
         # запуск сервера #
-        @this.javaServer.setup(this.port)
+        this.javaServer.setup(this.port)
     }
 
     func route(path, function) = {
         # роутим функцию на путь для сервера #
-        @this.javaServer.route(path, function)
+        this.javaServer.route(path, function)
     }
 }
 

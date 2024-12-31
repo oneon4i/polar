@@ -1,7 +1,7 @@
 package com.slavlend.Libraries;
 
 import com.slavlend.Polar.PolarValue;
-import com.slavlend.Env.PolarEnv;
+import com.slavlend.Logger.PolarLogger;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -45,7 +45,7 @@ public class http {
             // возвращаем
             return new PolarValue(response.toString());
         } catch (Exception e) {
-            PolarEnv.Crash("Http Exception (Java): " + e.getCause().getMessage(), _url.instantiateAddress);
+            PolarLogger.Crash("Http Exception (Java): " + e.getCause().getMessage(), _url.instantiateAddress);
             return null;
         }
     }
