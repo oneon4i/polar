@@ -28,15 +28,12 @@ public class ArithmeticExpression implements Expression {
         if (right.isString() && left.isClass()) {
             return new PolarValue(right.asString() + left.asClass().toString());
         }
-        else if (right.isClass() && left.isNumber()) {
+        else if (right.isClass() && left.isString()) {
             return new PolarValue(right.asClass().toString() + left.asString());
         }
         // строка и строка
         if (right.isString() && left.isString()) {
             return new PolarValue(right.asString() + left.asString());
-        }
-        else if (right.isString() && left.isNumber()) {
-            return new PolarValue(right.asString() + String.valueOf(left.asNumber()));
         }
         // функция и строка
         if (right.isFunc() && left.isString()) {
