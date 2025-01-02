@@ -34,7 +34,7 @@ public class Classes {
     // проверка на наличие класса по имени
     public boolean hasClass(String name) {
         for (PolarClass clazz : classes) {
-            if (clazz.name.equals(name)) {
+            if (clazz.name.equals(name) || clazz.fullName.equals(name)) {
                 return true;
             }
         }
@@ -45,7 +45,7 @@ public class Classes {
     // получение класса из списка по имени и адрессу
     public PolarClass getClassByAddress(Address address, String name) {
         for (PolarClass clazz : classes) {
-            if (clazz.name.equals(name)) {
+            if (clazz.name.equals(name) || clazz.fullName.equals(name)) {
                 return clazz;
             }
         }

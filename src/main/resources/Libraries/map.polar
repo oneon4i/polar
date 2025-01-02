@@ -32,6 +32,14 @@ class Map() = {
     func dumps() = {
         back(this.map.dumps())
     }
+
+    func size() = {
+        back(this.map.size())
+    }
+
+    func keys() = {
+        back(this.map.keys())
+    }
 }
 
 

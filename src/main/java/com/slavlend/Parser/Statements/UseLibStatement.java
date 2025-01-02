@@ -65,7 +65,9 @@ public class UseLibStatement implements Statement{
         Lexer tempLexer = new Lexer(code.toString());
         tempLexer.Tokenize();
         // импортируем классы
-        new Parser(tempLexer.getTokens()).loadClasses();
+        Parser tempParser = new Parser(tempLexer.getTokens());
+        tempParser.setFile(libName.data.replace(".polar", ""));
+        tempParser.loadClasses();
     }
 
     @Override

@@ -28,8 +28,8 @@ public class ClassStatement implements Statement {
     }
 
     // конструктор
-    public ClassStatement(String name, ArrayList<ArgumentExpression> constructor) {
-        this.polarClass = new PolarClass(name, constructor, address);
+    public ClassStatement(String fullName, String name, ArrayList<ArgumentExpression> constructor) {
+        this.polarClass = new PolarClass(fullName, name, constructor, address);
         Classes.getInstance().classes.add(this.polarClass);
     }
 
@@ -59,7 +59,7 @@ public class ClassStatement implements Statement {
 
     @Override
     public Statement copy() {
-        return new ClassStatement(polarClass.name, polarClass.constructor);
+        return new ClassStatement(polarClass.fullName, polarClass.name, polarClass.constructor);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.slavlend.Libraries;
 
+import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
+import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Polar.Stack.Storage;
 
 import java.util.ArrayList;
@@ -121,5 +123,17 @@ public class map {
         str.append("}");
 
         return new PolarValue(str.toString().replace("'", "\""));
+    }
+
+    public PolarValue keys() {
+        ArrayList<PolarValue> _keys = new ArrayList<>(valuesMap.keySet());
+        PolarObject arr = PolarObject.create(Classes.getInstance().getClass("Array"), new ArrayList<>());
+        ArrayList<PolarValue> _temp = new ArrayList<>();
+        for (PolarValue key: _keys) {
+            _temp.add(key);
+            arr.classValues.get("add").asFunc().call(null, _temp);
+            _temp.clear();
+        }
+        return new PolarValue(arr);
     }
 }

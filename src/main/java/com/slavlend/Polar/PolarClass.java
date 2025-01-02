@@ -24,13 +24,16 @@ public class PolarClass {
     public HashMap<String, Expression> module_values = new HashMap<>();
     // конструктор
     public ArrayList<ArgumentExpression> constructor = new ArrayList<ArgumentExpression>();
+    // полное имя
+    public String fullName;
     // имя
     public String name;
     // адресс
     private final Address address;
 
     // конструктор
-    public PolarClass(String name, ArrayList<ArgumentExpression> constructor, Address address) {
+    public PolarClass(String fullName, String name, ArrayList<ArgumentExpression> constructor, Address address) {
+        this.fullName = fullName;
         this.name = name;
         this.constructor = constructor;
         this.address = address;

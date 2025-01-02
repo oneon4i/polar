@@ -34,7 +34,12 @@ public class Executor {
                 lexer.getTokens()
         );
         String envPath = settings.getFilePath().substring(0, settings.getFilePath().lastIndexOf('\\'));
+        String filePath = settings.getFilePath().substring(
+                settings.getFilePath().lastIndexOf('\\'),
+                settings.getFilePath().length()-1
+        ).replace(".polar", "");
         parser.setEnv(envPath);
+        parser.setFile(filePath);
         App.parser = parser;
 
         // интерпретация

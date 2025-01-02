@@ -49,6 +49,7 @@ public class Parser {
 
     // путь эвайронмента (окружения)
     private String environmentPath;
+    private String fileName;
 
     // конструктор
     public Parser(List<Token> _tokens) {
@@ -121,6 +122,11 @@ public class Parser {
         if (check(TokenType.ID)) {
             // айди
             String name = consume(TokenType.ID).value;
+            // проверка на полное имя класс
+            if (check(TokenType.COLON)) {
+                consume(TokenType.COLON);
+                name = name + ":" + consume(TokenType.ID).value;
+            }
             // функция
             if (check(TokenType.BRACKET) && match("(")) {
                 // параметры
@@ -429,8 +435,10 @@ public class Parser {
                 consume(TokenType.COMMA);
             }
         }
+        // полное имя
+        String fullName = fileName + ":" + name;
         // стэйтменты
-        ClassStatement classStatement = new ClassStatement(name, constructor);
+        ClassStatement classStatement = new ClassStatement(fullName, name, constructor);
         // скобка
         consume(TokenType.BRACKET);
         // ассигн
@@ -701,6 +709,11 @@ public class Parser {
         consume(TokenType.NEW);
         // айди
         String clazz = consume(TokenType.ID).value;
+        // проверяем на полное имя
+        if (check(TokenType.COLON)) {
+            consume(TokenType.COLON);
+            clazz = clazz + ":" + consume(TokenType.ID).value;
+        }
         // брэкет
         consume(TokenType.BRACKET);
         // параметры
@@ -969,8 +982,10 @@ public class Parser {
                         consume(TokenType.COMMA);
                     }
                 }
+                // полное имя
+                String fullName = fileName + ":" + name;
                 // стэйтмент класса
-                ClassStatement classStatement = new ClassStatement(name, constructor);
+                ClassStatement classStatement = new ClassStatement(fullName, name, constructor);
                 // скобка
                 consume(TokenType.BRACKET);
                 // ассигн
@@ -1046,8 +1061,18 @@ public class Parser {
         this.environmentPath = path;
     }
 
+    // установка текущего файла
+    public void setFile(String fileName) {
+        this.fileName = fileName;
+    }
+
     // получение энвайронмента (путя из окружения)
     public String getEnv() {
         return this.environmentPath;
+    }
+
+    // получение текущего файла
+    public String getFile() {
+        return this.fileName;
     }
 }
