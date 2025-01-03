@@ -23,7 +23,7 @@ public class CallAccess implements Access {
     // аддресс
     private final Address address;
     // параметры
-    private final ArrayList<Expression> params;
+    private ArrayList<Expression> params;
 
     // конструктор
     public CallAccess(Address address, Access next, String funcName, ArrayList<Expression> params) {
@@ -289,4 +289,9 @@ public class CallAccess implements Access {
 
     @Override
     public Access getNext() { return next; }
+
+    // установка параметров
+    public void setParams(ArrayList<Expression> newParams) {
+        params = newParams;
+    }
 }

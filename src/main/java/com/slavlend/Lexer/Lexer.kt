@@ -142,7 +142,17 @@ class Lexer // конструктор
                     i++
                 }
 
-                Next(i+1)
+                Next(i + 1)
+                continue
+            } else if (cur == '|' && Peek(1) == '>') {
+                tokens.add(
+                    Token(
+                        TokenType.OPERATOR,
+                        "|>",
+                        line + 1
+                    )
+                )
+                Next(2)
                 continue
             } else if (cur == '*' || cur == '+' || cur == '-' || cur == '/' || cur == '%') {
                 if (input[current + 1] != '=') {

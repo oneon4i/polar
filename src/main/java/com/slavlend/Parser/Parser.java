@@ -96,6 +96,7 @@ public class Parser {
         };
     }
 
+    // парсинг кондишена
     public Expression conditional() {
         // левый экспрешен
         Expression _l = additive();
@@ -306,6 +307,26 @@ public class Parser {
                 Expression value = parseExpression();
                 VarAccess last = ((VarAccess) id.GetLast());
                 id.Set(new AssignAccess(id.address(), null, last.varName, value, AccessType.DIVIDE));
+            }
+            // |>
+            else if (match("|>")) {
+                Expression expr = id;
+                while (match("|>")) {
+                    consume(TokenType.OPERATOR);
+                    Expression _expr = conditional();
+                    if (_expr instanceof AccessExpression accessExpression) {
+                        expr = new PipeExpression(expr, accessExpression);
+                    }
+                    else {
+                        PolarLogger.Crash("Invalid Expression For Pipe: " + _expr.getClass().getName(), _expr.address());
+                    }
+                }
+                if (expr instanceof PipeExpression) {
+                    return ((PipeExpression) expr);
+                }
+                else {
+                    PolarLogger.Crash("Invalid Expression During Parsing Pipe: "+ expr.getClass().getName(), expr.address());
+                }
             }
             else {
                 // неизвестный оператор кондишена
@@ -769,9 +790,27 @@ public class Parser {
         return expr;
     }
 
+    // Парсинг pipe-выражения
+    private Expression pipe() {
+        Expression expr = conditional();
+
+        while (match("|>")) {
+            consume(TokenType.OPERATOR);
+            Expression _expr = conditional();
+            if (_expr instanceof AccessExpression accessExpression) {
+                expr = new PipeExpression(expr, accessExpression);
+            }
+            else {
+                PolarLogger.Crash("Invalid Expression For Pipe: " + _expr.getClass().getName(), _expr.address());
+            }
+        }
+
+        return expr;
+    }
+
     // парсинг экспрешенна
     public Expression parseExpression() {
-        return conditional();
+        return pipe();
     }
 
     // парсинг праймари экспрешенна
