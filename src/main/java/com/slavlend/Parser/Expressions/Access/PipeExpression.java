@@ -30,6 +30,7 @@ public class PipeExpression implements Expression, Statement {
         if (r.GetLast() instanceof CallAccess callAccess) {
             ArrayList<Expression> params = new ArrayList<>();
             params.add(l);
+            params.addAll(callAccess.getParams());
             callAccess.setParams(params);
             return r.evaluate();
         }
@@ -49,6 +50,7 @@ public class PipeExpression implements Expression, Statement {
         if (r.GetLast() instanceof CallAccess callAccess) {
             ArrayList<Expression> params = new ArrayList<>();
             params.add(l);
+            params.addAll(callAccess.getParams());
             callAccess.setParams(params);
             r.execute();
         }

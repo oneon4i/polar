@@ -11,6 +11,7 @@ import com.slavlend.Parser.Statements.FunctionStatement;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /*
 Акссесс к функции
@@ -293,5 +294,10 @@ public class CallAccess implements Access {
     // установка параметров
     public void setParams(ArrayList<Expression> newParams) {
         params = newParams;
+    }
+
+    // получение параметров
+    public ArrayList<Expression> getParams() {
+        return params;
     }
 }
