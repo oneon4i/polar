@@ -605,7 +605,7 @@ public class Parser {
     // парсинг throw
     private Statement throwValue() {
         // паттерн
-        // try { ... } catch (...) { ... }
+        // throw(...)
         consume(TokenType.THROW);
         // брэкет
         consume(TokenType.BRACKET);
