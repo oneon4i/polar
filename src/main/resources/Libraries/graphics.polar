@@ -62,4 +62,12 @@ class Window() = {
     func set_camera_input() = {
         this.reflected.set_camera_input()
     }
+
+    func resize(w, h) = {
+        this.reflected.resize(w, h)
+    }
+
+    func set_title(title) = {
+        this.reflected.set_title(title)
+    }
 }

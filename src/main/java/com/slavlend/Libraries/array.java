@@ -78,16 +78,15 @@ public class array {
             else {
                 if (value.asObject().getClazz().getName().equals("Map") ||
                         value.asObject().getClazz().getName().equals("Array")) {
-                    String _value = "";
 
                     Storage.getInstance().push();
-                    _value = value.asObject().getClassValues().get("dumps").asFunc().call(value.asObject(), new ArrayList<>()).asString();
+                    String _value = value.asObject().getClassValues().get("dumps").asFunc().call(value.asObject(), new ArrayList<>()).asString();
                     Storage.getInstance().pop();
 
-                    str.append(_value + ", ");
+                    str.append(_value).append(", ");
                 }
                 else {
-                    str.append("'" + value.asString() + "'" + ", ");
+                    str.append("'").append(value.asString()).append("'").append(", ");
                 }
             }
         }
@@ -113,10 +112,9 @@ public class array {
             else {
                 if (value.asObject().getClazz().getName().equals("Map") ||
                         value.asObject().getClazz().getName().equals("Array")) {
-                    String _value = "";
 
                     Storage.getInstance().push();
-                    _value = value.asObject().getClassValues().get("dumps").asFunc().call(value.asObject(), new ArrayList<>()).asString();
+                    String _value = value.asObject().getClassValues().get("dumps").asFunc().call(value.asObject(), new ArrayList<>()).asString();
                     Storage.getInstance().pop();
 
                     str.append(_value);

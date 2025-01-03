@@ -10,6 +10,8 @@ window.setup(800, 480, 'title', initialized)
 
 func initialized() = {
     window.load_image('test', 'E:\Turtle Game Engine\Contents\CustomEmojis\Dino\dino_run_0.png')
+    window.resize(1080, 720)
+    window.set_title('dino')
     window.on_key_hold(key_handler)
     window.on_update(update)
 }

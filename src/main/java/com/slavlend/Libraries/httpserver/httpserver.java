@@ -23,7 +23,7 @@ import java.util.Map;
 http-сервера. Представляет собой враппер вокруг
 просто http-сервера.
  */
-@SuppressWarnings({"unused", "AnonymousHasLambdaAlternative", "CallToPrintStackTrace"})
+@SuppressWarnings({"unused", "AnonymousHasLambdaAlternative", "CallToPrintStackTrace", "InfiniteLoopStatement"})
 public class httpserver {
     // хэндлер запросов
     private final Map<String, FunctionStatement> requestHandlerList = new HashMap<>();
@@ -52,7 +52,7 @@ public class httpserver {
                 try (ServerSocket serverSocket = new ServerSocket(port)) {
                     // выводим сообщение о старте сервера
                     System.out.println(Colors.ANSI_GREEN + "╭──────────────────────────╮");
-                    System.out.println("│ 🛸 Server Started at: " + String.valueOf(serverSocket.getInetAddress().toString()) + ":" + String.valueOf(serverSocket.getLocalPort()));
+                    System.out.println("│ 🛸 Server Started at: " + serverSocket.getInetAddress().toString() + ":" + serverSocket.getLocalPort());
                     System.out.println("╰──────────────────────────╯" + Colors.ANSI_RESET);
                     // запускаем его
                     while (true) {

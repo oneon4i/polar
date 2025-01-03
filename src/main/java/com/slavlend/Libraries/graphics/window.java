@@ -28,12 +28,6 @@ public class window extends ApplicationAdapter implements InputProcessor {
     private final HashMap<String, Texture> textures = new HashMap<>();
     // список моделей
     private final HashMap<String, ModelInstance> models = new HashMap<>();
-    // заголовок
-    private String title;
-    // высота
-    private int height;
-    // ширина
-    private int width;
     // хэндлеры
     private FunctionStatement on_initialized;
     private FunctionStatement on_updated;
@@ -60,11 +54,14 @@ public class window extends ApplicationAdapter implements InputProcessor {
 
     }
 
-    // инициализация окна
-    public void init(int width, int height, String title) {
-        this.width = width;
-        this.height = height;
-        this.title = title;
+    // установка размеров
+    public void resize(int width, int height) {
+        Gdx.graphics.setWindowedMode(width, height);
+    }
+
+    // установка тайтла
+    public void set_title(String title) {
+        Gdx.graphics.setTitle(title);
     }
 
     // при создании окна
