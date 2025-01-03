@@ -10,15 +10,18 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Expressions.NumberExpression;
 import com.slavlend.Parser.Statements.FunctionStatement;
+import lombok.Getter;
 
 import java.lang.reflect.Field;
 
 /*
 Акссесс к функции
  */
+@SuppressWarnings("ConstantValue")
+@Getter
 public class AssignAccess implements Access {
     // следующий
-    public Access next;
+    private Access next;
     // имя функции
     private final String varName;
     // аддресс
@@ -42,32 +45,30 @@ public class AssignAccess implements Access {
     public PolarValue access(PolarValue previous) {
         // если нет предыдущего
         if (previous == null) {
-            // получаем переменную
-            PolarValue res = null;
             // устанавливаем переменную
             switch (type) {
-                case SET -> Storage.getInstance().put(address, varName, Optimizations.optimize(to).evaluate());
+                case SET -> Storage.getInstance().put(varName, Optimizations.optimize(to).evaluate());
                 case MUL -> {
                     PolarValue e = Storage.getInstance().get(address, varName);
-                    Storage.getInstance().put(address, varName, Optimizations.optimize(new NumberExpression(
+                    Storage.getInstance().put(varName, Optimizations.optimize(new NumberExpression(
                             String.valueOf(e.asNumber() * to.evaluate().asNumber()))
                     ).evaluate());
                 }
                 case DIVIDE -> {
                     PolarValue e = Storage.getInstance().get(address, varName);
-                    Storage.getInstance().put(address, varName, Optimizations.optimize(new NumberExpression(
+                    Storage.getInstance().put(varName, Optimizations.optimize(new NumberExpression(
                             String.valueOf(e.asNumber() / to.evaluate().asNumber()))
                     ).evaluate());
                 }
                 case PLUS -> {
                     PolarValue e = Storage.getInstance().get(address, varName);
-                    Storage.getInstance().put(address, varName, Optimizations.optimize(new NumberExpression(
+                    Storage.getInstance().put(varName, Optimizations.optimize(new NumberExpression(
                             String.valueOf(e.asNumber() + to.evaluate().asNumber()))
                     ).evaluate());
                 }
                 case MINUS -> {
                     PolarValue e = Storage.getInstance().get(address, varName);
-                    Storage.getInstance().put(address, varName, Optimizations.optimize(new NumberExpression(
+                    Storage.getInstance().put(varName, Optimizations.optimize(new NumberExpression(
                             String.valueOf(e.asNumber() - to.evaluate().asNumber()))
                     ).evaluate());
                 }
@@ -84,11 +85,11 @@ public class AssignAccess implements Access {
             // получаем
             try {
                 // получаем значение java-переменной
-                Field field = r.clazz.getField(varName);
+                Field field = r.getClazz().getField(varName);
                 field.setAccessible(true);
                 PolarValue _value = to.evaluate();
                 Object value = convertToJavaValue(field, _value);
-                field.set(r.o, field.getType().cast(value));
+                field.set(r.getReflectedObject(), field.getType().cast(value));
             } catch (IllegalAccessException e) {
                 PolarLogger.exception("Illegal Access Exception (Java): " + e.getMessage(), address);
             } catch (NoSuchFieldException e) {
@@ -109,26 +110,26 @@ public class AssignAccess implements Access {
             // устанавливаем
             // устанавливаем переменную
             switch (type) {
-                case SET -> v.classValues.put(varName, Optimizations.optimize(to).evaluate());
+                case SET -> v.getClassValues().put(varName, Optimizations.optimize(to).evaluate());
                 case MUL -> {
-                    PolarValue e = v.classValues.get(varName);
+                    PolarValue e = v.getClassValues().get(varName);
                     String mul = String.valueOf(e.asNumber() * Optimizations.optimize(to).evaluate().asNumber());
-                    v.classValues.put(varName, new PolarValue(new NumberExpression(mul)));
+                    v.getClassValues().put(varName, new PolarValue(new NumberExpression(mul)));
                 }
                 case DIVIDE -> {
                     PolarValue e = Storage.getInstance().get(address, varName);
                     String div = String.valueOf(e.asNumber() / Optimizations.optimize(to).evaluate().asNumber());
-                    v.classValues.put(varName, new PolarValue(new NumberExpression(div)));
+                    v.getClassValues().put(varName, new PolarValue(new NumberExpression(div)));
                 }
                 case PLUS -> {
                     PolarValue e = Storage.getInstance().get(address, varName);
                     String div = String.valueOf(e.asNumber() + Optimizations.optimize(to).evaluate().asNumber());
-                    v.classValues.put(varName, new PolarValue(new NumberExpression(div)));
+                    v.getClassValues().put(varName, new PolarValue(new NumberExpression(div)));
                 }
                 case MINUS -> {
                     PolarValue e = Storage.getInstance().get(address, varName);
                     String div = String.valueOf(e.asNumber() - Optimizations.optimize(to).evaluate().asNumber());
-                    v.classValues.put(varName, new PolarValue(new NumberExpression(div)));
+                    v.getClassValues().put(varName, new PolarValue(new NumberExpression(div)));
                 }
             }
 
@@ -144,27 +145,27 @@ public class AssignAccess implements Access {
         Object result = null;
         // числа
         if (_clazz == Integer.class) {
-            result = ((Integer) ((int) ((double)v.asNumber())));
+            result = (int) ((double)v.asNumber());
         }
         else if (_clazz == int.class) {
-            result = ((Integer) ((int) ((double)v.asNumber())));
+            result = (int) ((double)v.asNumber());
         }
         // символы
         else if (_clazz == String.class) {
             result = (v.asString());
         }
         else if (_clazz == Character.class) {
-            result = ((Character) v.asString().charAt(0));
+            result = v.asString().charAt(0);
         }
         else if (_clazz == char.class) {
-            result = ((char) v.asString().charAt(0));
+            result = v.asString().charAt(0);
         }
         // логика
         else if (_clazz == boolean.class) {
-            result = ((boolean) v.asBool());
+            result = v.asBool();
         }
         else if (_clazz == Boolean.class) {
-            result = ((Boolean) v.asBool());
+            result = v.asBool();
         }
         // объекты
         else if (_clazz == Object.class) {
@@ -180,7 +181,7 @@ public class AssignAccess implements Access {
             result = (v.asFunc());
         } else {
             if (v.isReflected()) {
-                result = (_clazz.cast(v.asReflected().o));
+                result = (_clazz.cast(v.asReflected().getReflectedObject()));
             }
             else {
                 PolarLogger.exception("Impossible To Convert Not Reflected Types To Java Like Classes", address);

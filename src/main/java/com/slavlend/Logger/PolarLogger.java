@@ -12,7 +12,17 @@ public class PolarLogger {
      */
     public static void exception(String message, Address line) {
         // исключение
-        throw new PolarException(message, line.line);
+        throw new PolarException(message, line.getLine(), null);
+    }
+
+    /*
+    Крашит выполнение, выводя сообщение
+    об ошибке вместе с линией ошибки а также стак трейсом
+    джава функции.
+     */
+    public static void exception(String message, Address line, StackTraceElement[] stackTrace) {
+        // исключение
+        throw new PolarException(message, line.getLine(), stackTrace);
     }
 
     /*
@@ -40,16 +50,20 @@ public class PolarLogger {
         StackHistoryWriter.getInstance().printStackTrace();
         System.out.println("│ ");
         System.out.println("│ 📃 Java stack: ");
-        printCurrentStackTrace();
+        // выводим java стак-трейс
+        if (e.getStackTrace() == null) {
+            printStackTrace(Thread.currentThread().getStackTrace());
+        }
+        else {
+            printStackTrace(e.getStackTrace());
+        }
         System.out.println("╰──────────────────────────╯" + Colors.ANSI_RESET);
         // выход с кодом ошибки
         System.exit(1);
     }
 
     // вывод java стак-трейса этого потока.
-    public static void printCurrentStackTrace() {
-        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-
+    public static void printStackTrace(StackTraceElement[] stackTraceElements) {
         for (StackTraceElement element : stackTraceElements) {
             System.out.println("| " + element);
         }

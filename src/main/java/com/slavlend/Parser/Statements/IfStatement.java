@@ -4,19 +4,22 @@ import com.slavlend.App;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Expressions.ConditionExpression;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
+@Getter
 public class IfStatement implements Statement {
     // тело функции
-    public ArrayList<Statement> statements = new ArrayList<Statement>();
+    private final ArrayList<Statement> statements = new ArrayList<>();
     // в ином случае
-    public IfStatement _else = null;
+    @Setter
+    private IfStatement elseCondition = null;
     // кодишены для ифа
-    public ArrayList<Expression> conditions = new ArrayList<>();
+    private final ArrayList<Expression> conditions;
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     @Override
     public void optimize() {
@@ -38,8 +41,8 @@ public class IfStatement implements Statement {
         else {
             // если условие не сработало
             // экзекьютим если есть что-то в ином случае
-            if (_else != null) {
-                _else.execute();
+            if (elseCondition != null) {
+                elseCondition.execute();
             }
         }
     }
@@ -75,8 +78,8 @@ public class IfStatement implements Statement {
             _copy.add(statement.copy());
         }
 
-        if (_else != null) {
-            _copy._else = (IfStatement) _else.copy();
+        if (elseCondition != null) {
+            _copy.elseCondition = (IfStatement) elseCondition.copy();
         }
 
         return _copy;

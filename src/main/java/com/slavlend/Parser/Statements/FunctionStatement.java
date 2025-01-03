@@ -1,28 +1,31 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
+import com.slavlend.Exceptions.PolarThrowable;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Storage;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ArgumentExpression;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
 /*
 Стэйтмент функции - для дефенишена функции
  */
+@Getter
 public class FunctionStatement implements Statement, Callable {
     // тело функции
-    public ArrayList<Statement> statements = new ArrayList<>();
+    private final ArrayList<Statement> statements = new ArrayList<>();
     // аргументы
-    public ArrayList<ArgumentExpression> arguments;
-
+    private final ArrayList<ArgumentExpression> arguments;
     // имя
-    public String name;
-
+    private final String name;
     // дефайнуто для
-    public PolarObject definedFor;
+    @Setter
+    private PolarObject definedFor;
 
     @Override
     public void optimize() {
@@ -38,12 +41,6 @@ public class FunctionStatement implements Statement, Callable {
 
     // адресс
     private final Address address = App.parser.address();
-
-    // ставим дефайн
-    public void setDefinedFor(PolarObject _definedFor) {
-        this.definedFor = _definedFor;
-    }
-
     // конструктор
     public FunctionStatement(String name, ArrayList<ArgumentExpression> arguments) {
         this.name = name;

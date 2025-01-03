@@ -6,23 +6,26 @@ import com.slavlend.App;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Access.AccessExpression;
 import com.slavlend.Parser.Expressions.ConditionExpression;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
 /*
 Фор стэйтмент - цикл
  */
+@SuppressWarnings("PointlessBooleanExpression")
+@Getter
 public class EachStatement implements Statement {
     // тело
-    public ArrayList<Statement> statements = new ArrayList<Statement>();
+    private final ArrayList<Statement> statements = new ArrayList<>();
     // кодишены
-    public ArrayList<ConditionExpression> conditions = new ArrayList<>();
+    private final ArrayList<ConditionExpression> conditions = new ArrayList<>();
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
     // имя переменной
-    private String variable;
+    private final String variableName;
     // имя переменной списка
-    private AccessExpression listVariable;
+    private final AccessExpression listVariable;
 
     @Override
     public void optimize() {
@@ -36,7 +39,7 @@ public class EachStatement implements Statement {
         // создаём темповую переменную
         ArrayList<PolarValue> arr = listVariable.evaluate().asList();
         int index = 0;
-        if (arr.size() > index) { Storage.getInstance().put(variable, arr.get(index)); }
+        if (arr.size() > index) { Storage.getInstance().put(variableName, arr.get(index)); }
         else { return; }
 
         // кондишены
@@ -55,13 +58,13 @@ public class EachStatement implements Statement {
                 }
             }
             // удаляем значение и помещаем новое
-            Storage.getInstance().del(variable);
+            Storage.getInstance().del(variableName);
             if (index >= arr.size()) { return; }
-            Storage.getInstance().put(variable, arr.get(index));
+            Storage.getInstance().put(variableName, arr.get(index));
         }
 
         // удаляем темповую переменную
-        Storage.getInstance().del(variable);
+        Storage.getInstance().del(variableName);
     }
 
     public void add(Statement statement) {
@@ -77,7 +80,7 @@ public class EachStatement implements Statement {
 
     @Override
     public Statement copy() {
-        EachStatement _copy = new EachStatement(listVariable, variable);
+        EachStatement _copy = new EachStatement(listVariable, variableName);
 
         for (Statement statement : statements) {
             _copy.add(statement.copy());
@@ -95,7 +98,7 @@ public class EachStatement implements Statement {
     // конструктор
     public EachStatement(AccessExpression arr, String name) {
         this.listVariable = arr;
-        this.variable = name;
+        this.variableName = name;
     }
 
     // кондишены

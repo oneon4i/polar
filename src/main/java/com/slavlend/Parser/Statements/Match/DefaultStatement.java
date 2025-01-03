@@ -3,14 +3,16 @@ package com.slavlend.Parser.Statements.Match;
 import com.slavlend.App;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Statements.*;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
+@Getter
 public class DefaultStatement implements Statement {
     // тело функции
-    public ArrayList<Statement> statements = new ArrayList<Statement>();
+    private final ArrayList<Statement> statements = new ArrayList<>();
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     @Override
     public void execute() {

@@ -12,6 +12,8 @@ import com.slavlend.Parser.Statements.Match.CaseStatement;
 import com.slavlend.Parser.Statements.Match.DefaultStatement;
 import com.slavlend.Parser.Statements.Match.MatchStatement;
 import com.slavlend.Logger.PolarLogger;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,10 +24,12 @@ import java.util.List;
  */
 public class Parser {
     // токены
+    @Getter
     private final List<Token> tokens;
     // текущий токен
     private int current = 0;
     // библиотеки
+    @Getter
     public static HashMap<String, String> libraries = new HashMap<>() {{
         put("lib.random", "Libraries/random.polar");
         put("lib.array", "Libraries/array.polar");
@@ -49,7 +53,11 @@ public class Parser {
     }};
 
     // путь эвайронмента (окружения)
+    @Getter
+    @Setter
     private String environmentPath;
+    @Getter
+    @Setter
     private String fileName;
 
     // конструктор
@@ -82,7 +90,7 @@ public class Parser {
         } catch (PolarException e) {
             PolarLogger.printError(e);
         } catch (Exception e) {
-            PolarLogger.printError(new PolarException("Unecpected Parsing Error: " + e.getMessage(), address().line));
+            PolarLogger.printError(new PolarException("Unexpected Parsing Error: " + e.getMessage(), address().getLine(), null));
         }
     }
 
@@ -170,13 +178,13 @@ public class Parser {
         AccessExpression expr = new AccessExpression(address(), null);
 
         // добавляем акссесс
-        expr.Add(accessPart());
+        expr.add(accessPart());
 
         while (check(TokenType.DOT)) {
             // консьюм
             consume(TokenType.DOT);
             // добавляем акссесс
-            expr.Add(accessPart());
+            expr.add(accessPart());
         }
 
         return expr;
@@ -288,40 +296,40 @@ public class Parser {
                 consume(TokenType.ASSIGN);
                 // expression
                 Expression value = parseExpression();
-                VarAccess last = ((VarAccess) id.GetLast());
-                id.Set(new AssignAccess(id.address(), null, last.varName, value, AccessType.SET));
+                VarAccess last = ((VarAccess) id.getLast());
+                id.set(new AssignAccess(id.address(), null, last.varName, value, AccessType.SET));
             }
             // +=
             else if (check(TokenType.ASSIGN_ADD)) {
                 consume(TokenType.ASSIGN_ADD);
                 // expression
                 Expression value = parseExpression();
-                VarAccess last = ((VarAccess) id.GetLast());
-                id.Set(new AssignAccess(id.address(), null, last.varName, value, AccessType.PLUS));
+                VarAccess last = ((VarAccess) id.getLast());
+                id.set(new AssignAccess(id.address(), null, last.varName, value, AccessType.PLUS));
             }
             // -=
             else if (check(TokenType.ASSIGN_SUB)) {
                 consume(TokenType.ASSIGN_SUB);
                 // expression
                 Expression value = parseExpression();
-                VarAccess last = ((VarAccess) id.GetLast());
-                id.Set(new AssignAccess(id.address(), null, last.varName, value, AccessType.MINUS));
+                VarAccess last = ((VarAccess) id.getLast());
+                id.set(new AssignAccess(id.address(), null, last.varName, value, AccessType.MINUS));
             }
             // *=
             else if (check(TokenType.ASSIGN_MUL)) {
                 consume(TokenType.ASSIGN_MUL);
                 // expression
                 Expression value = parseExpression();
-                VarAccess last = ((VarAccess) id.GetLast());
-                id.Set(new AssignAccess(id.address(), null, last.varName, value, AccessType.MUL));
+                VarAccess last = ((VarAccess) id.getLast());
+                id.set(new AssignAccess(id.address(), null, last.varName, value, AccessType.MUL));
             }
             // /=
             else if (check(TokenType.ASSIGN_DIVIDE)) {
                 consume(TokenType.ASSIGN_DIVIDE);
                 // expression
                 Expression value = parseExpression();
-                VarAccess last = ((VarAccess) id.GetLast());
-                id.Set(new AssignAccess(id.address(), null, last.varName, value, AccessType.DIVIDE));
+                VarAccess last = ((VarAccess) id.getLast());
+                id.set(new AssignAccess(id.address(), null, last.varName, value, AccessType.DIVIDE));
             }
             // |>
             else if (match("|>")) {
@@ -605,7 +613,7 @@ public class Parser {
     // парсинг throw
     private Statement throwValue() {
         // паттерн
-        // try { ... } catch (...) { ... }
+        // throw(...)
         consume(TokenType.THROW);
         // брэкет
         consume(TokenType.BRACKET);
@@ -764,7 +772,7 @@ public class Parser {
                 // брэйс
                 consume(TokenType.BRACE);
                 // добавляем в цепочку
-                last._else = _statement;
+                last.setElseCondition(_statement);
                 last = _statement;
             }
             else {
@@ -784,7 +792,7 @@ public class Parser {
                 // брэйс
                 consume(TokenType.BRACE);
                 // добавляем в цепочку
-                last._else = _statement;
+                last.setElseCondition(_statement);
                 last = _statement;
             }
         }
@@ -1140,7 +1148,7 @@ public class Parser {
                 // брэйс
                 consume(TokenType.BRACE);
                 // удаляем если там такой класс есть
-                classes.removeIf(_clazz -> _clazz.name.equals(classStatement.getPolarClass().name));
+                classes.removeIf(_clazz -> _clazz.getName().equals(classStatement.getPolarClass().getName()));
                 // добавляем
                 classes.add(classStatement.getPolarClass());
             }
@@ -1157,33 +1165,13 @@ public class Parser {
         // добавляем найденные классы в кучу
         List<PolarClass> forRemove = new ArrayList<>();
         for (PolarClass st: classes) {
-            for (PolarClass _st: Classes.getInstance().classes) {
-                if (_st.name.equals(st.name)) {
+            for (PolarClass _st: Classes.getInstance().getClasses()) {
+                if (_st.getName().equals(st.getName())) {
                     forRemove.add(st);
                 }
             }
         }
-        Classes.getInstance().classes.removeAll(forRemove);
-        Classes.getInstance().classes.addAll(classes);
-    }
-
-    // установка энвайронмента (путя из окружения)
-    public void setEnv(String path) {
-        this.environmentPath = path;
-    }
-
-    // установка текущего файла
-    public void setFile(String fileName) {
-        this.fileName = fileName;
-    }
-
-    // получение энвайронмента (путя из окружения)
-    public String getEnv() {
-        return this.environmentPath;
-    }
-
-    // получение текущего файла
-    public String getFile() {
-        return this.fileName;
+        Classes.getInstance().getClasses().removeAll(forRemove);
+        Classes.getInstance().getClasses().addAll(classes);
     }
 }

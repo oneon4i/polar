@@ -6,18 +6,20 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.Statement;
 import com.slavlend.Polar.PolarValue;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
 /*
 Экспрешенн пайп-выражения
  */
+@Getter
 public class PipeExpression implements Expression, Statement {
     // левое и правое выражение
     private final Expression l;
     private final AccessExpression r;
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     // конструктор
     public PipeExpression(Expression l, AccessExpression r) {
@@ -27,7 +29,7 @@ public class PipeExpression implements Expression, Statement {
 
     @Override
     public PolarValue evaluate() {
-        if (r.GetLast() instanceof CallAccess callAccess) {
+        if (r.getLast() instanceof CallAccess callAccess) {
             ArrayList<Expression> params = new ArrayList<>();
             params.add(l);
             params.addAll(callAccess.getParams());
@@ -47,7 +49,7 @@ public class PipeExpression implements Expression, Statement {
 
     @Override
     public void execute() {
-        if (r.GetLast() instanceof CallAccess callAccess) {
+        if (r.getLast() instanceof CallAccess callAccess) {
             ArrayList<Expression> params = new ArrayList<>();
             params.add(l);
             params.addAll(callAccess.getParams());
@@ -72,10 +74,5 @@ public class PipeExpression implements Expression, Statement {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-
     }
 }

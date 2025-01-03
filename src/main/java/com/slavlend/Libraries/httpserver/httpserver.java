@@ -23,6 +23,7 @@ import java.util.Map;
 http-сервера. Представляет собой враппер вокруг
 просто http-сервера.
  */
+@SuppressWarnings({"unused", "AnonymousHasLambdaAlternative", "CallToPrintStackTrace"})
 public class httpserver {
     // хэндлер запросов
     private final Map<String, FunctionStatement> requestHandlerList = new HashMap<>();
@@ -35,7 +36,7 @@ public class httpserver {
             requestHandlerList.put(path.asString(), func.asFunc());
         }
         else {
-            PolarLogger.exception("Http Server Error. Not A Function: ", func.instantiateAddress);
+            PolarLogger.exception("Http Server Error. Not A Function: ", func.getInstantiateAddress());
         }
     }
 
@@ -109,7 +110,9 @@ public class httpserver {
                 String _json = "{'method': '" + method + "'," + "'request':'" + bodyBuilder + "'}";
                 parameters.add(json.read(new PolarValue(_json)));
                 PolarObject _response = handler.call(null, parameters).asObject();
-                Response response = new Response(_response.classValues.get("code").asNumber().intValue(), _response.classValues.get("body").asString());
+                Response response = new Response(
+                        _response.getClassValues().get("code").asNumber().intValue(),
+                        _response.getClassValues().get("body").asString());
                 writer.println("HTTP/1.1 " + response.getCode() + " OK");
                 writer.println("Content-Type: text/plain");
                 writer.println("Content-Length: " + response.getBody().length());

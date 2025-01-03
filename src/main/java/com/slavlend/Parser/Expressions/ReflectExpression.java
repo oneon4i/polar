@@ -5,16 +5,18 @@ import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Reflected;
 import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
+import lombok.Getter;
 
 /*
 Экспрешенн рефлексии -> создание
 Java класса с использованием рефлексии
  */
+@Getter
 public class ReflectExpression implements Expression {
     // имя класса для создания объекта
-    public String className;
+    private final String className;
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     @Override
     public PolarValue evaluate() {
@@ -22,19 +24,14 @@ public class ReflectExpression implements Expression {
             return new PolarValue(new Reflected(address, Class.forName(className)));
         }
         catch (ClassNotFoundException e) {
-            PolarLogger.exception("Reflection Exception: " + e.toString(), address);
-            return null;
+            PolarLogger.exception("Reflection Exception: " + e, address);
+            return new PolarValue(null);
         }
     }
 
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-
     }
 
     public ReflectExpression(String className) {

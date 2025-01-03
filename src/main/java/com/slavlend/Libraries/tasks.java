@@ -20,8 +20,8 @@ public class tasks {
             @Override
             public void run() {
                 // инициализируем стек под поток
-                Storage.getInstance().callStack.set(new ArrayList<>());
-                StackHistoryWriter.getInstance().hist.set(new ArrayList<>());
+                Storage.getInstance().getCallStack().set(new ArrayList<>());
+                StackHistoryWriter.getInstance().getHistory().set(new ArrayList<>());
                 // пушим в стек новый фрейм
                 Storage.getInstance().push();
                 // аргументы для функции

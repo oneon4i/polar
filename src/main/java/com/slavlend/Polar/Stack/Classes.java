@@ -3,26 +3,27 @@ package com.slavlend.Polar.Stack;
 import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
 import com.slavlend.Polar.PolarClass;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
 /*
 Список классов
  */
+@Getter
 public class Classes {
     // синглтон
+    @Getter
     public static Classes Instance;
-    public static Classes getInstance() {
-        return Instance;
-    }
 
     // список классов
-    public ArrayList<PolarClass> classes = new ArrayList<>();
+    private final ArrayList<PolarClass> classes = new ArrayList<>();
 
     // получение класса из списка по имени
-    public PolarClass getClass(String name) {
+    public PolarClass lookupClass(String name) {
         for (PolarClass clazz : classes) {
-            if (clazz.name.equals(name)) {
+            if (clazz.getName().equals(name) ||
+                    clazz.getFullName().equals(name)) {
                 return clazz;
             }
         }
@@ -31,21 +32,11 @@ public class Classes {
         return null;
     }
 
-    // проверка на наличие класса по имени
-    public boolean hasClass(String name) {
+    // получение класса из списка по имени (с адрессом)
+    public PolarClass lookupClass(Address address, String name) {
         for (PolarClass clazz : classes) {
-            if (clazz.name.equals(name) || clazz.fullName.equals(name)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // получение класса из списка по имени и адрессу
-    public PolarClass getClassByAddress(Address address, String name) {
-        for (PolarClass clazz : classes) {
-            if (clazz.name.equals(name) || clazz.fullName.equals(name)) {
+            if (clazz.getName().equals(name) ||
+                    clazz.getFullName().equals(name)) {
                 return clazz;
             }
         }
@@ -59,5 +50,16 @@ public class Classes {
         if (Instance == null) {
             Instance = this;
         }
+    }
+
+    // есть ли класс
+    public boolean hasClass(String name) {
+        for (PolarClass clazz : classes) {
+            if (clazz.getName().equals(name) |
+                clazz.getFullName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

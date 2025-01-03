@@ -13,35 +13,33 @@ public class ConstantFolding implements Optimization {
     public Expression optimize(Expression expr) {
         // оптимизация арифметики
         if (expr instanceof ArithmeticExpression _expr) {
-            Expression l = optimize(_expr.l);
-            Expression r = optimize(_expr.r);
+            Expression l = optimize(_expr.getL());
+            Expression r = optimize(_expr.getR());
 
             // числа
             if (l instanceof NumberExpression first &&
                 r instanceof NumberExpression second) {
-                if (_expr.operator.operator.equals("+")) {
-                    NumberExpression o = new NumberExpression(
-                            String.valueOf(first.evaluate().asNumber() + second.evaluate().asNumber())
-                    );
-                    return o;
-                }
-                else if (_expr.operator.operator.equals("-")) {
-                    NumberExpression o = new NumberExpression(
-                            String.valueOf(first.evaluate().asNumber() - second.evaluate().asNumber())
-                    );
-                    return o;
-                }
-                else if (_expr.operator.operator.equals("*")) {
-                    NumberExpression o = new NumberExpression(
-                            String.valueOf(first.evaluate().asNumber() * second.evaluate().asNumber())
-                    );
-                    return o;
-                }
-                else {
-                    NumberExpression o = new NumberExpression(
-                            String.valueOf(first.evaluate().asNumber() / second.evaluate().asNumber())
-                    );
-                    return o;
+                switch (_expr.getOperator().operator) {
+                    case "+" -> {
+                        return new NumberExpression(
+                                String.valueOf(first.evaluate().asNumber() + second.evaluate().asNumber())
+                        );
+                    }
+                    case "-" -> {
+                        return new NumberExpression(
+                                String.valueOf(first.evaluate().asNumber() - second.evaluate().asNumber())
+                        );
+                    }
+                    case "*" -> {
+                        return new NumberExpression(
+                                String.valueOf(first.evaluate().asNumber() * second.evaluate().asNumber())
+                        );
+                    }
+                    default -> {
+                        return new NumberExpression(
+                                String.valueOf(first.evaluate().asNumber() / second.evaluate().asNumber())
+                        );
+                    }
                 }
             }
             // строки

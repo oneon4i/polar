@@ -5,6 +5,7 @@ import com.slavlend.Polar.PolarValue;
 /*
 Библиотека для работы со временем
  */
+@SuppressWarnings("unused")
 public class time {
     // наносекунды
     public PolarValue get_ns() {

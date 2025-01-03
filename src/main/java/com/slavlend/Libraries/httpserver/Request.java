@@ -1,9 +1,12 @@
 package com.slavlend.Libraries.httpserver;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 // реквесты
+@Getter
 public class Request {
     // доступные типы запросов
     private final String[] types = {
@@ -21,14 +24,5 @@ public class Request {
     public Request(String type, String body) {
         this.type = type;
         this.body = body;
-    }
-
-    // геттеры
-    public String getType() {
-        return type;
-    }
-
-    public String getBody() {
-        return body;
     }
 }

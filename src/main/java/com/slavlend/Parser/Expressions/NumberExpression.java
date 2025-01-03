@@ -3,16 +3,18 @@ package com.slavlend.Parser.Expressions;
 import com.slavlend.App;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
+import lombok.Getter;
 
 /*
 Намбер экспрешенн - возвращает число
  */
+@Getter
 public class NumberExpression implements Expression {
     // данные
-    public String data;
+    private final String data;
 
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     @Override
     public PolarValue evaluate() {
@@ -22,11 +24,6 @@ public class NumberExpression implements Expression {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile(/*MethodVisitor visitor*/) {
-        /*CompilerTypes.visitFloat(Float.parseFloat(data), visitor)*/;
     }
 
     public NumberExpression(String data) {

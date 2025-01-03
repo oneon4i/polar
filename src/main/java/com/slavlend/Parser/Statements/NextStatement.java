@@ -2,13 +2,15 @@ package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
 import com.slavlend.Parser.Address;
+import lombok.Getter;
 
 /*
 Некст стэйтмент - итерирует forStatement
  */
+@Getter
 public class NextStatement extends RuntimeException implements Statement {
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     @Override
     public void optimize() {

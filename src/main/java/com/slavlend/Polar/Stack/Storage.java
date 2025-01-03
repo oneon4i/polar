@@ -4,6 +4,7 @@ import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.StackHistoryWriter;
 import com.slavlend.Parser.Address;
 import com.slavlend.Logger.PolarLogger;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
@@ -12,17 +13,16 @@ import java.util.ArrayList;
 для управления хранением локальных,
 объектовых и глобальных переменных.
  */
+@Getter
 public class Storage {
     // стэк вызовов с фреймами под каждый вызов
-    public ThreadLocal<ArrayList<Frame>> callStack = new ThreadLocal<>();
+    private final ThreadLocal<ArrayList<Frame>> callStack = new ThreadLocal<>();
     // переменные глобального скоупа
-    public Frame globalVariables = new Frame();
+    private final Frame globalVariables = new Frame();
 
     // синглтон
+    @Getter
     public static Storage Instance;
-    public static Storage getInstance() {
-        return Instance;
-    }
 
     // конструктор
     public Storage() {
@@ -38,37 +38,37 @@ public class Storage {
             // получаем последний вызов
             Frame frame = last();
             // ищем локальное значение
-            if (frame.values.containsKey(name)) {
+            if (frame.getValues().containsKey(name)) {
                 // возвращаем если есть
-                return frame.values.get(name);
+                return frame.getValues().get(name);
             }
         }
 
         // ищем глобальное значение
-        if (globalVariables.values.containsKey(name)) {
-            return globalVariables.values.get(name);
+        if (globalVariables.getValues().containsKey(name)) {
+            return globalVariables.getValues().get(name);
         }
 
         // крашим
         PolarLogger.exception("Cannot Find Variable: " + name, reqAddress);
-        return null;
+        return new PolarValue(null);
     }
 
     // показывает существует ли локальная/глобальная переменная с этим именем
-    public boolean has(Address reqAddress, String name) {
+    public boolean has(String name) {
         // если стэк не пуст
         if (!callStack.get().isEmpty()) {
             // получаем последний вызов
             Frame frame = last();
             // ищем локальное значение
-            if (frame.values.containsKey(name)) {
+            if (frame.getValues().containsKey(name)) {
                 // возвращаем true если есть
                 return true;
             }
         }
 
         // ищем глобальное значение
-        return globalVariables.values.containsKey(name);
+        return globalVariables.getValues().containsKey(name);
     }
 
     // инициализация хранилища в потоке
@@ -76,7 +76,7 @@ public class Storage {
         // инициализация стека вызовов
         callStack.set(new ArrayList<>());
         // инициализация истории стека
-        StackHistoryWriter.getInstance().hist.set(new ArrayList<>());
+        StackHistoryWriter.getInstance().getHistory().set(new ArrayList<>());
     }
 
     // пушим фрейм в стэк
@@ -89,25 +89,13 @@ public class Storage {
         callStack.get().remove(callStack.get().size() - 1);
     }
 
-    // помещаем по имени
-    public void put(Address reqAddress, String name, PolarValue value) {
-        // если стэк пуст
-        if (callStack.get().isEmpty()) {
-            // помещаем в глобал значения
-            globalVariables.values.put(name, value);
-        }
-        else {
-            // в ином случае в стек
-            last().put(name, value);
-        }
-    }
 
-    // помещаем по имени (без адресса)
+    // помещаем по имени
     public void put(String name, PolarValue value) {
         // если стэк пуст
         if (callStack.get().isEmpty()) {
             // помещаем в глобал значения
-            globalVariables.values.put(name, value);
+            globalVariables.getValues().put(name, value);
         }
         else {
             // в ином случае в стек
@@ -120,7 +108,7 @@ public class Storage {
         // если стэк пуст
         if (callStack.get().isEmpty()) {
             // помещаем в глобал значения
-            globalVariables.values.remove(name);
+            globalVariables.getValues().remove(name);
         }
         else {
             // в ином случае в стек

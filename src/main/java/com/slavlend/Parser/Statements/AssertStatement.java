@@ -5,10 +5,12 @@ import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ConditionExpression;
+import lombok.Getter;
 
 /*
 Стэйтмент для ассерта ( проверяет условие )
  */
+@Getter
 public class AssertStatement implements Statement {
     // экспрешен
     private ConditionExpression expr;
@@ -24,9 +26,9 @@ public class AssertStatement implements Statement {
     public void optimize() {
         // оптимизация
         expr = new ConditionExpression(
-                Optimizations.optimize(expr.l),
-                expr.o,
-                Optimizations.optimize(expr.r)
+                Optimizations.optimize(expr.getL()),
+                expr.getO(),
+                Optimizations.optimize(expr.getR())
         );
     }
 

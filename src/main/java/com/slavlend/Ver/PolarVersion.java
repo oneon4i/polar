@@ -1,9 +1,12 @@
 package com.slavlend.Ver;
 
+import lombok.Getter;
+
 /*
 Версия языка
  */
 public class PolarVersion {
     // билд
-    public static PolarBuild build = new PolarBuild(1, 0, 0);
+    @Getter
+    public final static PolarBuild build = new PolarBuild(1, 0, 0);
 }

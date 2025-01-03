@@ -23,11 +23,6 @@ public class ArgumentExpression implements Expression {
         return address;
     }
 
-    @Override
-    public void compile() {
-
-    }
-
     public ArgumentExpression(String data) {
         this.data = data;
     }

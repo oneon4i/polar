@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 /*
 Класс для работы с системой
  */
+@SuppressWarnings("unused")
 public class sys {
     // конструктор
     public sys() {

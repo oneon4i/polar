@@ -4,8 +4,8 @@ package com.slavlend.Parser;
 Арифмитические операторы: (+, -, *, /)
  */
 public class Operator {
-    // operator
-    public String operator;
+    // оператор
+    public final String operator;
 
     // конструктор
     public Operator(String operator) {

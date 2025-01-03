@@ -6,18 +6,19 @@ import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Operator;
 import com.slavlend.Logger.PolarLogger;
+import lombok.Getter;
 
 /*
 Арифмитическое выражение
  */
+@Getter
 public class ArithmeticExpression implements Expression {
     // правая и левая стороны
-    public Expression r;
-    public Expression l;
+    private final Expression r, l;
     // оператор
-    public Operator operator;
+    private final Operator operator;
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     @Override
     public PolarValue evaluate() {
@@ -33,31 +34,33 @@ public class ArithmeticExpression implements Expression {
         }
         // функция и строка
         if (right.isFunc() && left.isString()) {
-            return new PolarValue(right.asFunc().name + left.asString());
+            return new PolarValue(right.asFunc().getName() + left.asString());
         }
         else if (right.isString() && left.isFunc()) {
-            return new PolarValue(right.asString() + left.asFunc().name);
+            return new PolarValue(right.asString() + left.asFunc().getName());
         }
         // число и число
         else if (right.isNumber() && left.isNumber()) {
-            if (operator.operator.equals("+")) {
-                return new PolarValue(right.asNumber() + left.asNumber());
-            }
-            else if (operator.operator.equals("*")) {
-                return new PolarValue(right.asNumber() * left.asNumber());
-            }
-            else if (operator.operator.equals("/")) {
-                return new PolarValue(right.asNumber() / left.asNumber());
-            }
-            else if (operator.operator.equals("-")) {
-                return new PolarValue(right.asNumber() - left.asNumber());
-            }
-            else if (operator.operator.equals("%")) {
-                return new PolarValue(right.asNumber() % left.asNumber());
-            }
-            else {
-                PolarLogger.exception("Cannot Concat: " + right.data + " and " + left.data, address);
-                return null;
+            switch (operator.operator) {
+                case "+" -> {
+                    return new PolarValue(right.asNumber() + left.asNumber());
+                }
+                case "*" -> {
+                    return new PolarValue(right.asNumber() * left.asNumber());
+                }
+                case "/" -> {
+                    return new PolarValue(right.asNumber() / left.asNumber());
+                }
+                case "-" -> {
+                    return new PolarValue(right.asNumber() - left.asNumber());
+                }
+                case "%" -> {
+                    return new PolarValue(right.asNumber() % left.asNumber());
+                }
+                default -> {
+                    PolarLogger.exception("Cannot Concat: " + right.getData() + " and " + left.getData(), address);
+                    return new PolarValue(null);
+                }
             }
         }
         // остальные случаи
@@ -69,11 +72,6 @@ public class ArithmeticExpression implements Expression {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-
     }
 
     // конструктор

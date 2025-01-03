@@ -1,6 +1,7 @@
 package com.slavlend.Polar.Stack;
 
 import com.slavlend.Polar.PolarValue;
+import lombok.Getter;
 
 import java.util.HashMap;
 
@@ -8,9 +9,10 @@ import java.util.HashMap;
 Фрейм данных (создается при вызове функции)
 для контроллирования локальных переменных функции
  */
+@Getter
 public class Frame {
     // значения
-    public HashMap<String, PolarValue> values = new HashMap<>();
+    private final HashMap<String, PolarValue> values = new HashMap<>();
 
     // функция для помещения значения
     public void put(String name, PolarValue values) {

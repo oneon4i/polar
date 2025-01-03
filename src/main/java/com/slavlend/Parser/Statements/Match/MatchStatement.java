@@ -14,14 +14,12 @@ public class MatchStatement implements Statement {
     // мэтч экспрешенн
     private Expression matchExpr;
     // кейсы
-    public ArrayList<Statement> statements = new ArrayList<Statement>();
+    private final ArrayList<Statement> statements = new ArrayList<>();
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     @Override
     public void optimize() {
-        // оптимизируем
-        optimize();
         // оптимизируем константной сверткой
         matchExpr = Optimizations.optimize(matchExpr);
     }
@@ -56,7 +54,12 @@ public class MatchStatement implements Statement {
 
         // дефолт вызов если все кейсы не сработали
         if (_default) {
-            defaultStatement.execute();
+            if (defaultStatement != null) {
+                defaultStatement.execute();
+            }
+            else {
+                PolarLogger.exception("Default Statement Not Found In Match Statement", address());
+            }
         }
     }
 

@@ -4,13 +4,16 @@ import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.Statement;
+import lombok.Getter;
 
 /*
 Экспрешен для акссеса к переменной
  */
+@SuppressWarnings("ThrowableNotThrown")
+@Getter
 public class AccessExpression implements Expression, Statement {
     // аксес
-    public Access access;
+    private Access access;
     // аддресс
     private final Address address;
 
@@ -21,7 +24,7 @@ public class AccessExpression implements Expression, Statement {
     }
 
     // добавление
-    public void Add(Access _access) {
+    public void add(Access _access) {
         // устанавливаем на следующий
         if (access != null) {
             access.setNext(_access);
@@ -32,7 +35,7 @@ public class AccessExpression implements Expression, Statement {
     }
 
     // установка
-    public void Set(Access _access) {
+    public void set(Access _access) {
         // устанавливаем на следующий
         if (access.hasNext()) {
             access.setLast(_access);
@@ -43,27 +46,11 @@ public class AccessExpression implements Expression, Statement {
     }
 
     // получаем последний акссес
-    public Access GetLast() {
+    public Access getLast() {
         Access _access = access;
 
         while (_access.hasNext()) {
             _access = _access.getNext();
-        }
-
-        return _access;
-    }
-
-    // получение по индексу
-    public Access ByIndex(int requiredIndex) {
-        Access _access = access;
-
-        int index = 0;
-        while (_access.hasNext()) {
-            _access = _access.getNext();
-            index += 1;
-            if (index >= requiredIndex) {
-                break;
-            }
         }
 
         return _access;
@@ -97,9 +84,5 @@ public class AccessExpression implements Expression, Statement {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
     }
 }

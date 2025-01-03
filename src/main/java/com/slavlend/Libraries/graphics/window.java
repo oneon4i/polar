@@ -24,131 +24,10 @@ import java.util.HashMap;
 Библиотека для работы с окнами
  */
 public class window extends ApplicationAdapter implements InputProcessor {
-    /*
-    // объект
-    public static class gameobject {
-        private int y;
-        private final String image;
-        private int x;
-        private int height;
-        private int width;
-
-        public gameobject(String image, int x, int y, int width, int height) {
-            this.image = image;
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-        }
-
-        public void set_pos(int _x, int _y) {
-            this.x = _x;
-            this.y = _y;
-        }
-
-        public void set_size(int _width, int _height) {
-            this.width = _width;
-            this.height = _height;
-        }
-
-        public int getHeight() {
-            return height;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        public String getImage() {
-            return image;
-        }
-    }
-    // изображения
-    private HashMap<String, Image> images = new HashMap<>();
-    private HashMap<String, gameobject> gameobjects = new HashMap<String, gameobject>();
-    // функция
-    private FunctionStatement loop_handler;
-
-    // конструктор
-    public window() {
-
-    }
-
-    // метод инициализация
-    public void init(int width, int height, String title) {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setSize(width, height);
-        setVisible(true);
-    }
-
-    // загрузка изображения
-    public void load_image(String key, String path) {
-        images.put(key, new ImageIcon(path).getImage());
-    }
-
-    // изменение кординат изображения
-    public void set_pos(String name, int x, int y) {
-        gameobjects.get(name).set_pos(x, y);
-        repaint_window();
-    }
-
-    // изменение размера изображения
-    public void set_size(String name, int w, int h) {
-        gameobjects.get(name).set_size(w, h);
-        repaint_window();
-    }
-
-    // получение изображения
-    public PolarValue add_object(PolarObject obj, String name, String key, int x, int y, int w, int h) {
-        gameobjects.put(name, new gameobject(key, x, y, w, h));
-        gameobject go = gameobjects.get(name);
-        ArrayList<PolarValue> args = new ArrayList<>();
-        args.add(new PolarValue(x));
-        args.add(new PolarValue(y));
-        args.add(new PolarValue(w));
-        args.add(new PolarValue(h));
-        args.add(new PolarValue(name));
-        args.add(new PolarValue(obj));
-        PolarObject po = PolarObject.create(Classes.getInstance().getClass("GameObject"), args);
-        return new PolarValue(po);
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        for (gameobject go : gameobjects.values()) {
-            g.drawImage(images.get(go.image), go.x, go.y, go.width, go.height, null);
-        }
-        if (loop_handler != null) {
-            loop_handler.call(null, new ArrayList<>());
-        }
-    }
-
-    // хэндлим
-    public void handle_loop(FunctionStatement func) {
-        this.loop_handler = func;
-    }
-
-    // репэинт
-    public void repaint_window() {
-        repaint();
-    }
-
-     */
-
     // список изображений
-    private HashMap<String, Texture> textures = new HashMap<>();
+    private final HashMap<String, Texture> textures = new HashMap<>();
     // список моделей
-    private HashMap<String, ModelInstance> models = new HashMap<>();
+    private final HashMap<String, ModelInstance> models = new HashMap<>();
     // заголовок
     private String title;
     // высота
@@ -222,12 +101,14 @@ public class window extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void render() {
-        if (following != null && !following.equals("")) {
+        if (following != null && !following.isEmpty()) {
             camera.position.set(models.get(following).transform.getTranslation(new Vector3()).add(new Vector3(50, 50, 50)));
             camera.update();
         }
         super.render();
-        on_updated.call(null, new ArrayList<>());
+        if (on_updated != null) {
+            on_updated.call(null, new ArrayList<>());
+        }
 
         for (Integer i : holdings_keys) {
             ArrayList<PolarValue> list = new ArrayList<>();
@@ -329,13 +210,13 @@ public class window extends ApplicationAdapter implements InputProcessor {
         // камера
         camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(
-                settings.classValues.get("x").asNumber(),
-                settings.classValues.get("y").asNumber(),
-                settings.classValues.get("z").asNumber()
+                settings.getClassValues().get("x").asNumber(),
+                settings.getClassValues().get("y").asNumber(),
+                settings.getClassValues().get("z").asNumber()
         );
         camera.lookAt(0, 0, 0);
-        camera.near = settings.classValues.get("near").asNumber();
-        camera.far = settings.classValues.get("far").asNumber();
+        camera.near = settings.getClassValues().get("near").asNumber();
+        camera.far = settings.getClassValues().get("far").asNumber();
         camera.update();
 
         // куб
@@ -353,9 +234,9 @@ public class window extends ApplicationAdapter implements InputProcessor {
     // установка света
     public void add_light(PolarObject color, float x, float y, float z)
     {
-        float r = color.classValues.get("r").asNumber();
-        float g = color.classValues.get("g").asNumber();
-        float b = color.classValues.get("b").asNumber();
+        float r = color.getClassValues().get("r").asNumber();
+        float g = color.getClassValues().get("g").asNumber();
+        float b = color.getClassValues().get("b").asNumber();
 
         environment.add(new DirectionalLight().set(r, g, b, x, y, z));
     }

@@ -1,26 +1,22 @@
 package com.slavlend.Exceptions;
 
-import java.util.List;
+import lombok.Getter;
 
 /*
 Исключение
  */
+@Getter
 public class PolarException extends RuntimeException {
     // ошибка
     private final String error;
     // линия ошибки
     private final int line;
+    // стак трейс
+    private final StackTraceElement[] stackTrace;
 
-    public PolarException(String error, int line) {
+    public PolarException(String error, int line, StackTraceElement[] stackTrace) {
         this.error = error;
         this.line = line;
-    }
-
-    public String getLine() {
-        return String.valueOf(line);
-    }
-
-    public String getError() {
-        return error;
+        this.stackTrace = stackTrace;
     }
 }

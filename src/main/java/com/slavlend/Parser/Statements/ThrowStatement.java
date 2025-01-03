@@ -4,17 +4,17 @@ import com.slavlend.App;
 import com.slavlend.Exceptions.PolarThrowable;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
-
-import java.util.ArrayList;
+import lombok.Getter;
 
 /*
 Троу стейтмент - выкидывает throwable
  */
+@Getter
 public class ThrowStatement implements Statement {
     // выкидываемое
-    private Expression throwableExpr;
+    private final Expression throwableExpr;
     // адресс
-    private Address address = App.parser.address();
+    private final  Address address = App.parser.address();
 
     @Override
     public void optimize() {

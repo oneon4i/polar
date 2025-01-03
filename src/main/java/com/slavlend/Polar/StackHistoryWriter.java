@@ -2,6 +2,8 @@ package com.slavlend.Polar;
 
 
 import com.slavlend.Parser.Address;
+import lombok.Getter;
+
 import java.util.ArrayList;
 
 /*
@@ -9,11 +11,10 @@ import java.util.ArrayList;
 историю вызов.
  */
 public class StackHistoryWriter {
-    // размер истории стека
-    private final int historySize = 7;
-
     // элемент стэка
-    public static class StackElement {
+    @Getter
+    private static class StackElement {
+        // геттеры
         // адресс
         private final Address address;
         // вызов
@@ -25,25 +26,15 @@ public class StackHistoryWriter {
             this.call = call;
         }
 
-        // геттеры
-        public Address getAddress() {
-            return address;
-        }
-
-        public String getCall() {
-            return call;
-        }
     }
 
     // история
-    public ThreadLocal<ArrayList<StackElement>> hist = new ThreadLocal<>();
+    @Getter
+    private final ThreadLocal<ArrayList<StackElement>> history = new ThreadLocal<>();
 
     // инстанс
+    @Getter
     public static StackHistoryWriter instance;
-
-    public static StackHistoryWriter getInstance() {
-        return instance;
-    }
 
     // инициализация
     public StackHistoryWriter() {
@@ -54,25 +45,18 @@ public class StackHistoryWriter {
     public void printStackTrace() {
         // вывод
         for (int i = 0; i < getHistStackSize(); i++) {
-            StackElement elem = hist.get().get(i);
-            System.out.println("| ➡️ " + elem.getCall() + " at: " + elem.getAddress().line + ":" + elem.getAddress().ch);
+            StackElement elem = history.get().get(i);
+            System.out.println("| ➡️ " + elem.getCall() + " at: " + elem.getAddress().getLine());
         }
     }
 
     // получение размера истории стэка
     public int getHistStackSize() {
-        // проверяем если размер истории стека больше ограничения для её вывода
-        if (hist.get().size() > historySize) {
-            return historySize;
-        }
-        // в ином случае возвращаем размер истории стека
-        else {
-            return hist.get().size();
-        }
+        return Math.min(history.get().size(), 7);
     }
 
-    // пуш вызова
+    // пуш вызова в историю стека
     public void pushCall(Address address, String call) {
-        hist.get().add(new StackElement(address, call));
+        history.get().add(new StackElement(address, call));
     }
 }

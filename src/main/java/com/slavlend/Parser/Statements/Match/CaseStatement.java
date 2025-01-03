@@ -7,14 +7,16 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.*;
 import kotlin.NotImplementedError;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
+@Getter
 public class CaseStatement implements Statement {
     // экспрешенн для проверки
-    private Expression equalExpr;
+    private Expression checkExpr;
     // тело функции
-    public ArrayList<Statement> statements = new ArrayList<Statement>();
+    private final ArrayList<Statement> statements = new ArrayList<>();
     // адресс
     private final Address address = App.parser.address();
 
@@ -27,29 +29,29 @@ public class CaseStatement implements Statement {
         // оптимизируем
         optimize();
         // если условие сработало
-        if (expr.evaluate().equal(equalExpr.evaluate())) {
+        if (expr.evaluate().equal(checkExpr.evaluate())) {
             // стэйтменты
             for (Statement statement : statements) {
                 try {
                     statement.execute();
                 } catch (BreakStatement breakStatement) {
-                    return null;
+                    return new PolarValue(null);
                 }
             }
         }
 
-        return null;
+        return new PolarValue(null);
     }
 
     @Override
     public void optimize() {
         // оптимизируем константной сверткой
-        equalExpr = Optimizations.optimize(equalExpr);
+        checkExpr = Optimizations.optimize(checkExpr);
     }
 
     // правильно ли
     public boolean isRight(Expression expr) {
-        return expr.evaluate().equal(equalExpr.evaluate());
+        return expr.evaluate().equal(checkExpr.evaluate());
     }
 
     public void add(Statement statement) {
@@ -65,7 +67,7 @@ public class CaseStatement implements Statement {
 
     @Override
     public Statement copy() {
-        CaseStatement _copy = new CaseStatement(equalExpr);
+        CaseStatement _copy = new CaseStatement(checkExpr);
 
         for (Statement statement : statements) {
             _copy.add(statement.copy());
@@ -81,6 +83,6 @@ public class CaseStatement implements Statement {
 
     // конструктор
     public CaseStatement(Expression e) {
-        this.equalExpr = e;
+        this.checkExpr = e;
     }
 }

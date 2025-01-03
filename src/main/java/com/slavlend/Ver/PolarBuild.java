@@ -1,14 +1,19 @@
 package com.slavlend.Ver;
 
+import lombok.Getter;
+
 /*
 Билд версии языка
  */
 public class PolarBuild {
     // мажорная версия
+    @Getter
     private final int major;
     // минорная версия
+    @Getter
     private final int minor;
     // патч версии
+    @Getter
     private final int patch;
 
     // конструктор

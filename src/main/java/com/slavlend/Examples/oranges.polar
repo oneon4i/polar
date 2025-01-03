@@ -6,12 +6,12 @@ use 'lib.polar'
 window = new Window()
 x = 400
 y = 400
-@window.setup(800, 480, 'title', initialized)
+window.setup(800, 480, 'title', initialized)
 
 func initialized() = {
-    @window.load_image('test', 'E:\Turtle Game Engine\Contents\CustomEmojis\Dino\dino_run_0.png')
-    @window.on_key_hold(key_handler)
-    @window.on_update(update)
+    window.load_image('test', 'E:\Turtle Game Engine\Contents\CustomEmojis\Dino\dino_run_0.png')
+    window.on_key_hold(key_handler)
+    window.on_update(update)
 }
 
 func key_handler(code) = {
@@ -27,6 +27,6 @@ func key_handler(code) = {
 }
 
 func update() = {
-    @window.clear()
-    @window.draw_image('test', x, y, 148, 147)
+    window.clear()
+    window.draw_image('test', x, y, 148, 147)
 }

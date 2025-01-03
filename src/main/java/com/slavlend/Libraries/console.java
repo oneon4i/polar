@@ -3,6 +3,7 @@ package com.slavlend.Libraries;
 /*
 Библиотека на консоль
  */
+@SuppressWarnings("unused")
 public class console {
     // конструктор
     public console() {

@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 /*
 Библиотека на работу с файлами
  */
+@SuppressWarnings({"unused", "ThrowableNotThrown", "resource"})
 public class files {
     // конструктор
     public files() {
@@ -42,9 +43,9 @@ public class files {
             return new PolarValue(text.toString());
         } catch (Exception e) {
             // ошибка
-            PolarLogger.exception("Cannot Read: " + name + ", (Java) " + e.getMessage(), name.instantiateAddress);
+            PolarLogger.exception("Cannot Read: " + name + ", (Java) " + e.getMessage(), name.getInstantiateAddress());
 
-            return null;
+            return new PolarValue(null);
         }
     }
 
@@ -59,30 +60,30 @@ public class files {
             writer.close();
         } catch (Exception e) {
             // ошибка
-            PolarLogger.exception("Cannot Write: " + name + ", (Java): " + e.getMessage(), name.instantiateAddress);
+            PolarLogger.exception("Cannot Write: " + name + ", (Java): " + e.getMessage(), name.getInstantiateAddress());
         }
     }
 
     // список файлов в определенной директории
-    public PolarValue files(PolarValue path) {
+    public PolarValue get_files(PolarValue path) {
         // файлы
         try {
             Stream<Path> stream = Files.list(Paths.get(path.asString()));
-            PolarObject _array = new PolarObject(Classes.getInstance().getClass("Array"), new ArrayList<>());
+            PolarObject _array = new PolarObject(Classes.getInstance().lookupClass("Array"), new ArrayList<>());
             _array.init();
 
             for (Path _path : stream.toList()) {
                 ArrayList<PolarValue> params = new ArrayList<PolarValue>();
                 params.add(new PolarValue(_path.getFileName().toString()));
-                _array.classValues.get("add").asFunc().call(null, params);
+                _array.getClassValues().get("add").asFunc().call(null, params);
             }
 
             return new PolarValue(_array);
         } catch (IOException e) {
             PolarLogger.exception(
-                    "Io Exception (Java): " + e.getCause().getMessage(), path.instantiateAddress
+                    "Io Exception (Java): " + e.getCause().getMessage(), path.getInstantiateAddress()
             );
-            return null;
+            return new PolarValue(null);
         }
     }
 }

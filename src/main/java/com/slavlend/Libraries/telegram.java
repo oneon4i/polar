@@ -20,6 +20,7 @@ import java.util.List;
 /*
 Библиотека для работы с тг-ботами.
  */
+@SuppressWarnings({"unused", "ThrowableNotThrown", "CallToPrintStackTrace", "Convert2Lambda"})
 public class telegram {
     private TelegramBot bot;
     public FunctionStatement ON_CALL;
@@ -56,11 +57,11 @@ public class telegram {
                         params.add(new PolarValue(String.valueOf(message.chat().id())));
                         params.add(new PolarValue(message.text()));
 
-                        if (Storage.getInstance().callStack.get() == null) {
-                            Storage.getInstance().callStack.set(new ArrayList<>());
+                        if (Storage.getInstance().getCallStack().get() == null) {
+                            Storage.getInstance().getCallStack().set(new ArrayList<>());
                         }
-                        if (StackHistoryWriter.getInstance().hist.get() == null) {
-                            StackHistoryWriter.getInstance().hist.set(new ArrayList<>());
+                        if (StackHistoryWriter.getInstance().getHistory().get() == null) {
+                            StackHistoryWriter.getInstance().getHistory().set(new ArrayList<>());
                         }
 
                         Storage.getInstance().push();
@@ -73,11 +74,11 @@ public class telegram {
                         params.add(new PolarValue(String.valueOf(poll.user().id())));
                         params.add(new PolarValue((float) poll.optionIds()[0]));
 
-                        if (Storage.getInstance().callStack.get() == null) {
-                            Storage.getInstance().callStack.set(new ArrayList<>());
+                        if (Storage.getInstance().getCallStack().get() == null) {
+                            Storage.getInstance().getCallStack().set(new ArrayList<>());
                         }
-                        if (StackHistoryWriter.getInstance().hist.get() == null) {
-                            StackHistoryWriter.getInstance().hist.set(new ArrayList<>());
+                        if (StackHistoryWriter.getInstance().getHistory().get() == null) {
+                            StackHistoryWriter.getInstance().getHistory().set(new ArrayList<>());
                         }
 
                         Storage.getInstance().push();
@@ -106,7 +107,7 @@ public class telegram {
     }
 
     public void send_quiz(String chat_id, String question, int right, PolarValue list) {
-        ArrayList<InputPollOption> options = new ArrayList<InputPollOption>();
+        ArrayList<InputPollOption> options = new ArrayList<>();
 
         for (PolarValue v : list.asList()) {
             options.add(new InputPollOption(v.asString()));

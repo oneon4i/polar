@@ -7,22 +7,24 @@ import com.slavlend.Executor.Executor;
 import com.slavlend.Executor.ExecutorSettings;
 import com.slavlend.Parser.Parser;
 import com.slavlend.Ver.PolarVersion;
+import lombok.Getter;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
+/*
+Главный файл
+ */
 public class App 
 {
-
     // парсер
     public static Parser parser;
 
     // список комманд
-    public static HashMap<String, Command> commandList = new HashMap() {{
+    @Getter
+    private final static HashMap<String, Command> commandList = new HashMap() {{
        put("pkg", new InstallPkgCommand());
        put("run", new RunCommand());
     }};

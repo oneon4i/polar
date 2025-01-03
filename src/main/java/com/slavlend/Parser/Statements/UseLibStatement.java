@@ -6,6 +6,7 @@ import com.slavlend.Lexer.Lexer;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.TextExpression;
 import com.slavlend.Parser.Parser;
+import lombok.Getter;
 
 import java.io.*;
 import java.util.Scanner;
@@ -13,11 +14,12 @@ import java.util.Scanner;
 /*
 Стэйтмент - использование библиотеки. Подгружает ее.
  */
+@Getter
 public class UseLibStatement implements Statement{
     // имя библиотеки
-    public TextExpression libName;
+    private final TextExpression libName;
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     @Override
     public void optimize() {
@@ -39,11 +41,11 @@ public class UseLibStatement implements Statement{
         Scanner sc = null;
         // инпут стрим
         InputStream is;
-        if (Parser.libraries.containsKey(libName.data)) {
-            is = getClass().getResourceAsStream("/resources/" + Parser.libraries.get(libName.data));
+        if (Parser.libraries.containsKey(libName.getData())) {
+            is = getClass().getResourceAsStream("/resources/" + Parser.libraries.get(libName.getData()));
         }
         else {
-            File file = new File(App.parser.getEnv() + "/" + libName.data);
+            File file = new File(App.parser.getEnvironmentPath() + "/" + libName.getData());
             try {
                 is = new FileInputStream(file);
             } catch (FileNotFoundException e) {
@@ -54,19 +56,19 @@ public class UseLibStatement implements Statement{
             sc = new Scanner(is);
         }
         else {
-            PolarLogger.exception("Cannot Load: " + libName.data + " (Not Found)", address);
+            PolarLogger.exception("Cannot Load: " + libName.getData() + " (Not Found)", address);
         }
 
         // линии кода
         while (sc.hasNextLine()) {
-            code.append(sc.nextLine() + "\n");
+            code.append(sc.nextLine()).append("\n");
         }
         // лексер
         Lexer tempLexer = new Lexer(code.toString());
         tempLexer.Tokenize();
         // импортируем классы
         Parser tempParser = new Parser(tempLexer.getTokens());
-        tempParser.setFile(libName.data.replace(".polar", ""));
+        tempParser.setFileName(libName.getData().replace(".polar", ""));
         tempParser.loadClasses();
     }
 

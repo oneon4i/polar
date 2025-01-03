@@ -5,11 +5,11 @@ package com.slavlend.Lexer;
  */
 public class Token {
     // тип токена
-    public TokenType type;
+    public final TokenType type;
     // значение токена
-    public String value;
+    public final String value;
     // линия адресса токена
-    public int line = 0;
+    public final int line;
 
     // конструктор
     public Token(TokenType type, String value, int line) {

@@ -6,21 +6,17 @@ import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ArgumentExpression;
 import com.slavlend.Parser.Expressions.Expression;
+import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 // стэтймент класса
+@Getter
 public class ClassStatement implements Statement {
     // класс
-    private PolarClass polarClass;
+    private final PolarClass polarClass;
     // адресс
-    private Address address = App.parser.address();
-
-    // получение класса
-    public PolarClass getPolarClass() {
-        return polarClass;
-    }
+    private final Address address = App.parser.address();
 
     @Override
     public void optimize() {
@@ -30,7 +26,7 @@ public class ClassStatement implements Statement {
     // конструктор
     public ClassStatement(String fullName, String name, ArrayList<ArgumentExpression> constructor) {
         this.polarClass = new PolarClass(fullName, name, constructor, address);
-        Classes.getInstance().classes.add(this.polarClass);
+        Classes.getInstance().getClasses().add(this.polarClass);
     }
 
     // эддеры функций
@@ -59,7 +55,7 @@ public class ClassStatement implements Statement {
 
     @Override
     public Statement copy() {
-        return new ClassStatement(polarClass.fullName, polarClass.name, polarClass.constructor);
+        return new ClassStatement(polarClass.getFullName(), polarClass.getName(), polarClass.getConstructor());
     }
 
     @Override

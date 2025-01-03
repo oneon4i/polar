@@ -3,7 +3,7 @@ package com.slavlend.Parser.Expressions.Access;
 import com.slavlend.Polar.PolarValue;
 
 /*
-Абстракция акссесса
+Абстракция доступа (акссеса)
  */
 public interface Access {
     abstract PolarValue access(PolarValue previous);

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 /*
 Библиотека для работы с json
  */
+@SuppressWarnings("unused")
 public class json {
     // конструктор
     public json() {
@@ -34,6 +35,6 @@ public class json {
         // получаем как объект мапу
         PolarObject o = data.asObject();
         // возвращаем
-        return o.classValues.get("to_string").asFunc().call(o, new ArrayList<>());
+        return o.getClassValues().get("to_string").asFunc().call(o, new ArrayList<>());
     }
 }

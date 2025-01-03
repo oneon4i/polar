@@ -7,6 +7,7 @@ import java.util.ArrayList;
 /*
 Библиотека для углубленной работы со строками
  */
+@SuppressWarnings("unused")
 public class str {
     // конструктор
     public str() {

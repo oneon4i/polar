@@ -1,18 +1,9 @@
 package com.slavlend.Repo;
 
-import lukfor.progress.TaskService;
-import lukfor.progress.tasks.DownloadTask;
-import lukfor.progress.tasks.ITaskRunnable;
-import lukfor.progress.tasks.monitors.ITaskMonitor;
-
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import static lukfor.progress.Components.*;
 
 /*
 Довнлоадер репозиториев

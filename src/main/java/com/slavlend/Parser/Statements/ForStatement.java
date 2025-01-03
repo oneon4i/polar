@@ -7,21 +7,24 @@ import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ConditionExpression;
 import com.slavlend.Parser.Expressions.Expression;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
 /*
 Фор стэйтмент - цикл
  */
+@SuppressWarnings("PointlessBooleanExpression")
+@Getter
 public class ForStatement implements Statement {
     // тело
-    public ArrayList<Statement> statements = new ArrayList<Statement>();
+    private final ArrayList<Statement> statements = new ArrayList<>();
     // кодишены
-    public ArrayList<ConditionExpression> conditions = new ArrayList<>();
+    private final ArrayList<ConditionExpression> conditions;
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
     // имя переменной
-    private String variable;
+    private final String variable;
     // значение
     private Expression valueExpr;
 

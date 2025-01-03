@@ -7,17 +7,21 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Access.AccessExpression;
 import com.slavlend.Parser.Expressions.Access.VarAccess;
 import com.slavlend.Parser.Operator;
+import lombok.Getter;
+import lombok.Setter;
 
 /*
 Эксперешен кондишен - возвращает бул
  */
+@Getter
 public class ConditionExpression implements Expression {
-    // право и лево
-    public Expression r, l;
+    // правая и левая стороны
+    @Setter
+    private final Expression r, l;
     // оператор
-    public Operator o;
+    private final Operator o;
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     // конструктор
     public ConditionExpression(Expression l, Operator o, Expression r) {
@@ -54,8 +58,8 @@ public class ConditionExpression implements Expression {
         PolarValue left = l.evaluate();
         if (left.isObject()) {
             PolarObject _object = left.asObject();
-            String name = ((VarAccess) ((AccessExpression) r).GetLast()).varName;
-            return _object.clazz.name.equals(name);
+            String name = ((VarAccess) ((AccessExpression) r).getLast()).varName;
+            return _object.getClazz().getName().equals(name);
         }
         else {
             return false;
@@ -90,10 +94,5 @@ public class ConditionExpression implements Expression {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-
     }
 }

@@ -3,7 +3,7 @@ class A(a) = {
 }
 
 try {
-    throw(new A(5))
+    error('hello')
 } catch (catchable) {
     put('caught: <<' + catchable + '>>')
 }

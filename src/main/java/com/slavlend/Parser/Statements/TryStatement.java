@@ -4,24 +4,27 @@ import com.slavlend.App;
 import com.slavlend.Exceptions.PolarException;
 import com.slavlend.Exceptions.PolarThrowable;
 import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Expressions.ConditionExpression;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Storage;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
 /*
 Трай стэйтмент - ловит исключения
  */
+@Getter
 public class TryStatement implements Statement {
     // тело
-    private ArrayList<Statement> statements = new ArrayList<Statement>();
+    private final ArrayList<Statement> statements = new ArrayList<>();
     // тело при пойманом throwable
-    private ArrayList<Statement> catchStatements = new ArrayList<Statement>();
+    private final ArrayList<Statement> catchStatements = new ArrayList<>();
     // имя переменной
+    @Setter
     private String variableName;
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     @Override
     public void optimize() {
@@ -100,10 +103,5 @@ public class TryStatement implements Statement {
     // конструктор
     public TryStatement(String variableName) {
         this.variableName = variableName;
-    }
-
-    // установка имени переменной
-    public void setVariableName(String newVariableName) {
-        this.variableName = newVariableName;
     }
 }

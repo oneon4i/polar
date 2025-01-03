@@ -13,15 +13,15 @@ import java.util.ArrayList;
  */
 public class ObjectExpression implements Expression {
     // класс
-    public String className;
+    private final String className;
     // конструктор
-    public ArrayList<Expression> constructor;
+    private final ArrayList<Expression> constructor;
     // адресс
     private Address address = App.parser.address();
 
     @Override
     public PolarValue evaluate() {
-        PolarObject obj = new PolarObject(Classes.getInstance().getClassByAddress(address, className), constructor);
+        PolarObject obj = new PolarObject(Classes.getInstance().lookupClass(address, className), constructor);
         obj.init();
         return new PolarValue(obj);
     }
@@ -31,10 +31,6 @@ public class ObjectExpression implements Expression {
         return address;
     }
 
-    @Override
-    public void compile() {
-
-    }
 
     public ObjectExpression(String className, ArrayList<Expression> constructor) {
         this.className = className;

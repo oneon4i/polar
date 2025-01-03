@@ -2,15 +2,18 @@ package com.slavlend.Libraries;
 
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Storage;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
 /*
 Библиотека для списка
  */
+@SuppressWarnings("unused")
+@Getter
 public class array {
     // список
-    public ArrayList<PolarValue> valueArrayList = new ArrayList<>();
+    private final ArrayList<PolarValue> valueArrayList = new ArrayList<>();
 
     // конструктор
     public array() {
@@ -70,15 +73,15 @@ public class array {
 
         for (PolarValue value : valueArrayList) {
             if (!value.isObject()) {
-                str.append(value.asString() + ", ");
+                str.append(value.asString()).append(", ");
             }
             else {
-                if (value.asObject().clazz.name.equals("Map") ||
-                        value.asObject().clazz.name.equals("Array")) {
+                if (value.asObject().getClazz().getName().equals("Map") ||
+                        value.asObject().getClazz().getName().equals("Array")) {
                     String _value = "";
 
                     Storage.getInstance().push();
-                    _value = value.asObject().classValues.get("dumps").asFunc().call(value.asObject(), new ArrayList<>()).asString();
+                    _value = value.asObject().getClassValues().get("dumps").asFunc().call(value.asObject(), new ArrayList<>()).asString();
                     Storage.getInstance().pop();
 
                     str.append(_value + ", ");
@@ -101,25 +104,25 @@ public class array {
 
     // функция преобразования в строку
     public PolarValue stringify() {
-        StringBuilder str = new StringBuilder("");
+        StringBuilder str = new StringBuilder();
 
         for (PolarValue value : valueArrayList) {
             if (!value.isObject()) {
-                str.append(value.asString() + "");
+                str.append(value.asString());
             }
             else {
-                if (value.asObject().clazz.name.equals("Map") ||
-                        value.asObject().clazz.name.equals("Array")) {
+                if (value.asObject().getClazz().getName().equals("Map") ||
+                        value.asObject().getClazz().getName().equals("Array")) {
                     String _value = "";
 
                     Storage.getInstance().push();
-                    _value = value.asObject().classValues.get("dumps").asFunc().call(value.asObject(), new ArrayList<>()).asString();
+                    _value = value.asObject().getClassValues().get("dumps").asFunc().call(value.asObject(), new ArrayList<>()).asString();
                     Storage.getInstance().pop();
 
-                    str.append(_value + "");
+                    str.append(_value);
                 }
                 else {
-                    str.append("'" + value.asString() + "'" + "");
+                    str.append("'").append(value.asString()).append("'");
                 }
             }
         }

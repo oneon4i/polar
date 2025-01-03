@@ -4,15 +4,17 @@ import com.slavlend.Polar.PolarValue;
 import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ObjectExpression;
+import lombok.Getter;
 
 /*
 Акссесс к функции
  */
+@Getter
 public class TempAccess implements Access {
     // следующий
-    public Access next;
-    // имя функции
-    private final ObjectExpression _object;
+    private Access next;
+    // временный объект
+    private final ObjectExpression objectExpr;
     // аддресс
     private final Address address;
 
@@ -20,7 +22,7 @@ public class TempAccess implements Access {
     public TempAccess(Address address, Access next, ObjectExpression _object) {
         this.address = address;
         this.next = next;
-        this._object = _object;
+        this.objectExpr = _object;
     }
 
     // акссес
@@ -29,7 +31,7 @@ public class TempAccess implements Access {
         // если нет предыдущего
         if (previous == null) {
             // получаем функцию
-            PolarValue res = _object.evaluate();
+            PolarValue res = objectExpr.evaluate();
 
             // если нет следующего
             if (next == null) {
@@ -43,7 +45,7 @@ public class TempAccess implements Access {
         else {
             PolarLogger.exception("Cannot Use Temp Access Not First Of Call Chain", address);
 
-            return null;
+            return new PolarValue(null);
         }
     }
 

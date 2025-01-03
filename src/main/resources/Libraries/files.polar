@@ -9,6 +9,6 @@ class Files() = {
     }
 
     mod func files(path) = {
-        back(Files.reflected.files(path))
+        back(Files.reflected.get_files(path))
     }
 }

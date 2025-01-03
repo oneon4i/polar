@@ -9,6 +9,7 @@ import com.slavlend.Parser.Statements.ClassStatement;
 import com.slavlend.Parser.Statements.FunctionStatement;
 import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Statements.NextStatement;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
@@ -16,11 +17,12 @@ import java.util.ArrayList;
 Значение - часть переменной, хранит
 внутри себя объект.
  */
+@Getter
 public class PolarValue extends RuntimeException {
     // хранимый объект
-    public Object data;
+    private final Object data;
     // адресс из кода
-    public Address instantiateAddress = App.parser.address();
+    private final Address instantiateAddress = App.parser.address();
 
     // конструктор
     public PolarValue(Object data) {
@@ -30,23 +32,25 @@ public class PolarValue extends RuntimeException {
     // возвращает объект как список
     public ArrayList<PolarValue> asList() {
         ArrayList<String> arrayList = new ArrayList<String>();
-        Reflected reflected = asObject().classValues.get("arr").asObject().classValues.get("javaArr").asReflected();
-        array arr = (array) reflected.o;
+        Reflected reflected = asObject().getClassValues().get("arr").asObject()
+                .getClassValues().get("javaArr").asReflected();
+        array arr = (array) reflected.getReflectedObject();
 
-        return arr.valueArrayList;
+        return arr.getValueArrayList();
     }
 
     // создаёт список из джава списка
     public static PolarValue toList(ArrayList<PolarValue> list) {
         // аррэй
-        PolarObject array = new PolarObject(Classes.Instance.getClass("Array"), new ArrayList<>());
+        PolarObject array = new PolarObject(Classes.Instance.lookupClass("Array"), new ArrayList<>());
         array.init();
 
         // добавляем в список
-        Reflected reflected = array.classValues.get("arr").asObject().classValues.get("javaArr").asReflected();
-        array arr = (array) reflected.o;
+        Reflected reflected = array.getClassValues().get("arr").asObject()
+                .getClassValues().get("javaArr").asReflected();
+        array arr = (array) reflected.getReflectedObject();
 
-        arr.valueArrayList.addAll(list);
+        arr.getValueArrayList().addAll(list);
 
         // возвращаем
         return new PolarValue(array);

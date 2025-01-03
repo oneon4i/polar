@@ -3,13 +3,15 @@ package com.slavlend.Parser.Expressions;
 import com.slavlend.App;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
+import lombok.Getter;
 
 /*
 Нил экспрешенн - возвращает нулл
  */
+@Getter
 public class NilExpression implements Expression {
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     @Override
     public PolarValue evaluate() {
@@ -19,11 +21,6 @@ public class NilExpression implements Expression {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile(/*MethodVisitor visitor*/) {
-        /*visitor.visitInsn(Opcodes.ACONST_NULL)*/;
     }
 
     public NilExpression() {

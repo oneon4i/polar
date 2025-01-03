@@ -2,16 +2,19 @@ package com.slavlend.Polar;
 
 import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
+import lombok.Getter;
 
 /*
 Reflected - представляет собой
 хранилище класса и инстанца этого объекта
  */
+@SuppressWarnings("deprecation")
+@Getter
 public class Reflected {
     // класс
-    public Class<?> clazz;
+    private final Class<?> clazz;
     // объект
-    public Object o;
+    private Object reflectedObject;
 
     // конструктор
     public Reflected(Address address, Class<?> clazz) {
@@ -19,7 +22,7 @@ public class Reflected {
         this.clazz = clazz;
         // пробуем создает объект по классу
         try {
-            this.o = clazz.newInstance();
+            this.reflectedObject = clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             // кэтчим эксцепшены
             PolarLogger.exception("Reflection object creation error (Java):  " + e.getMessage(), address);
@@ -31,6 +34,6 @@ public class Reflected {
         // присваиваем класс
         this.clazz = clazz;
         // объект
-        this.o = object;
+        this.reflectedObject = object;
     }
 }

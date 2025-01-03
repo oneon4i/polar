@@ -37,12 +37,12 @@ public class VarAccess implements Access {
             // получаем переменную
             PolarValue res = null;
             // если есть переменная
-            if (Storage.getInstance().has(address, varName)) {
+            if (Storage.getInstance().has(varName)) {
                 res = Storage.getInstance().get(address, varName);
             }
             else {
                 if (Classes.getInstance().hasClass(varName)) {
-                    res = new PolarValue(Classes.getInstance().getClassByAddress(address, varName));
+                    res = new PolarValue(Classes.getInstance().lookupClass(address, varName));
                 }
                 else {
                     PolarLogger.exception("Not Found: " + varName, address);
@@ -64,7 +64,7 @@ public class VarAccess implements Access {
                 // получаем переменную
                 PolarObject v = previous.asObject();
                 // вызываем
-                PolarValue res = v.classValues.get(varName);
+                PolarValue res = v.getClassValues().get(varName);
 
                 // если нет следующего
                 if (next == null) {
@@ -81,15 +81,15 @@ public class VarAccess implements Access {
                 // получаем
                 try {
                     // получаем значение java-переменной
-                    Field field = r.clazz.getField(varName);
+                    Field field = r.getClazz().getField(varName);
                     field.setAccessible(true);
-                    Object result = field.get(r.o);
+                    Object result = field.get(r.getReflectedObject());
                     // в зависимости от типа создаем переменную
                     if (result instanceof Integer ||
                         result instanceof Long ||
                         result instanceof Float ||
                         result instanceof Double) {
-                        res = new PolarValue((float)result);
+                        res = new PolarValue(result);
                     } else if (result instanceof String || result instanceof Boolean) {
                         res = new PolarValue(result);
                     } else {
@@ -113,7 +113,7 @@ public class VarAccess implements Access {
                 // получаем класс
                 PolarClass v = previous.asClass();
                 // получаем переменную
-                PolarValue res = v.module_values.get(varName).evaluate();
+                PolarValue res = v.getModuleValues().get(varName).evaluate();
 
                 // если нет следующего
                 if (next == null) {

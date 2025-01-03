@@ -2,15 +2,15 @@ package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
 import com.slavlend.Parser.Address;
+import lombok.Getter;
 
 /*
-Брэйк стэйтмент - когда whil'у возвращается это значение из
-другого whil'а, if'а или просто встречает этот стейтмент. Цикл
-заканчивается
+Брэйк стэйтмент - останавливает цикл
  */
+@Getter
 public class BreakStatement extends RuntimeException implements Statement {
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     @Override
     public void optimize() {

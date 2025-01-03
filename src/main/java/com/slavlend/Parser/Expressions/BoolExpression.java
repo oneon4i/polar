@@ -3,15 +3,17 @@ package com.slavlend.Parser.Expressions;
 import com.slavlend.App;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
+import lombok.Getter;
 
 /*
 Булевый экспрешен
  */
+@Getter
 public class BoolExpression implements Expression {
     // данные
-    public String data;
+    private final String data;
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     @Override
     public PolarValue evaluate() {
@@ -21,11 +23,6 @@ public class BoolExpression implements Expression {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-
     }
 
     public BoolExpression(String data) {

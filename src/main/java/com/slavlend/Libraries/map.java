@@ -8,8 +8,9 @@ import com.slavlend.Polar.Stack.Storage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@SuppressWarnings({"unused", "ThrowableNotThrown"})
 public class map {
-    public HashMap<PolarValue, PolarValue> valuesMap = new HashMap<PolarValue, PolarValue>();
+    public HashMap<PolarValue, PolarValue> valuesMap = new HashMap<>();
 
     public map() {
     }
@@ -62,21 +63,21 @@ public class map {
             PolarValue value = valuesMap.get(key);
 
             if (!value.isObject()) {
-                str.append(key.asString() + ": " + value.asString() + ", ");
+                str.append(key.asString()).append(": ").append(value.asString()).append(", ");
             }
             else {
-                if (value.asObject().clazz.name.equals("Map") ||
-                        value.asObject().clazz.name.equals("Array")) {
-                    String _value = "";
+                if (value.asObject().getClazz().getName().equals("Map") ||
+                        value.asObject().getClazz().getName().equals("Array")) {
+                    String _value;
 
                     Storage.getInstance().push();
-                    _value = value.asObject().classValues.get("to_string").asFunc().call(value.asObject(), new ArrayList<>()).asString();
+                    _value = value.asObject().getClassValues().get("to_string").asFunc().call(value.asObject(), new ArrayList<>()).asString();
                     Storage.getInstance().pop();
 
-                    str.append(key.asString() + ": " + _value + ", ");
+                    str.append(key.asString()).append(": ").append(_value).append(", ");
                 }
                 else {
-                    str.append(key.asString() + ": " + value.asString() + ", ");
+                    str.append(key.asString()).append(": ").append(value.asString()).append(", ");
                 }
             }
         }
@@ -96,21 +97,21 @@ public class map {
             PolarValue value = valuesMap.get(key);
 
             if (!value.isObject()) {
-                str.append("'" + key.asString() + "': " + "'" + value.asString() + "'" + ", ");
+                str.append("'").append(key.asString()).append("': ").append("'").append(value.asString()).append("'").append(", ");
             }
             else {
-                if (value.asObject().clazz.name.equals("Map") ||
-                        value.asObject().clazz.name.equals("Array")) {
-                    String _value = "";
+                if (value.asObject().getClazz().getName().equals("Map") ||
+                        value.asObject().getClazz().getName().equals("Array")) {
+                    String _value;
 
                     Storage.getInstance().push();
-                    _value = value.asObject().classValues.get("dumps").asFunc().call(value.asObject(), new ArrayList<>()).asString();
+                    _value = value.asObject().getClassValues().get("dumps").asFunc().call(value.asObject(), new ArrayList<>()).asString();
                     Storage.getInstance().pop();
 
-                    str.append("'" + key.asString() + "': " + _value + ", ");
+                    str.append("'").append(key.asString()).append("': ").append(_value).append(", ");
                 }
                 else {
-                    str.append("'" + key.asString() + "': " + value.asString() + ", ");
+                    str.append("'").append(key.asString()).append("': ").append(value.asString()).append(", ");
                 }
             }
         }
@@ -127,11 +128,11 @@ public class map {
 
     public PolarValue keys() {
         ArrayList<PolarValue> _keys = new ArrayList<>(valuesMap.keySet());
-        PolarObject arr = PolarObject.create(Classes.getInstance().getClass("Array"), new ArrayList<>());
+        PolarObject arr = PolarObject.create(Classes.getInstance().lookupClass("Array"), new ArrayList<>());
         ArrayList<PolarValue> _temp = new ArrayList<>();
         for (PolarValue key: _keys) {
             _temp.add(key);
-            arr.classValues.get("add").asFunc().call(null, _temp);
+            arr.getClassValues().get("add").asFunc().call(null, _temp);
             _temp.clear();
         }
         return new PolarValue(arr);

@@ -6,6 +6,7 @@ import com.slavlend.Polar.PolarValue;
 Математический модуль.
 Имеет базовый модуль математики.
  */
+@SuppressWarnings("unused")
 public class math {
     // конструктор
     public math() {
@@ -81,6 +82,6 @@ public class math {
 
     // модуль числа
     public PolarValue abs(PolarValue a) {
-        return new PolarValue((float) Math.abs(a.asNumber()));
+        return new PolarValue(Math.abs(a.asNumber()));
     }
 }

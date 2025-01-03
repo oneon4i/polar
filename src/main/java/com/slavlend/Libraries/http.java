@@ -11,6 +11,7 @@ import java.net.URL;
 /*
 Библиотека для работы с HTTP
  */
+@SuppressWarnings("unused")
 public class http {
     // отправляем реквест
     public PolarValue send(PolarValue _url, PolarValue type, PolarValue headers) {
@@ -25,7 +26,7 @@ public class http {
 
             // хедеры
             connection.setRequestProperty("Content-Type", "application/json");
-            map _map = (map) headers.asObject().classValues.get("map").asReflected().o;
+            map _map = (map) headers.asObject().getClassValues().get("map").asReflected().getReflectedObject();
 
             for (PolarValue key : _map.valuesMap.keySet()) {
                 connection.setRequestProperty(key.asString(), _map.valuesMap.get(key).asString());
@@ -45,8 +46,8 @@ public class http {
             // возвращаем
             return new PolarValue(response.toString());
         } catch (Exception e) {
-            PolarLogger.exception("Http Exception (Java): " + e.getCause().getMessage(), _url.instantiateAddress);
-            return null;
+            PolarLogger.exception("Http Exception (Java): " + e.getCause().getMessage(), _url.getInstantiateAddress());
+            return new PolarValue(null);
         }
     }
 }

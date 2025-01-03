@@ -4,19 +4,22 @@ import com.slavlend.App;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ConditionExpression;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
 /*
 Вайл стэйтмент - цикл
  */
+@SuppressWarnings("PointlessBooleanExpression")
+@Getter
 public class WhileStatement implements Statement {
     // тело
-    public ArrayList<Statement> statements = new ArrayList<Statement>();
+    private final ArrayList<Statement> statements = new ArrayList<>();
     // кодишены
-    public ArrayList<ConditionExpression> conditions = new ArrayList<>();
+    private final ArrayList<ConditionExpression> conditions;
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     @Override
     public void optimize() {

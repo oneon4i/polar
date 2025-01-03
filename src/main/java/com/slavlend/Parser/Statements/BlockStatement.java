@@ -2,19 +2,19 @@ package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
 import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Expressions.Access.AccessExpression;
-import com.slavlend.Parser.Expressions.Access.AssignAccess;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
 /*
  блок стэйтмент. Главный блок.
  */
+@Getter
 public class BlockStatement implements Statement {
     // стэйтменты
-    public ArrayList<Statement> statements = new ArrayList<>();
+    private final ArrayList<Statement> statements = new ArrayList<>();
     // адресс
-    private Address address = App.parser.address();
+    private final Address address = App.parser.address();
 
     public void add(Statement statement) {
         statements.add(statement);

@@ -4,6 +4,7 @@ import com.slavlend.Polar.PolarValue;
 import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -13,18 +14,19 @@ Built-in функции
  */
 public class BuiltInFunctions {
     // функции
-    public static Map<String, BuiltInFunction> functionHashMap = Map.of(
-            "put", new PutFunction(),
-            "len", new LenFunction(),
-            "scan", new ScanFunction(),
-            "warning", new WarningFunction(),
-            "panic", new PanicFunction(),
-            "sleep", new SleepFunction(),
-            "string", new StringFunction(),
-            "num", new NumberFunction(),
-            "number", new NumberFunction(),
-            "bool", new BoolFunction()
-    );
+    public static Map<String, BuiltInFunction> functionHashMap = new HashMap<>(){{
+        put("put", new PutFunction());
+        put("len", new LenFunction());
+        put("scan", new ScanFunction());
+        put("warning", new WarningFunction());
+        put("panic", new PanicFunction());
+        put("sleep", new SleepFunction());
+        put("string", new StringFunction());
+        put("num", new NumberFunction());
+        put("number", new NumberFunction());
+        put("bool", new BoolFunction());
+        put("error", new ErrorFunction());
+    }};
 
     // put
     public static class PutFunction implements BuiltInFunction {
@@ -79,7 +81,7 @@ public class BuiltInFunctions {
         @Override
         public PolarValue execute(Address address, List<PolarValue> args) {
             // действуем
-            PolarLogger.warning(args.get(0).asString(), address.line);
+            PolarLogger.warning(args.get(0).asString(), address.getLine());
             // возвращаем
             return new PolarValue(null);
         }
@@ -116,7 +118,7 @@ public class BuiltInFunctions {
             try {
                 Thread.sleep(args.get(0).asNumber().longValue());
             } catch (InterruptedException e) {
-                PolarLogger.exception("Error In Thread (Java): " + Thread.currentThread().toString() + ": " + e.getMessage(), address);
+                PolarLogger.exception("Error In Thread (Java): " + Thread.currentThread() + ": " + e.getMessage(), address);
             }
             // возвращаем
             return new PolarValue(null);
@@ -134,7 +136,7 @@ public class BuiltInFunctions {
         @Override
         public PolarValue execute(Address address, List<PolarValue> args) {
             // возвращаем
-            return new PolarValue(String.valueOf(args.get(0).data));
+            return new PolarValue(String.valueOf(args.get(0).getData()));
         }
 
         @Override
@@ -181,6 +183,23 @@ public class BuiltInFunctions {
 
             // в другом случае выводим false
             return new PolarValue(false);
+        }
+
+        @Override
+        public int argsAmount() {
+            return 1;
+        }
+    }
+
+    // error
+    public static class ErrorFunction implements BuiltInFunction {
+
+        @Override
+        public PolarValue execute(Address address, List<PolarValue> args) {
+            // вызываем исключение
+            PolarLogger.exception(args.get(0).asString(), address);
+            // выдаем пустоту
+            return new PolarValue(null);
         }
 
         @Override
