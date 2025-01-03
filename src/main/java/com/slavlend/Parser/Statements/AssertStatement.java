@@ -22,6 +22,7 @@ public class AssertStatement implements Statement {
         this.expr = expr;
     }
 
+
     @Override
     public void optimize() {
         // оптимизация
