@@ -45,16 +45,6 @@ public class ClassStatement implements Statement {
         moduleVariables.put(name, expr);
     }
 
-    // поместить переменные как полноценные значения в класс
-    public void putVariables() {
-        if (polarClass.getModuleValues().keySet().isEmpty()) {
-            for (String key : moduleVariables.keySet()) {
-                polarClass.addModuleVariable(key, moduleVariables.get(key).evaluate());
-            }
-        }
-    }
-
-
     @Override
     public void execute() {
     }

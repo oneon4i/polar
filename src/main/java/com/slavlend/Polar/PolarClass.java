@@ -35,7 +35,13 @@ public class PolarClass {
 
     // получение модульных переменных
     public HashMap<String, PolarValue> lookupModuleValues() {
-        createdBy.putVariables();
+        // если модульные переменные не были
+        // загружены из выражений до -> загружаем
+        if (getModuleValues().keySet().isEmpty()) {
+            for (String key : createdBy.getModuleVariables().keySet()) {
+                addModuleVariable(key, createdBy.getModuleVariables().get(key).evaluate());
+            }
+        }
         return moduleValues;
     }
 
