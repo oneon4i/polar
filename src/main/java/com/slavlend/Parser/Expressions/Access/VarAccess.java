@@ -45,7 +45,7 @@ public class VarAccess implements Access {
                     res = new PolarValue(Classes.getInstance().getClassByAddress(address, varName));
                 }
                 else {
-                    PolarLogger.Crash("Not Found: " + varName, address);
+                    PolarLogger.exception("Not Found: " + varName, address);
                 }
             }
 
@@ -96,9 +96,9 @@ public class VarAccess implements Access {
                         res = new PolarValue(new Reflected(address, result.getClass(), result));
                     }
                 } catch (IllegalAccessException e) {
-                    PolarLogger.Crash("Illegal Access Exception (Java): " + e.getMessage(), address);
+                    PolarLogger.exception("Illegal Access Exception (Java): " + e.getMessage(), address);
                 } catch (NoSuchFieldException e) {
-                    PolarLogger.Crash("No Such Field Exception (Java): " + e.getMessage(), address);
+                    PolarLogger.exception("No Such Field Exception (Java): " + e.getMessage(), address);
                 }
 
                 // если нет следующего

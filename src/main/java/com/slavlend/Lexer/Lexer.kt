@@ -22,10 +22,8 @@ class Lexer // конструктор
     // кейворды
     var keywords: Array<String> = arrayOf(
         "func",
-        //"put",
         "back",
         "if",
-        //"scan",
         "true",
         "false",
         "while",
@@ -37,30 +35,27 @@ class Lexer // конструктор
         "else",
         "and",
         "use",
-        //"warning",
         "mod",
         "break",
         "is",
         "match",
         "case",
         "default",
-        //"sleep",
         "for",
         "each",
         "assert",
         "next",
-        //"len",
-        //"panic"
+        "try",
+        "catch",
+        "throw"
     )
 
     // типы токенов для кейвордов
     var keyword_tokens: HashMap<String?, TokenType?> = object : HashMap<String?, TokenType?>() {
         init {
             put("func", TokenType.FUNC)
-            //put("put", TokenType.PUT)
             put("back", TokenType.BACK)
             put("if", TokenType.IF)
-            //put("scan", TokenType.SCAN)
             put("true", TokenType.BOOL)
             put("false", TokenType.BOOL)
             put("while", TokenType.WHILE)
@@ -72,20 +67,19 @@ class Lexer // конструктор
             put("else", TokenType.ELSE)
             put("and", TokenType.AND)
             put("use", TokenType.USE)
-            //put("warning", TokenType.WARNING)
             put("mod", TokenType.MOD)
             put("break", TokenType.BREAK)
             put("is", TokenType.IS)
             put("match", TokenType.MATCH)
             put("case", TokenType.CASE)
             put("default", TokenType.DEFAULT)
-            //put("sleep", TokenType.SLEEP)
             put("for", TokenType.FOR)
             put("each", TokenType.EACH)
             put("assert", TokenType.ASSERT)
             put("next", TokenType.NEXT)
-            // put("len", TokenType.LEN)
-            //put("panic", TokenType.PANIC)
+            put("try", TokenType.TRY)
+            put("catch", TokenType.CATCH)
+            put("throw", TokenType.THROW)
         }
     }
 
@@ -165,7 +159,7 @@ class Lexer // конструктор
 
                         while (Character.isDigit(Peek(i)) || Peek(i) == '.') {
                             if (!isInt && Peek(i) == '.') {
-                                PolarLogger.Crash("Cannot Parse Num With Two Dots.", Address(line + 1))
+                                PolarLogger.exception("Cannot Parse Num With Two Dots.", Address(line + 1))
                             }
                             isInt = Peek(i) != '.'
                             builder.append(Peek(i))
@@ -255,7 +249,7 @@ class Lexer // конструктор
                         Next(2)
                         continue
                     } else {
-                        PolarLogger.Crash("Invalid Operator % For Assigning Value", Address(line))
+                        PolarLogger.exception("Invalid Operator % For Assigning Value", Address(line))
                     }
                 }
             } else if (cur == ',') {
@@ -322,7 +316,7 @@ class Lexer // конструктор
 
                 while (Character.isDigit(Peek(i)) || Peek(i) == '.') {
                     if (!isInt && Peek(i) == '.') {
-                        PolarLogger.Crash("Cannot Parse Num With Two Dots.", Address(line + 1))
+                        PolarLogger.exception("Cannot Parse Num With Two Dots.", Address(line + 1))
                     }
                     if (Peek(i) == '.') { isInt = false }
                     builder.append(Peek(i))

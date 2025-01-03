@@ -51,4 +51,7 @@ public enum TokenType {
     EACH, // each loop
     ASSERT, // assert
     NEXT, // next
+    TRY, // try
+    CATCH, // catch
+    THROW // throw
 }

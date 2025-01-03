@@ -42,7 +42,7 @@ public class files {
             return new PolarValue(text.toString());
         } catch (Exception e) {
             // ошибка
-            PolarLogger.Crash("Cannot Read: " + name + ", (Java) " + e.getMessage(), name.instantiateAddress);
+            PolarLogger.exception("Cannot Read: " + name + ", (Java) " + e.getMessage(), name.instantiateAddress);
 
             return null;
         }
@@ -59,7 +59,7 @@ public class files {
             writer.close();
         } catch (Exception e) {
             // ошибка
-            PolarLogger.Crash("Cannot Write: " + name + ", (Java): " + e.getMessage(), name.instantiateAddress);
+            PolarLogger.exception("Cannot Write: " + name + ", (Java): " + e.getMessage(), name.instantiateAddress);
         }
     }
 
@@ -79,7 +79,7 @@ public class files {
 
             return new PolarValue(_array);
         } catch (IOException e) {
-            PolarLogger.Crash(
+            PolarLogger.exception(
                     "Io Exception (Java): " + e.getCause().getMessage(), path.instantiateAddress
             );
             return null;

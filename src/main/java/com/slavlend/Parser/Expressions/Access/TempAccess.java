@@ -41,7 +41,7 @@ public class TempAccess implements Access {
         }
         // если есть
         else {
-            PolarLogger.Crash("Cannot Use Temp Access Not First Of Call Chain", address);
+            PolarLogger.exception("Cannot Use Temp Access Not First Of Call Chain", address);
 
             return null;
         }

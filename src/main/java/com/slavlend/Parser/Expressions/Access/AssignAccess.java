@@ -90,9 +90,9 @@ public class AssignAccess implements Access {
                 Object value = convertToJavaValue(field, _value);
                 field.set(r.o, field.getType().cast(value));
             } catch (IllegalAccessException e) {
-                PolarLogger.Crash("Illegal Access Exception (Java): " + e.getMessage(), address);
+                PolarLogger.exception("Illegal Access Exception (Java): " + e.getMessage(), address);
             } catch (NoSuchFieldException e) {
-                PolarLogger.Crash("No Such Field Exception (Java): " + e.getMessage(), address);
+                PolarLogger.exception("No Such Field Exception (Java): " + e.getMessage(), address);
             }
 
             // если нет следующего
@@ -183,7 +183,7 @@ public class AssignAccess implements Access {
                 result = (_clazz.cast(v.asReflected().o));
             }
             else {
-                PolarLogger.Crash("Impossible To Convert Not Reflected Types To Java Like Classes", address);
+                PolarLogger.exception("Impossible To Convert Not Reflected Types To Java Like Classes", address);
             }
         }
 

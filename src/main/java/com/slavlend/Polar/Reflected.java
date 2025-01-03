@@ -22,7 +22,7 @@ public class Reflected {
             this.o = clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             // кэтчим эксцепшены
-            PolarLogger.Crash("Reflection object creation error (Java):  " + e.getMessage(), address);
+            PolarLogger.exception("Reflection object creation error (Java):  " + e.getMessage(), address);
         }
     }
 

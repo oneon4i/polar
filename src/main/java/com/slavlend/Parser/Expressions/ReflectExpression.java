@@ -22,7 +22,7 @@ public class ReflectExpression implements Expression {
             return new PolarValue(new Reflected(address, Class.forName(className)));
         }
         catch (ClassNotFoundException e) {
-            PolarLogger.Crash("Reflection Exception: " + e.toString(), address);
+            PolarLogger.exception("Reflection Exception: " + e.toString(), address);
             return null;
         }
     }

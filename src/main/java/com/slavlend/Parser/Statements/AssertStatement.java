@@ -36,7 +36,7 @@ public class AssertStatement implements Statement {
         optimize();
         // проверяем условие
         if (!expr.evaluate().asBool()) {
-            PolarLogger.Crash("Assertion Error", address);
+            PolarLogger.exception("Assertion Error", address);
         }
     }
 

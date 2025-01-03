@@ -87,4 +87,9 @@ public class PolarObject {
             Storage.getInstance().pop();
         }
     }
+
+    // как строка
+    public String asString() {
+        return "PolarObject{class=" + clazz.fullName + "}";
+    }
 }

@@ -45,7 +45,7 @@ public class http {
             // возвращаем
             return new PolarValue(response.toString());
         } catch (Exception e) {
-            PolarLogger.Crash("Http Exception (Java): " + e.getCause().getMessage(), _url.instantiateAddress);
+            PolarLogger.exception("Http Exception (Java): " + e.getCause().getMessage(), _url.instantiateAddress);
             return null;
         }
     }

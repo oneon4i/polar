@@ -1,5 +1,6 @@
 package com.slavlend.Parser;
 
+import com.slavlend.Exceptions.PolarException;
 import com.slavlend.Polar.PolarClass;
 import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Lexer.TokenType;
@@ -72,10 +73,16 @@ public class Parser {
                 statement.add(statement());
             }
 
-            // экзекьютим
-            statement.execute();
+            // экзекьютим и ловим ошибки
+            try {
+                statement.execute();
+            } catch (PolarException e) {
+                PolarLogger.printError(e);
+            }
+        } catch (PolarException e) {
+            PolarLogger.printError(e);
         } catch (Exception e) {
-            PolarLogger.Crash("Parsing Error: " + e.getMessage(), address());
+            PolarLogger.printError(new PolarException("Unecpected Parsing Error: " + e.getMessage(), address().line));
         }
     }
 
@@ -90,7 +97,7 @@ public class Parser {
             case BIGGER_EQUAL -> new Operator(consume(TokenType.BIGGER_EQUAL).value);
             case IS -> new Operator(consume(TokenType.IS).value);
             default -> {
-                PolarLogger.Crash("Invalid Conditional Operator: " + tokenInfo(), new Address(tokens.get(current).line));
+                PolarLogger.exception("Invalid Conditional Operator: " + tokenInfo(), new Address(tokens.get(current).line));
                 yield null;
             }
         };
@@ -248,6 +255,14 @@ public class Parser {
         if (check(TokenType.ASSERT)) {
             return polarAssert();
         }
+        // стэйтмент try
+        if (check(TokenType.TRY)) {
+            return tryCatch();
+        }
+        // стэйтмент throw
+        if (check(TokenType.THROW)) {
+            return throwValue();
+        }
         // стэйтмент функции
         if (check(TokenType.FUNC)) {
             FunctionStatement func = (FunctionStatement) function();
@@ -318,14 +333,14 @@ public class Parser {
                         expr = new PipeExpression(expr, accessExpression);
                     }
                     else {
-                        PolarLogger.Crash("Invalid Expression For Pipe: " + _expr.getClass().getName(), _expr.address());
+                        PolarLogger.exception("Invalid Expression For Pipe: " + _expr.getClass().getName(), _expr.address());
                     }
                 }
                 if (expr instanceof PipeExpression) {
                     return ((PipeExpression) expr);
                 }
                 else {
-                    PolarLogger.Crash("Invalid Expression During Parsing Pipe: "+ expr.getClass().getName(), expr.address());
+                    PolarLogger.exception("Invalid Expression During Parsing Pipe: "+ expr.getClass().getName(), expr.address());
                 }
             }
             else {
@@ -509,6 +524,9 @@ public class Parser {
                     classStatement.addModuleVariable(idData, expr);
                 }
             }
+            else {
+                PolarLogger.exception("Invalid Statement Creation In Class: " + tokenInfo(), address());
+            }
         }
         // брэйс
         consume(TokenType.BRACE);
@@ -546,6 +564,57 @@ public class Parser {
         consume(TokenType.BRACE);
         // возвращаем
         return statement;
+    }
+
+    // парсинг try
+    private Statement tryCatch() {
+        // паттерн
+        // try { ... } catch (...) { ... }
+        consume(TokenType.TRY);
+        // брэйс
+        consume(TokenType.BRACE);
+        // стэйтмент трай
+        TryStatement statement = new TryStatement("");
+        // стэйтменты
+        while (!check(TokenType.BRACE)) {
+            statement.add(statement());
+        }
+        // брэйс
+        consume(TokenType.BRACE);
+        // кэтч
+        consume(TokenType.CATCH);
+        // брекет
+        consume(TokenType.BRACKET);
+        // имя переменной
+        String variableName = consume(TokenType.ID).value;
+        statement.setVariableName(variableName);
+        // брекет
+        consume(TokenType.BRACKET);
+        // брэйс
+        consume(TokenType.BRACE);
+        // стэйтменты
+        while (!check(TokenType.BRACE)) {
+            statement.addCatch(statement());
+        }
+        // брэйс
+        consume(TokenType.BRACE);
+        // возвращаем
+        return statement;
+    }
+
+    // парсинг throw
+    private Statement throwValue() {
+        // паттерн
+        // try { ... } catch (...) { ... }
+        consume(TokenType.THROW);
+        // брэкет
+        consume(TokenType.BRACKET);
+        // выражение
+        Expression expr = parseExpression();
+        // брэкет
+        consume(TokenType.BRACKET);
+        // возвращаем
+        return new ThrowStatement(expr);
     }
 
     // парсинг for
@@ -801,7 +870,7 @@ public class Parser {
                 expr = new PipeExpression(expr, accessExpression);
             }
             else {
-                PolarLogger.Crash("Invalid Expression For Pipe: " + _expr.getClass().getName(), _expr.address());
+                PolarLogger.exception("Invalid Expression For Pipe: " + _expr.getClass().getName(), _expr.address());
             }
         }
 
@@ -977,7 +1046,7 @@ public class Parser {
         // токен
         Token token = tokens.get(current);
         // трэйс ошибки
-        PolarLogger.Crash(message, new Address(token.line));
+        PolarLogger.exception(message, new Address(token.line));
     }
 
     // токен инфо
@@ -1063,6 +1132,9 @@ public class Parser {
                             Expression expr = parseExpression();
                             classStatement.addModuleVariable(assignName, expr);
                         }
+                    }
+                    else {
+                        PolarLogger.exception("Invalid Statement Creation In Class: " + tokenInfo(), address());
                     }
                 }
                 // брэйс

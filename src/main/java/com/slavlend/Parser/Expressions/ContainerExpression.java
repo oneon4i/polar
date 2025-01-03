@@ -37,7 +37,7 @@ public class ContainerExpression implements Expression {
             return new PolarValue(array);
         }
         else {
-            PolarLogger.Crash("Cannot Find Array Class. Did You Forgot To Import 'lib.array'?", address);
+            PolarLogger.exception("Cannot Find Array Class. Did You Forgot To Import 'lib.array'?", address);
             return new PolarValue(null);
         }
     }

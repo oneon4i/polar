@@ -54,7 +54,7 @@ public class UseLibStatement implements Statement{
             sc = new Scanner(is);
         }
         else {
-            PolarLogger.Crash("Cannot Load: " + libName.data + " (Not Found)", address);
+            PolarLogger.exception("Cannot Load: " + libName.data + " (Not Found)", address);
         }
 
         // линии кода

@@ -50,7 +50,7 @@ public class MatchStatement implements Statement {
                 defaultStatement = (DefaultStatement) statement;
             }
             else {
-                PolarLogger.Crash("Cannot Use Any Statement Except Default | Case In Match!", address);
+                PolarLogger.exception("Cannot Use Any Statement Except Default | Case In Match!", address);
             }
         }
 

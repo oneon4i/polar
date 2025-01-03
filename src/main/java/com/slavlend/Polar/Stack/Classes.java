@@ -27,7 +27,7 @@ public class Classes {
             }
         }
 
-        PolarLogger.Crash("Class Not Found (" + name + ")", new Address(-1));
+        PolarLogger.exception("Class Not Found (" + name + ")", new Address(-1));
         return null;
     }
 
@@ -50,7 +50,7 @@ public class Classes {
             }
         }
 
-        PolarLogger.Crash("Class Not Found (" + name + ")", address);
+        PolarLogger.exception("Class Not Found (" + name + ")", address);
         return null;
     }
 

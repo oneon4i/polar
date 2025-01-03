@@ -35,7 +35,7 @@ public class PipeExpression implements Expression, Statement {
             return r.evaluate();
         }
         else {
-            PolarLogger.Crash("Not A Call Access In Pipe Expr!", address());
+            PolarLogger.exception("Not A Call Access In Pipe Expr!", address());
             return null;
         }
     }
@@ -55,7 +55,7 @@ public class PipeExpression implements Expression, Statement {
             r.execute();
         }
         else {
-            PolarLogger.Crash("Not A Call Access In Pipe Stmt!", address());
+            PolarLogger.exception("Not A Call Access In Pipe Stmt!", address());
         }
     }
 

@@ -31,23 +31,12 @@ public class ArithmeticExpression implements Expression {
         else if (right.isClass() && left.isString()) {
             return new PolarValue(right.asClass().toString() + left.asString());
         }
-        // строка и строка
-        if (right.isString() && left.isString()) {
-            return new PolarValue(right.asString() + left.asString());
-        }
         // функция и строка
         if (right.isFunc() && left.isString()) {
             return new PolarValue(right.asFunc().name + left.asString());
         }
         else if (right.isString() && left.isFunc()) {
             return new PolarValue(right.asString() + left.asFunc().name);
-        }
-        // число и строка
-        else if (right.isNumber() && left.isString()) {
-            return new PolarValue(right.asString() + left.asString());
-        }
-        else if (right.isString() && left.isNumber()) {
-            return new PolarValue(right.asString() + left.asString());
         }
         // число и число
         else if (right.isNumber() && left.isNumber()) {
@@ -67,13 +56,14 @@ public class ArithmeticExpression implements Expression {
                 return new PolarValue(right.asNumber() % left.asNumber());
             }
             else {
-                PolarLogger.Crash("Cannot Concat: " + right.data + " and " + left.data, address);
+                PolarLogger.exception("Cannot Concat: " + right.data + " and " + left.data, address);
                 return null;
             }
         }
-
-        PolarLogger.Crash("Cannot Concat: " + right.data + " and " + left.data, address);
-        return null;
+        // остальные случаи
+        else {
+            return new PolarValue(right.asString() + left.asString());
+        }
     }
 
     @Override

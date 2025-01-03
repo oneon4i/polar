@@ -79,7 +79,7 @@ public class BuiltInFunctions {
         @Override
         public PolarValue execute(Address address, List<PolarValue> args) {
             // действуем
-            PolarLogger.Warning(args.get(0).asString(), address.line);
+            PolarLogger.warning(args.get(0).asString(), address.line);
             // возвращаем
             return new PolarValue(null);
         }
@@ -96,7 +96,7 @@ public class BuiltInFunctions {
         @Override
         public PolarValue execute(Address address, List<PolarValue> args) {
             // действуем
-            PolarLogger.Crash(args.get(0).asString(), address);
+            PolarLogger.exception(args.get(0).asString(), address);
             // возвращаем
             return new PolarValue(null);
         }
@@ -116,7 +116,7 @@ public class BuiltInFunctions {
             try {
                 Thread.sleep(args.get(0).asNumber().longValue());
             } catch (InterruptedException e) {
-                PolarLogger.Crash("Error In Thread (Java): " + Thread.currentThread().toString() + ": " + e.getMessage(), address);
+                PolarLogger.exception("Error In Thread (Java): " + Thread.currentThread().toString() + ": " + e.getMessage(), address);
             }
             // возвращаем
             return new PolarValue(null);

@@ -44,7 +44,7 @@ public class MapContainerExpression implements Expression {
             return new PolarValue(array);
         }
         else {
-            PolarLogger.Crash("Cannot Find Map Class. Did You Forgot To Import 'lib.map'?", address);
+            PolarLogger.exception("Cannot Find Map Class. Did You Forgot To Import 'lib.map'?", address);
             return new PolarValue(null);
         }
     }

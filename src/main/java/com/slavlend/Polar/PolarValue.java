@@ -58,6 +58,9 @@ public class PolarValue extends RuntimeException {
             // если объект - строка, возвращаем
             return (String) data;
         } catch (Exception e) {
+            if (data instanceof PolarObject polarObject) {
+                return polarObject.asString();
+            }
             return data.toString();
         }
     }
@@ -70,7 +73,7 @@ public class PolarValue extends RuntimeException {
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку
-            PolarLogger.Crash("Cannot Parse " + data + " To Num", instantiateAddress);
+            PolarLogger.exception("Cannot Parse " + data + " To Num", instantiateAddress);
             return null;
         }
 
@@ -84,7 +87,7 @@ public class PolarValue extends RuntimeException {
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку
-            PolarLogger.Crash("Cannot Parse " + data + " To Bool", instantiateAddress);
+            PolarLogger.exception("Cannot Parse " + data + " To Bool", instantiateAddress);
             return null;
         }
     }
@@ -97,7 +100,7 @@ public class PolarValue extends RuntimeException {
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку
-            PolarLogger.Crash("Cannot Parse " + data + " To Reflected", instantiateAddress);
+            PolarLogger.exception("Cannot Parse " + data + " To Reflected", instantiateAddress);
             return null;
         }
     }
@@ -110,7 +113,7 @@ public class PolarValue extends RuntimeException {
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку
-            PolarLogger.Crash("Cannot Parse " + data + " To Egg Object", instantiateAddress);
+            PolarLogger.exception("Cannot Parse " + data + " To Egg Object", instantiateAddress);
             return null;
         }
     }
@@ -123,7 +126,7 @@ public class PolarValue extends RuntimeException {
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку
-            PolarLogger.Crash("Cannot Parse " + data + " To Function", instantiateAddress);
+            PolarLogger.exception("Cannot Parse " + data + " To Function", instantiateAddress);
             return null;
         }
     }
@@ -136,7 +139,7 @@ public class PolarValue extends RuntimeException {
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку
-            PolarLogger.Crash("Cannot Parse " + data + " To Class", instantiateAddress);
+            PolarLogger.exception("Cannot Parse " + data + " To Class", instantiateAddress);
             return null;
         }
     }
@@ -207,7 +210,7 @@ public class PolarValue extends RuntimeException {
             return asClass().equals(obj.asClass());
         }
         else {
-            PolarLogger.Crash("Cannot Compare: "
+            PolarLogger.exception("Cannot Compare: "
                     + obj.data.getClass().getSimpleName()
                     + " and "
                     + this.data.getClass().getSimpleName(),
@@ -253,7 +256,7 @@ public class PolarValue extends RuntimeException {
         else {
             String first = obj.data != null ? obj.data.getClass().getSimpleName() : null;
             String second = this.data != null ? this.data.getClass().getSimpleName() : null;
-            PolarLogger.Crash("Cannot Compare: "
+            PolarLogger.exception("Cannot Compare: "
                             + first
                             + " and "
                             + second,

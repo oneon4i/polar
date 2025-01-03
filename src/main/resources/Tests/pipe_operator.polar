@@ -35,3 +35,16 @@ func to_uppercase(text) = {
 }
 
 get_text() |> append_world(' World') |> to_uppercase() |> output_result()
+
+# Тест 3: в выражениях #
+
+func get_first_num(exp) = {
+    back(5*exp)
+}
+
+func get_second_num(exp) = {
+    back(3*exp)
+}
+
+get_first_num(2) |> get_second_num() |> put()
+put(get_first_num(2) |> get_second_num())

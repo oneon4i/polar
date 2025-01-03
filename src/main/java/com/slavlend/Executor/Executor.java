@@ -35,8 +35,7 @@ public class Executor {
         );
         String envPath = settings.getFilePath().substring(0, settings.getFilePath().lastIndexOf('\\'));
         String filePath = settings.getFilePath().substring(
-                settings.getFilePath().lastIndexOf('\\'),
-                settings.getFilePath().length()-1
+                settings.getFilePath().lastIndexOf('\\')+1
         ).replace(".polar", "");
         parser.setEnv(envPath);
         parser.setFile(filePath);

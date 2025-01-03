@@ -208,7 +208,7 @@ public class window extends ApplicationAdapter implements InputProcessor {
         if (on_initialized != null) {
             on_initialized.call(null, new ArrayList<>());
         } else {
-            PolarLogger.Warning("Initialization Method Is Not Set", -1);
+            PolarLogger.warning("Initialization Method Is Not Set", -1);
         }
     }
 

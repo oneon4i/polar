@@ -50,7 +50,7 @@ public class Storage {
         }
 
         // крашим
-        PolarLogger.Crash("Cannot Find Variable: " + name, reqAddress);
+        PolarLogger.exception("Cannot Find Variable: " + name, reqAddress);
         return null;
     }
 

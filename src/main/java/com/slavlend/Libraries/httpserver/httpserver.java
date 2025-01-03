@@ -35,7 +35,7 @@ public class httpserver {
             requestHandlerList.put(path.asString(), func.asFunc());
         }
         else {
-            PolarLogger.Crash("Http Server Error. Not A Function: ", func.instantiateAddress);
+            PolarLogger.exception("Http Server Error. Not A Function: ", func.instantiateAddress);
         }
     }
 

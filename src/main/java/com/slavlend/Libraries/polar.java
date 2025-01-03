@@ -38,7 +38,7 @@ public class polar {
 
         // проверяем класс на нулл
         if (_clazz == null) {
-            PolarLogger.Crash("Class Not Found: " + name, name.instantiateAddress);
+            PolarLogger.exception("Class Not Found: " + name, name.instantiateAddress);
         }
 
         PolarObject obj = PolarObject.create(_clazz, args.asList());
