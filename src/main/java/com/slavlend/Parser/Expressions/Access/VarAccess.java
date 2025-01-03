@@ -113,7 +113,7 @@ public class VarAccess implements Access {
                 // получаем класс
                 PolarClass v = previous.asClass();
                 // получаем переменную
-                PolarValue res = v.getModuleValues().get(varName).evaluate();
+                PolarValue res = v.lookupModuleValues().get(varName);
 
                 // если нет следующего
                 if (next == null) {

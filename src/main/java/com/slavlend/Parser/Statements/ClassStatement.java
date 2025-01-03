@@ -9,6 +9,7 @@ import com.slavlend.Parser.Expressions.Expression;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 // стэтймент класса
 @Getter
@@ -17,6 +18,8 @@ public class ClassStatement implements Statement {
     private final PolarClass polarClass;
     // адресс
     private final Address address = App.parser.address();
+    // выражения для модульных переменных
+    private final HashMap<String, Expression> moduleVariables = new HashMap<>();
 
     @Override
     public void optimize() {
@@ -25,7 +28,7 @@ public class ClassStatement implements Statement {
 
     // конструктор
     public ClassStatement(String fullName, String name, ArrayList<ArgumentExpression> constructor) {
-        this.polarClass = new PolarClass(fullName, name, constructor, address);
+        this.polarClass = new PolarClass(this, fullName, name, constructor, address);
         Classes.getInstance().getClasses().add(this.polarClass);
     }
 
@@ -39,13 +42,21 @@ public class ClassStatement implements Statement {
 
     // эддер переменной
     public void addModuleVariable(String name, Expression expr) {
-        polarClass.addModuleVariable(name, expr);
+        moduleVariables.put(name, expr);
+    }
+
+    // поместить переменные как полноценные значения в класс
+    public void putVariables() {
+        if (polarClass.getModuleValues().keySet().isEmpty()) {
+            for (String key : moduleVariables.keySet()) {
+                polarClass.addModuleVariable(key, moduleVariables.get(key).evaluate());
+            }
+        }
     }
 
 
     @Override
     public void execute() {
-
     }
 
     @Override

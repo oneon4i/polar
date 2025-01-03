@@ -3,6 +3,7 @@ package com.slavlend.Polar;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ArgumentExpression;
 import com.slavlend.Parser.Expressions.Expression;
+import com.slavlend.Parser.Statements.ClassStatement;
 import com.slavlend.Parser.Statements.FunctionStatement;
 import com.slavlend.Polar.Stack.Classes;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class PolarClass {
     // модульные функции ( статические )
     private final HashMap<String, FunctionStatement> moduleFunctions = new HashMap<>();
     // модульные переменные ( статические )
-    private final HashMap<String, Expression> moduleValues = new HashMap<>();
+    private final HashMap<String, PolarValue> moduleValues = new HashMap<>();
     // конструктор
     private final ArrayList<ArgumentExpression> constructor;
     // полное имя
@@ -29,9 +30,18 @@ public class PolarClass {
     private final String name;
     // адресс
     private final Address address;
+    // стейтмент - которым создан объект
+    private final ClassStatement createdBy;
+
+    // получение модульных переменных
+    public HashMap<String, PolarValue> lookupModuleValues() {
+        createdBy.putVariables();
+        return moduleValues;
+    }
 
     // конструктор
-    public PolarClass(String fullName, String name, ArrayList<ArgumentExpression> constructor, Address address) {
+    public PolarClass(ClassStatement createdBy, String fullName, String name, ArrayList<ArgumentExpression> constructor, Address address) {
+        this.createdBy = createdBy;
         this.fullName = fullName;
         this.name = name;
         this.constructor = constructor;
@@ -48,7 +58,7 @@ public class PolarClass {
     }
 
     // эддер переменной
-    public void addModuleVariable(String name, Expression expr) {
+    public void addModuleVariable(String name, PolarValue expr) {
         moduleValues.put(name, expr);
     }
 

@@ -50,6 +50,7 @@ public class Parser {
         put("lib.http", "Libraries/http.polar");
         put("lib.http.server", "Libraries/httpserver.polar");
         put("lib.graphics", "Libraries/graphics.polar");
+        put("lib.colors", "Libraries/colors.polar");
     }};
 
     // путь эвайронмента (окружения)

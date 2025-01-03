@@ -6,7 +6,6 @@ class Map() = {
     func add(key, value) = {
         if (this.map.contains(key) == false) {
             this.map.add(key, value)
-            # put('adding element to map') #
         }
     }
 
@@ -41,12 +40,3 @@ class Map() = {
         back(this.map.keys())
     }
 }
-
-
-#
-map = new Map()
-map.add('Рома', 14)
-map.add('Слава', 13)
-map.add('Ваня', 15)
-put(map.to_string())
-#

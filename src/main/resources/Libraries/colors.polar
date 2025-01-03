@@ -5,12 +5,12 @@ use 'lib.array'
 
 class ColorsLib() = {
   mod color_map = {
-    '{red}': '\u001B[31m',
-    '{white}': '\u001B[37m',
-    '{blue}': '\u001B[34m',
-    '{green}': '\u001B[32m',
-    '{yellow}': '\u001B[33m',
-    '{reset}': '\u001B[0m'
+    '{red}': '[31m',
+    '{white}': '[37m',
+    '{blue}': '[34m',
+    '{green}': '[32m',
+    '{yellow}': '[33m',
+    '{reset}': '[0m'
   }
 
   mod func color(text) = {
@@ -27,7 +27,7 @@ class ColorsLib() = {
 
   mod func put_color(key, value) = {
     if (Polar.name(key) == 'string') {
-      ColorsLib.color_map.add('{' + key '}', value)
+      ColorsLib.color_map.add('{' + key + '}', value)
     }
     else {
       put('Invalid color (' + key + ': ' + value + ')')
