@@ -1,5 +1,6 @@
 package com.slavlend.Parser.Expressions.Access;
 
+import com.slavlend.Polar.PolarClass;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Reflected;
@@ -104,7 +105,7 @@ public class AssignAccess implements Access {
             }
         }
         // если предыдущий объект
-        else {
+        else if (previous.isObject()) {
             // получаем переменную
             PolarObject v = previous.asObject();
             // устанавливаем
@@ -130,6 +131,38 @@ public class AssignAccess implements Access {
                     PolarValue e = Storage.getInstance().get(address, varName);
                     String div = String.valueOf(e.asNumber() - Optimizations.optimize(to).evaluate().asNumber());
                     v.getClassValues().put(varName, new PolarValue(new NumberExpression(div)));
+                }
+            }
+
+            return null;
+        }
+        // если класс
+        else {
+            // получаем переменную
+            PolarClass v = previous.asClass();
+            // устанавливаем
+            // устанавливаем переменную
+            switch (type) {
+                case SET -> v.getModuleValues().put(varName, Optimizations.optimize(to).evaluate());
+                case MUL -> {
+                    PolarValue e = v.getModuleValues().get(varName);
+                    String mul = String.valueOf(e.asNumber() * Optimizations.optimize(to).evaluate().asNumber());
+                    v.getModuleValues().put(varName, new PolarValue(new NumberExpression(mul)));
+                }
+                case DIVIDE -> {
+                    PolarValue e = Storage.getInstance().get(address, varName);
+                    String div = String.valueOf(e.asNumber() / Optimizations.optimize(to).evaluate().asNumber());
+                    v.getModuleValues().put(varName, new PolarValue(new NumberExpression(div)));
+                }
+                case PLUS -> {
+                    PolarValue e = Storage.getInstance().get(address, varName);
+                    String div = String.valueOf(e.asNumber() + Optimizations.optimize(to).evaluate().asNumber());
+                    v.getModuleValues().put(varName, new PolarValue(new NumberExpression(div)));
+                }
+                case MINUS -> {
+                    PolarValue e = Storage.getInstance().get(address, varName);
+                    String div = String.valueOf(e.asNumber() - Optimizations.optimize(to).evaluate().asNumber());
+                    v.getModuleValues().put(varName, new PolarValue(new NumberExpression(div)));
                 }
             }
 
