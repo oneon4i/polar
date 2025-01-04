@@ -199,7 +199,11 @@ public class CallAccess implements Access {
                 // вызываем
                 ArrayList<PolarValue> _params = parseParameters();
                 StackHistoryWriter.getInstance().pushCall(address, v.getName() + "." + funcName);
-                checkArgs(v.getName() + "." + funcName, v.getModuleFunctions().get(funcName).getArguments().size(), _params.size());
+                if (previous.asClass().getModuleFunctions().containsKey(funcName)) {
+                    checkArgs(v.getName() + "." + funcName, v.getModuleFunctions().get(funcName).getArguments().size(), _params.size());
+                } else {
+                    PolarLogger.exception("Mod Function Not Found: " + funcName, address);
+                }
                 Storage.getInstance().push();
                 PolarValue res = v.getModuleFunctions().get(funcName).call(null, _params);
                 Storage.getInstance().pop();

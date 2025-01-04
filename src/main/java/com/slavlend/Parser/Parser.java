@@ -91,7 +91,7 @@ public class Parser {
         } catch (PolarException e) {
             PolarLogger.printError(e);
         } catch (Exception e) {
-            PolarLogger.printError(new PolarException("Unexpected Parsing Error: " + e.getMessage(), address().getLine(), null));
+            PolarLogger.printError(new PolarException("Unexpected Error: " + e.getMessage(), address().getLine(), null));
         }
     }
 
