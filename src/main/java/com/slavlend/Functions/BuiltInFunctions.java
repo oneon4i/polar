@@ -25,7 +25,6 @@ public class BuiltInFunctions {
         put("num", new NumberFunction());
         put("number", new NumberFunction());
         put("bool", new BoolFunction());
-        put("error", new ErrorFunction());
     }};
 
     // put
@@ -183,23 +182,6 @@ public class BuiltInFunctions {
 
             // в другом случае выводим false
             return new PolarValue(false);
-        }
-
-        @Override
-        public int argsAmount() {
-            return 1;
-        }
-    }
-
-    // error
-    public static class ErrorFunction implements BuiltInFunction {
-
-        @Override
-        public PolarValue execute(Address address, List<PolarValue> args) {
-            // вызываем исключение
-            PolarLogger.exception(args.get(0).asString(), address);
-            // выдаем пустоту
-            return new PolarValue(null);
         }
 
         @Override
