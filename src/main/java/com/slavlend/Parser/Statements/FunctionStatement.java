@@ -1,7 +1,6 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
-import com.slavlend.Exceptions.PolarThrowable;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Storage;

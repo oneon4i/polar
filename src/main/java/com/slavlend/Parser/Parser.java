@@ -275,7 +275,7 @@ public class Parser {
         // стэйтмент функции
         if (check(TokenType.FUNC)) {
             FunctionStatement func = (FunctionStatement) function();
-            func.putToFunction();
+            func.putToFunctions();
 
             return func;
         }
@@ -1156,7 +1156,7 @@ public class Parser {
             // стэйтмент функция
             else if (check(TokenType.FUNC)) {
                 // помещаем функцию
-                ((FunctionStatement) function()).putToFunction();
+                ((FunctionStatement) function()).putToFunctions();
             }
             else {
                 // продвигаемся по токенам
