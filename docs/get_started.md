@@ -52,9 +52,18 @@ a = true
 b = false
 # etc #
  ```
-4. PolarObject (instance of ClassStatement(Class) under the hood), declaring with new keyword 🐩: 
+4. PolarObject (instance of PolarClass under the hood), declaring with new keyword 🐩: 
 ```polar
 a = new SomeClass()
+```
+4. Reflected (java object under the hood), declaring like this:
+```polar
+a = reflect 'some_awesome_java_class_name'
+```
+Needs for java reflection such as a method call, class creation, etc...
+5. Func (FunctionStatement under the hood)
+```polar
+a = some_avesome_exists_function
 ```
 
 > [!WARNING]
