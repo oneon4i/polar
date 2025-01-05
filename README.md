@@ -28,3 +28,6 @@ while (1 == 1) {
 
 > [!WARNING]
 > Documentation is work in progress
+
+Roadmap 🗺️:
+> Write own VM
