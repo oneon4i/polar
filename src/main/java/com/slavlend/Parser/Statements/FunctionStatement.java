@@ -48,7 +48,7 @@ public class FunctionStatement implements Statement, Callable {
     }
 
     // помещение в глоабальный скоуп
-    public void putToFunction() {
+    public void putToFunctions() {
         Storage.getInstance().put(name, new PolarValue(this));
     }
 
