@@ -37,7 +37,7 @@ class Handler() = {
 
     func start_bot() = {
         put('starting bot')
-        this.tg.start('5742807524:AAH3oScbSFmqLQQgo6r6xRRaF6S6DgAPkl4')
+        this.tg.start('5742807524:AAEqfOzeZ1lhDBCCcqggN5vFps8-gZMLHLw')
         this.tg.on_message(this, this.on_message)
         this.tg.on_quiz_answer(this, this.on_quiz_answer)
     }
