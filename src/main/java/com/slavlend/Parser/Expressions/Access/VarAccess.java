@@ -150,4 +150,9 @@ public class VarAccess implements Access {
 
     @Override
     public Access getNext() { return next; }
+
+    @Override
+    public void compile() {
+
+    }
 }

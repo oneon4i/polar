@@ -1,5 +1,6 @@
 package com.slavlend.Parser.Expressions.Access;
 
+import com.slavlend.Compiler.Compiler;
 import com.slavlend.Polar.PolarClass;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
@@ -11,6 +12,8 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Expressions.NumberExpression;
 import com.slavlend.Parser.Statements.FunctionStatement;
+import com.slavlend.VM.Instructions.VmInstrPush;
+import com.slavlend.VM.Instructions.VmInstrStore;
 import lombok.Getter;
 
 import java.lang.reflect.Field;
@@ -249,4 +252,10 @@ public class AssignAccess implements Access {
 
     @Override
     public Access getNext() { return next; }
+
+    @Override
+    public void compile() {
+        to.compile();
+        Compiler.code.visitInstr(new VmInstrStore(varName));
+    }
 }

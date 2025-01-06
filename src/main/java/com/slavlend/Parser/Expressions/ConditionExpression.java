@@ -1,12 +1,14 @@
 package com.slavlend.Parser.Expressions;
 
 import com.slavlend.App;
+import com.slavlend.Compiler.Compiler;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Access.AccessExpression;
 import com.slavlend.Parser.Expressions.Access.VarAccess;
 import com.slavlend.Parser.Operator;
+import com.slavlend.VM.Instructions.VmInstrOperator;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -94,5 +96,12 @@ public class ConditionExpression implements Expression {
     @Override
     public Address address() {
         return address;
+    }
+
+    @Override
+    public void compile() {
+        l.compile();
+        r.compile();
+        Compiler.code.visitInstr(new VmInstrOperator(o));
     }
 }

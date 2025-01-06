@@ -1,16 +1,19 @@
 package com.slavlend.Commands;
 
-import com.slavlend.Colors;
 import com.slavlend.Executor.Executor;
 import com.slavlend.Executor.ExecutorSettings;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
-// комманда запуска файла
-public class RunCommand implements Command {
+/*
+Команда компиляции в IceVM
+ */
+public class CmplCommand implements Command {
+
     @Override
-    public void execute(String[] args) {
+    public void execute(String[] args) throws IOException {
         // вводим файл нэйм для открытия
         // System.out.println("🪶 Enter File Name: ");
         // проверяем на колличество аргументов
@@ -49,13 +52,10 @@ public class RunCommand implements Command {
         Executor.exec(new ExecutorSettings(
                 filePath,
                 code.toString(),
-                false
+                true
         ));
 
         // пустая строка
         System.out.println();
-
-        // выводим сообщение о завршении программы
-        // System.out.println(Colors.ANSI_YELLOW + "💡 Program was finished!" + Colors.ANSI_RESET);
     }
 }

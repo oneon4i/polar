@@ -86,4 +86,9 @@ public class UseLibStatement implements Statement{
     public Address address() {
         return address;
     }
+
+    @Override
+    public void compile() {
+
+    }
 }

@@ -10,11 +10,11 @@ import java.util.HashMap;
  */
 @Getter
 public class VmFrame<T> {
-    private HashMap<String, T> values;
+    private HashMap<String, T> values = new HashMap<>();
     @Setter
     private VmFrame<T> root;
     public T lookup(String name) {
-        VmFrame<T> current = root;
+        VmFrame<T> current = this;
         while (current.root != null && !current.root.getValues().containsKey(name)) {
             current = current.root;
         }

@@ -51,6 +51,11 @@ public class BackStatement implements Statement, Expression {
         return address;
     }
 
+    @Override
+    public void compile() {
+
+    }
+
     public BackStatement(Expression expression) {
         this.expression = expression;
     }

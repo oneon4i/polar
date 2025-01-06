@@ -39,4 +39,9 @@ public class NextStatement extends RuntimeException implements Statement {
     public Address address() {
         return address;
     }
+
+    @Override
+    public void compile() {
+
+    }
 }

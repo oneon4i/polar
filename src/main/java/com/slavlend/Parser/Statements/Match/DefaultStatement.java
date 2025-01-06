@@ -54,6 +54,11 @@ public class DefaultStatement implements Statement {
         return address;
     }
 
+    @Override
+    public void compile() {
+
+    }
+
     // конструктор
     public DefaultStatement() {
     }

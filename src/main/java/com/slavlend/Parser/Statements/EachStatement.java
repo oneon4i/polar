@@ -95,6 +95,11 @@ public class EachStatement implements Statement {
         return address;
     }
 
+    @Override
+    public void compile() {
+
+    }
+
     // конструктор
     public EachStatement(AccessExpression arr, String name) {
         this.listVariable = arr;

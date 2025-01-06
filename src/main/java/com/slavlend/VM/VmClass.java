@@ -13,6 +13,8 @@ public class VmClass {
     private final String name;
     // функции
     private final VmFrame<VmFunction> functions = new VmFrame<>();
+    // модульные значения
+    private final VmFrame<Object> modValues = new VmFrame<>();
 
     public VmClass(String name) {
         this.name = name;

@@ -90,6 +90,11 @@ public class IfStatement implements Statement {
         return address;
     }
 
+    @Override
+    public void compile() {
+
+    }
+
     // конструктор
     public IfStatement(ArrayList<Expression> expressions) {
         this.conditions = expressions;

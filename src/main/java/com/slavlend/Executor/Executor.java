@@ -1,5 +1,8 @@
 package com.slavlend.Executor;
 
+import com.slavlend.Commands.Command;
+import com.slavlend.Compiler.Compiler;
+import com.slavlend.Parser.Statements.BlockStatement;
 import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Polar.Stack.Storage;
 import com.slavlend.Polar.StackHistoryWriter;
@@ -46,6 +49,12 @@ public class Executor {
         System.out.println(Colors.ANSI_CYAN + "❄️ Interpreting..." + Colors.ANSI_RESET);
 
         // интерпретируем
-        parser.execute();
+        if (settings.getCompilerMode()) {
+            BlockStatement statement = parser.parse();
+            statement.compile();
+            Compiler.iceVm.run(Compiler.code);
+        } else {
+            parser.execute();
+        }
     }
 }

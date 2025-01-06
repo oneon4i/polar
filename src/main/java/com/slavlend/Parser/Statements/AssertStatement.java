@@ -57,4 +57,9 @@ public class AssertStatement implements Statement {
     public Address address() {
         return address;
     }
+
+    @Override
+    public void compile() {
+
+    }
 }

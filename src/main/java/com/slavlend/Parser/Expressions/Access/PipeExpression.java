@@ -75,4 +75,9 @@ public class PipeExpression implements Expression, Statement {
     public Address address() {
         return address;
     }
+
+    @Override
+    public void compile() {
+
+    }
 }

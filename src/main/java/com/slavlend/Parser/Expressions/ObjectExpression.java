@@ -1,10 +1,12 @@
 package com.slavlend.Parser.Expressions;
 
 import com.slavlend.App;
+import com.slavlend.Compiler.Compiler;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Parser.Address;
+import com.slavlend.VM.Instructions.VmInstrPush;
 
 import java.util.ArrayList;
 
@@ -31,10 +33,13 @@ public class ObjectExpression implements Expression {
         return address;
     }
 
+    @Override
+    public void compile() {
+        Compiler.code.visitInstr(new VmInstrPush("not implemented"));
+    }
 
     public ObjectExpression(String className, ArrayList<Expression> constructor) {
         this.className = className;
         this.constructor = constructor;
     }
-
 }

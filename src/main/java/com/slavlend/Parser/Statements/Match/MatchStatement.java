@@ -90,6 +90,11 @@ public class MatchStatement implements Statement {
         return address;
     }
 
+    @Override
+    public void compile() {
+
+    }
+
     // конструктор
     public MatchStatement(Expression m) {
         this.matchExpr = m;

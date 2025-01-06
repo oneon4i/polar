@@ -74,4 +74,9 @@ public class TempAccess implements Access {
 
     @Override
     public Access getNext() { return next; }
+
+    @Override
+    public void compile() {
+
+    }
 }

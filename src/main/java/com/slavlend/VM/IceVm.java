@@ -32,8 +32,8 @@ public class IceVm {
         stack.push(val);
     }
 
-    public void pop() {
-        stack.pop();
+    public Object pop() {
+        return stack.pop();
     }
 
     public void load(VmFrame<Object> frame, String name) {
@@ -41,21 +41,25 @@ public class IceVm {
     }
 
     public void call(String name) {
-        if (!stack.isEmpty() &&stack.getFirst() instanceof VmObj obj) {
+        if (!stack.isEmpty() && stack.firstElement() instanceof VmObj obj) {
             if (obj.getClazz().getFunctions().lookup(name) != null) {
                 obj.call(name, this);
             } else {
                 if (functions.lookup(name) != null) {
                     functions.lookup(name).exec(this);
                 } else {
-                    throw new RuntimeException("fn not found: " + name);
+                    if (name.equals("put")) {
+                        System.out.println(pop());
+                    }
                 }
             }
         } else {
             if (functions.lookup(name) != null) {
                 functions.lookup(name).exec(this);
             } else {
-                throw new RuntimeException("fn not found: " + name);
+                if (name.equals("put")) {
+                    System.out.println(pop());
+                }
             }
         }
     }

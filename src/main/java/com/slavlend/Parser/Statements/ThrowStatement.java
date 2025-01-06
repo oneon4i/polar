@@ -47,6 +47,11 @@ public class ThrowStatement implements Statement {
         return address;
     }
 
+    @Override
+    public void compile() {
+
+    }
+
     // конструктор
     public ThrowStatement(Expression throwableExpr) {
         this.throwableExpr = throwableExpr;

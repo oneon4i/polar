@@ -100,6 +100,11 @@ public class TryStatement implements Statement {
         return address;
     }
 
+    @Override
+    public void compile() {
+
+    }
+
     // конструктор
     public TryStatement(String variableName) {
         this.variableName = variableName;

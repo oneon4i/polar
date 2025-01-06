@@ -16,6 +16,6 @@ public class VmInstrStore implements VmInstr {
 
     @Override
     public void run(IceVm vm, VmFrame<Object> frame) {
-        frame.set(name, vm.getStack().getLast());
+        frame.set(name, vm.getStack().pop());
     }
 }

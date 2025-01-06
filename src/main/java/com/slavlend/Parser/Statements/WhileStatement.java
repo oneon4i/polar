@@ -71,6 +71,11 @@ public class WhileStatement implements Statement {
         return address;
     }
 
+    @Override
+    public void compile() {
+
+    }
+
     // конструктор
     public WhileStatement(ArrayList<ConditionExpression> _conditions) {
         this.conditions = _conditions;

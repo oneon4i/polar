@@ -95,6 +95,26 @@ public class Parser {
         }
     }
 
+    // парсинг
+    public BlockStatement parse() {
+        try {
+            BlockStatement statement = new BlockStatement();
+
+            // парсим стэйтменты
+            while (current < tokens.size()) {
+                statement.add(statement());
+            }
+
+            // экзекьютим и ловим ошибки
+            return statement;
+        } catch (PolarException e) {
+            PolarLogger.printError(e);
+        } catch (Exception e) {
+            PolarLogger.printError(new PolarException("Unexpected Error: " + e.getMessage(), address().getLine(), null));
+        }
+        return null;
+    }
+
     public Operator condOperator() {
         // перебор операторов
         return switch (tokens.get(current).type) {

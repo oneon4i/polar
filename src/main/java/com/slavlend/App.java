@@ -1,5 +1,6 @@
 package com.slavlend;
 
+import com.slavlend.Commands.CmplCommand;
 import com.slavlend.Commands.Command;
 import com.slavlend.Commands.InstallPkgCommand;
 import com.slavlend.Commands.RunCommand;
@@ -27,6 +28,7 @@ public class App
     private final static HashMap<String, Command> commandList = new HashMap() {{
        put("pkg", new InstallPkgCommand());
        put("run", new RunCommand());
+       put("cmpl", new CmplCommand());
     }};
 
     /*
@@ -48,6 +50,7 @@ public class App
     public static void showCommandMenu() throws IOException {
         System.out.println("🐸 Choose command:");
         System.out.println(" > run (script name)");
+        System.out.println(" > cmpl (script name)");
         System.out.println(" > pkg (git repo)");
         // аргументы
         String[] inputArgs = new Scanner(System.in).nextLine().split(" ");

@@ -82,6 +82,11 @@ public class FunctionStatement implements Statement, Callable {
         return address;
     }
 
+    @Override
+    public void compile() {
+
+    }
+
     // вызов функции
     @Override
     public PolarValue call(PolarObject calledFor, ArrayList<PolarValue> params) {

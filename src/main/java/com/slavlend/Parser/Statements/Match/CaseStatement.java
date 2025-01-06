@@ -81,6 +81,11 @@ public class CaseStatement implements Statement {
         return address;
     }
 
+    @Override
+    public void compile() {
+
+    }
+
     // конструктор
     public CaseStatement(Expression e) {
         this.checkExpr = e;

@@ -9,4 +9,5 @@ import com.slavlend.Parser.Address;
 public interface Expression {
     abstract PolarValue evaluate();
     abstract Address address();
+    abstract void compile();
 }

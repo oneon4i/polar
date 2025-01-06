@@ -1,10 +1,12 @@
 package com.slavlend.Parser.Expressions;
 
 import com.slavlend.App;
+import com.slavlend.Compiler.Compiler;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Reflected;
 import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
+import com.slavlend.VM.Instructions.VmInstrPush;
 import lombok.Getter;
 
 /*
@@ -32,6 +34,11 @@ public class ReflectExpression implements Expression {
     @Override
     public Address address() {
         return address;
+    }
+
+    @Override
+    public void compile() {
+        Compiler.code.visitInstr(new VmInstrPush("not implemented"));
     }
 
     public ReflectExpression(String className) {

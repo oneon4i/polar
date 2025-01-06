@@ -35,4 +35,8 @@ public class VmFunction {
         fn.instructions = instructions;
         return fn;
     }
+
+    public void visitInstr(VmInstr instr) {
+        this.instructions.add(instr);
+    }
 }

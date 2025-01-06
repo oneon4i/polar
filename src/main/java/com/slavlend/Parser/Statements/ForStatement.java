@@ -88,6 +88,11 @@ public class ForStatement implements Statement {
         return address;
     }
 
+    @Override
+    public void compile() {
+
+    }
+
     // конструктор
     public ForStatement(ArrayList<ConditionExpression> _conditions, String variable, Expression valueExpr) {
         this.conditions = _conditions;
