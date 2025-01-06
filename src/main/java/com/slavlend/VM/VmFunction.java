@@ -33,11 +33,7 @@ public class VmFunction implements VmInstrContainer {
     public void exec(IceVm vm) {
         scope = new VmFrame<>();
         for (int i = arguments.size()-1; i >= 0; i--) {
-            if (i <= 0) {
-                return;
-            }
             Object arg = vm.pop();
-            System.out.println(arg);
             scope.set(arguments.get(i).data, arg);
         }
         for (VmInstr instr : instructions) {
