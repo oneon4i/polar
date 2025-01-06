@@ -88,6 +88,6 @@ public class AccessExpression implements Expression, Statement {
 
     @Override
     public void compile() {
-        access.compile();
+        access.compile(false);
     }
 }

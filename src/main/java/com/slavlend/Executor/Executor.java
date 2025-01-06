@@ -46,14 +46,15 @@ public class Executor {
 
         // интерпретация
         System.out.println(Colors.ANSI_GREEN + "🐲 Done!" + Colors.ANSI_RESET);
-        System.out.println(Colors.ANSI_CYAN + "❄️ Interpreting..." + Colors.ANSI_RESET);
 
         // интерпретируем
         if (settings.getCompilerMode()) {
+            System.out.println(Colors.ANSI_CYAN + "🧊 Compiling..." + Colors.ANSI_RESET);
             BlockStatement statement = parser.parse();
             statement.compile();
             Compiler.iceVm.run(Compiler.code);
         } else {
+            System.out.println(Colors.ANSI_CYAN + "❄️ Interpreting..." + Colors.ANSI_RESET);
             parser.execute();
         }
     }

@@ -8,7 +8,7 @@ import java.util.List;
 Класс
  */
 @Getter
-public class VmClass {
+public class VmClass implements VmInstrContainer {
     // имя класса
     private final String name;
     // функции
@@ -18,5 +18,10 @@ public class VmClass {
 
     public VmClass(String name) {
         this.name = name;
+    }
+
+    @Override
+    public void visitInstr(VmInstr instr) {
+        // not implemented
     }
 }

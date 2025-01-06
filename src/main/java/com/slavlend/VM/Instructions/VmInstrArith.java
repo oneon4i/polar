@@ -19,6 +19,10 @@ public class VmInstrArith implements VmInstr {
         Object l = vm.pop();
         switch (operator.operator) {
             case "+" -> {
+                if (l instanceof String && r instanceof String) {
+                    vm.push((String)l + (String)r);
+                    return;
+                }
                 vm.push((float)l + (float)r);
             }
             case "-" -> {

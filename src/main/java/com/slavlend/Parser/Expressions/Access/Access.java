@@ -11,5 +11,5 @@ public interface Access {
     abstract void setLast(Access access);
     abstract boolean hasNext();
     abstract Access getNext();
-    abstract void compile();
+    abstract void compile(boolean hasPrevious);
 }

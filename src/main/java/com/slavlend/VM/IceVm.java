@@ -13,6 +13,7 @@ public class IceVm {
     private final VmFrame<Object> variables = new VmFrame<Object>();
     private final VmFrame<VmFunction> functions = new VmFrame<VmFunction>();
     private final VmFrame<VmClass> classes = new VmFrame<VmClass>();
+    private VmInstrContainer writeTo = null;
 
     public void defineClass(VmClass cls) {
         this.classes.getValues().put(cls.getName(), cls);
@@ -20,6 +21,11 @@ public class IceVm {
 
     public void defineFunction(VmFunction fn) {
         this.functions.getValues().put(fn.getName(), fn);
+        this.writeTo = fn;
+    }
+
+    public void endWrite() {
+        this.writeTo = null;
     }
 
     public void run(VmCode code) {
@@ -37,7 +43,7 @@ public class IceVm {
     }
 
     public void load(VmFrame<Object> frame, String name) {
-        stack.push(frame.getValues().get(name));
+        stack.push(frame.lookup(name));
     }
 
     public void call(String name) {

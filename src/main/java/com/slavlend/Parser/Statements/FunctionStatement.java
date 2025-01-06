@@ -1,11 +1,13 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
+import com.slavlend.Compiler.Compiler;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Storage;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ArgumentExpression;
+import com.slavlend.VM.VmFunction;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -84,7 +86,12 @@ public class FunctionStatement implements Statement, Callable {
 
     @Override
     public void compile() {
-
+        VmFunction f = new VmFunction(name, arguments);
+        Compiler.iceVm.defineFunction(f);
+        for (Statement s : statements) {
+            s.compile();
+        }
+        Compiler.iceVm.endWrite();
     }
 
     // вызов функции

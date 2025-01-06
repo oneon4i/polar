@@ -331,10 +331,13 @@ public class CallAccess implements Access {
     public Access getNext() { return next; }
 
     @Override
-    public void compile() {
+    public void compile(boolean hasPrevious) {
         for (Expression e : params) {
             e.compile();
         }
-        Compiler.code.visitInstr(new VmInstrCall(funcName));
+        Compiler.code.visitInstr(new VmInstrCall(funcName, params, hasPrevious));
+        if (hasNext()) {
+            getNext().compile(true);
+        }
     }
 }

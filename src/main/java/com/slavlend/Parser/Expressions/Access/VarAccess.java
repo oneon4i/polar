@@ -1,5 +1,7 @@
 package com.slavlend.Parser.Expressions.Access;
 
+import com.slavlend.Compiler.Compiler;
+import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Polar.PolarClass;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
@@ -8,6 +10,8 @@ import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Polar.Stack.Storage;
 import com.slavlend.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
+import com.slavlend.VM.Instructions.VmInstrCall;
+import com.slavlend.VM.Instructions.VmInstrLoad;
 
 import java.lang.reflect.Field;
 
@@ -152,7 +156,10 @@ public class VarAccess implements Access {
     public Access getNext() { return next; }
 
     @Override
-    public void compile() {
-
+    public void compile(boolean hasPrevious) {
+        Compiler.code.visitInstr(new VmInstrLoad(varName, hasPrevious));
+        if (hasNext()) {
+            getNext().compile(true);
+        }
     }
 }

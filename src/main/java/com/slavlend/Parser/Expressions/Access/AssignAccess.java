@@ -254,8 +254,11 @@ public class AssignAccess implements Access {
     public Access getNext() { return next; }
 
     @Override
-    public void compile() {
+    public void compile(boolean hasPrevious) {
         to.compile();
-        Compiler.code.visitInstr(new VmInstrStore(varName));
+        Compiler.code.visitInstr(new VmInstrStore(varName, hasPrevious));
+        if (hasNext()) {
+            PolarLogger.exception("How You Want Use Something After Assign? 😂", address);
+        }
     }
 }
