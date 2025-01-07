@@ -37,7 +37,7 @@ public class IceVm {
         }
         // останавливаем бенчмарк
         System.out.println(
-                Colors.ANSI_BLUE + "🧊 Exec time: " + benchmark.end() + Colors.ANSI_RESET
+                Colors.ANSI_BLUE + "🧊 Exec time: " + benchmark.end() + ", stack size: " + stack.get().size() + Colors.ANSI_RESET
         );
     }
 
