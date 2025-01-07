@@ -12,4 +12,14 @@ public class VmInstrPop implements VmInstr {
     public void run(IceVm vm, VmFrame<Object> frame) {
         vm.pop();
     }
+
+    @Override
+    public String toString() {
+        return "POP()";
+    }
+
+    @Override
+    public void print() {
+        System.out.println(this);
+    }
 }

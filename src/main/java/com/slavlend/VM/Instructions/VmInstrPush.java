@@ -18,4 +18,14 @@ public class VmInstrPush implements VmInstr {
     public void run(IceVm vm, VmFrame<Object> frame) {
         vm.push(data);
     }
+
+    @Override
+    public String toString() {
+        return "PUSH(" + data + ")";
+    }
+
+    @Override
+    public void print() {
+        System.out.println(this);
+    }
 }

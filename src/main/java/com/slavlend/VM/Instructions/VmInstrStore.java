@@ -27,4 +27,14 @@ public class VmInstrStore implements VmInstr {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "STORE(" + name + ")";
+    }
+
+    @Override
+    public void print() {
+        System.out.println(this);
+    }
 }

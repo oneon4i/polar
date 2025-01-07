@@ -32,4 +32,14 @@ public class VmInstrCall implements VmInstr {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "CALL[" + name  + "]" + "(" + params.size() + ")";
+    }
+
+    @Override
+    public void print() {
+        System.out.println(this);
+    }
 }

@@ -21,4 +21,14 @@ public class VmInstrNewObj implements VmInstr {
     public void run(IceVm vm, VmFrame<Object> frame) {
         vm.push(new VmObj(vm, vm.getClasses().lookup(className)));
     }
+
+    @Override
+    public void print() {
+        System.out.println(this);
+    }
+
+    @Override
+    public String toString() {
+        return "INST(" + className + ")";
+    }
 }

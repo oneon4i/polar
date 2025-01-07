@@ -1,6 +1,7 @@
 package com.slavlend.VM;
 
 import com.slavlend.Parser.Expressions.ArgumentExpression;
+import com.slavlend.VM.Instructions.VmInstrIf;
 import com.slavlend.VM.Instructions.VmInstrRet;
 import lombok.Getter;
 
@@ -36,11 +37,13 @@ public class VmFunction implements VmInstrContainer {
             Object arg = vm.pop();
             scope.set(arguments.get(i).data, arg);
         }
-        for (VmInstr instr : instructions) {
-            if (instr instanceof VmInstrRet instrReturn) {
-                return;
+        try {
+            // System.out.println("VmFunction: " + instructions);
+            for (VmInstr instr : instructions) {
+                instr.run(vm, scope);
             }
-            instr.run(vm, scope);
+        } catch (VmInstrRet e) {
+            return;
         }
     }
 
@@ -53,5 +56,13 @@ public class VmFunction implements VmInstrContainer {
     @Override
     public void visitInstr(VmInstr instr) {
         this.instructions.add(instr);
+    }
+
+    public void print() {
+        System.out.println("╭─────────function─────────╮");
+        for (VmInstr instr : instructions) {
+            instr.print();
+        }
+        System.out.println("╰──────────────────────────╯");
     }
 }

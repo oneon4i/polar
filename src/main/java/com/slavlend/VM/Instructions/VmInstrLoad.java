@@ -26,4 +26,14 @@ public class VmInstrLoad implements VmInstr {
             }
         }
     }
+
+    @Override
+    public void print() {
+        System.out.println(this);
+    }
+
+    @Override
+    public String toString() {
+        return "LOAD(" + name + ")";
+    }
 }

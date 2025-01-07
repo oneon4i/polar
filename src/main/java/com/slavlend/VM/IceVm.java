@@ -1,7 +1,10 @@
 package com.slavlend.VM;
 
+import com.slavlend.Colors;
+import com.slavlend.VM.Instructions.VmInstrIf;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.Stack;
 
 /*
@@ -13,7 +16,6 @@ public class IceVm {
     private final VmFrame<Object> variables = new VmFrame<Object>();
     private final VmFrame<VmFunction> functions = new VmFrame<VmFunction>();
     private final VmFrame<VmClass> classes = new VmFrame<VmClass>();
-    private VmInstrContainer writeTo = null;
 
     public void defineClass(VmClass cls) {
         this.classes.getValues().put(cls.getName(), cls);
@@ -21,16 +23,23 @@ public class IceVm {
 
     public void defineFunction(VmFunction fn) {
         this.functions.getValues().put(fn.getName(), fn);
-        this.writeTo = fn;
-    }
-
-    public void endWrite() {
-        this.writeTo = null;
     }
 
     public void run(VmCode code) {
+        System.out.println(Colors.ANSI_BLUE + "Ice Vm In 🧊:" + Colors.ANSI_RESET);
+        printCode(code);
+        System.out.println(Colors.ANSI_BLUE + "Ice Vm Out 🧊:" + Colors.ANSI_RESET);
         for (VmInstr instr : code.getInstructions()) {
             instr.run(this, variables);
+        }
+    }
+
+    private void printCode(VmCode code) {
+        for (VmFunction function :functions.getValues().values()) {
+            function.print();
+        }
+        for (VmInstr instr : code.getInstructions()) {
+            instr.print();
         }
     }
 

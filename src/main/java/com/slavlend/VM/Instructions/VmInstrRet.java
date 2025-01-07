@@ -7,9 +7,19 @@ import com.slavlend.VM.VmInstr;
 /*
 Ломает текущее исполнение
  */
-public class VmInstrRet implements VmInstr {
+public class VmInstrRet extends RuntimeException implements VmInstr {
     @Override
     public void run(IceVm vm, VmFrame<Object> scope) {
+        throw this;
+    }
 
+    @Override
+    public String toString() {
+        return "RET()";
+    }
+
+    @Override
+    public void print() {
+        System.out.println(toString());
     }
 }

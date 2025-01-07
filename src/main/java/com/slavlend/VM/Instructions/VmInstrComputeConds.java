@@ -6,43 +6,18 @@ import com.slavlend.VM.*;
 /*
 Помещение значения в стек VM
  */
-public class VmInstrArith implements VmInstr {
+public class VmInstrComputeConds implements VmInstr {
     private final Operator operator;
 
-    public VmInstrArith(Operator operator) {
+    public VmInstrComputeConds(Operator operator) {
         this.operator = operator;
     }
 
     @Override
     public void run(IceVm vm, VmFrame<Object> frame) {
-        Object r = vm.pop();
-        Object l = vm.pop();
-        switch (operator.operator) {
-            case "+" -> {
-                if (l instanceof String && r instanceof String) {
-                    vm.push((String)l + (String)r);
-                    return;
-                }
-                vm.push((float)l + (float)r);
-            }
-            case "-" -> {
-                vm.push((float)l - (float)r);
-            }
-            case "*" -> {
-                vm.push((float)l * (float)r);
-            }
-            case "/" -> {
-                vm.push((float)l / (float)r);
-            }
-            case "%" -> {
-                vm.push((float)l % (float)r);
-            }
-        }
-    }
-
-    @Override
-    public void print() {
-        System.out.println("ARITH("+operator.operator+")");
+        Object f = vm.pop();
+        Object s = vm.pop();
+        vm.push(equal(f, s));
     }
 
     public boolean equal(Object l, Object r) {
@@ -77,6 +52,11 @@ public class VmInstrArith implements VmInstr {
 
     @Override
     public String toString() {
-        return "ARITH(" + operator.operator + ")";
+        return "CCONDS(" + operator.operator + ")";
+    }
+
+    @Override
+    public void print() {
+        System.out.println(this);
     }
 }

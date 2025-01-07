@@ -1,18 +1,15 @@
 package com.slavlend.VM.Instructions;
 
-import com.slavlend.Logger.PolarLogger;
-import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Operator;
-import com.slavlend.Polar.PolarValue;
 import com.slavlend.VM.*;
 
 /*
 Помещение значения в стек VM
  */
-public class VmInstrOperator implements VmInstr {
+public class VmInstrCondOperator implements VmInstr {
     private final Operator operator;
 
-    public VmInstrOperator(Operator operator) {
+    public VmInstrCondOperator(Operator operator) {
         this.operator = operator;
     }
 
@@ -56,19 +53,29 @@ public class VmInstrOperator implements VmInstr {
             return true;
         }
         else if (l instanceof VmObj && r instanceof VmObj) {
-            return (l == r);
+            return (((VmObj)l) == ((VmObj)r));
         }
         else if (l instanceof Boolean && r instanceof Boolean) {
-            return (l == r);
+            return (((boolean)l) == ((boolean)r));
         }
         else if (l instanceof Float && r instanceof Float) {
-            return (l == r);
+            return (((float) l) == ((float) r));
         }
         else if (l instanceof VmClass && r instanceof VmClass) {
-            return (l == r);
+            return (((VmClass)l) == ((VmClass)r));
         }
         else {
             throw new RuntimeException("invalid comparable types: " + l + ", " + r);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "COP(" + operator.operator + ")";
+    }
+
+    @Override
+    public void print() {
+        System.out.println(this);
     }
 }

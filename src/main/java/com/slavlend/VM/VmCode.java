@@ -2,9 +2,11 @@ package com.slavlend.VM;
 
 import com.slavlend.Compiler.Compiler;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /*
 Код поступающий на вход
@@ -12,17 +14,25 @@ import java.util.List;
 @Getter
 public class VmCode {
     private final List<VmInstr> instructions = new ArrayList<>();
-    private VmInstrContainer writeTo = null;
+    private Stack<VmInstrContainer> writeTo = new Stack<>();
 
     public VmCode() {
 
     }
 
     public void visitInstr(VmInstr instr) {
-        if (Compiler.iceVm.getWriteTo() == null) {
+        if (writeTo.isEmpty()) {
             this.instructions.add(instr);
         } else {
-            Compiler.iceVm.getWriteTo().visitInstr(instr);
+            writeTo.lastElement().visitInstr(instr);
         }
+    }
+
+    public void endWrite() {
+        this.writeTo.pop();
+    }
+
+    public void startWrite(VmInstrContainer c) {
+        this.writeTo.push(c);
     }
 }

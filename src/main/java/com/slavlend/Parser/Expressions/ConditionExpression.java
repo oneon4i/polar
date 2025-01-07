@@ -8,7 +8,7 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Access.AccessExpression;
 import com.slavlend.Parser.Expressions.Access.VarAccess;
 import com.slavlend.Parser.Operator;
-import com.slavlend.VM.Instructions.VmInstrOperator;
+import com.slavlend.VM.Instructions.VmInstrCondOperator;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -102,6 +102,6 @@ public class ConditionExpression implements Expression {
     public void compile() {
         l.compile();
         r.compile();
-        Compiler.code.visitInstr(new VmInstrOperator(o));
+        Compiler.code.visitInstr(new VmInstrCondOperator(o));
     }
 }

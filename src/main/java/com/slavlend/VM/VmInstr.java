@@ -5,4 +5,5 @@ package com.slavlend.VM;
  */
 public interface VmInstr {
     abstract void run(IceVm vm, VmFrame<Object> scope);
+    abstract void print();
 }

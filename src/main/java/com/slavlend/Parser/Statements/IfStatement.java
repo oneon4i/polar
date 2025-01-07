@@ -1,9 +1,14 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
+import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Expressions.Expression;
+import com.slavlend.Parser.Operator;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
+import com.slavlend.VM.Instructions.VmInstrComputeConds;
+import com.slavlend.VM.Instructions.VmInstrIf;
+import com.slavlend.VM.VmInstr;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -92,7 +97,48 @@ public class IfStatement implements Statement {
 
     @Override
     public void compile() {
+        VmInstrIf ifInstr = new VmInstrIf();
+        Compiler.code.visitInstr(ifInstr);
+        Compiler.code.startWrite(ifInstr);
+        ifInstr.setWritingConditions(true);
+        compileConditions();
+        ifInstr.setWritingConditions(false);
+        for (Statement s : statements) {
+            s.compile();
+        }
+        Compiler.code.endWrite();
+        if (elseCondition != null) {
+            ifInstr.setElse(elseCondition.getCompiled());
+        }
+    }
 
+    private void compileConditions() {
+        int conditionsAmount = 0;
+        for (Expression cond : conditions) {
+            cond.compile();
+            if (conditionsAmount+1 == 2) {
+                Compiler.code.visitInstr(new VmInstrComputeConds(new Operator("&&")));
+            }
+            else {
+                conditionsAmount += 1;
+            }
+        }
+    }
+
+    private VmInstrIf getCompiled() {
+        VmInstrIf ifInstr = new VmInstrIf();
+        Compiler.code.startWrite(ifInstr);
+        ifInstr.setWritingConditions(true);
+        compileConditions();
+        ifInstr.setWritingConditions(false);
+        for (Statement s : statements) {
+            s.compile();
+        }
+        Compiler.code.endWrite();
+        if (elseCondition != null) {
+            ifInstr.setElse(elseCondition.getCompiled());
+        }
+        return ifInstr;
     }
 
     // конструктор
