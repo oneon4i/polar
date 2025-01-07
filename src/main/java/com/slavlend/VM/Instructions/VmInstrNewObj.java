@@ -1,24 +1,26 @@
 package com.slavlend.VM.Instructions;
 
-import com.slavlend.VM.IceVm;
-import com.slavlend.VM.VmFrame;
-import com.slavlend.VM.VmInstr;
-import com.slavlend.VM.VmObj;
+import com.slavlend.VM.*;
 import lombok.Getter;
 
 /*
-Удаление значения из VM
+Помещение инстанса класса в VM
  */
+@SuppressWarnings("ClassCanBeRecord")
 @Getter
 public class VmInstrNewObj implements VmInstr {
     private final String className;
+    private final VmVarContainer args;
 
-    public VmInstrNewObj(String className) {
+    public VmInstrNewObj(String className, VmVarContainer args) {
         this.className = className;
+        this.args = args;
     }
 
     @Override
     public void run(IceVm vm, VmFrame<Object> frame) {
+        // конструктор
+        passArgs(vm, frame);
         vm.push(new VmObj(vm, vm.getClasses().lookup(className)));
     }
 
@@ -29,6 +31,12 @@ public class VmInstrNewObj implements VmInstr {
 
     @Override
     public String toString() {
-        return "INST(" + className + ")";
+        return "INST(" + className + "," + args.getVarContainer().size() + ")";
+    }
+
+    private void passArgs(IceVm vm, VmFrame<Object> frame) {
+        for (VmInstr instr : args.getVarContainer()) {
+            instr.run(vm, frame);
+        }
     }
 }

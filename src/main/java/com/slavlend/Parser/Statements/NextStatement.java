@@ -1,7 +1,9 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
+import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
+import com.slavlend.VM.Instructions.VmInstrLoopEnd;
 import lombok.Getter;
 
 /*
@@ -42,6 +44,6 @@ public class NextStatement extends RuntimeException implements Statement {
 
     @Override
     public void compile() {
-
+        Compiler.code.visitInstr(new VmInstrLoopEnd(true));
     }
 }

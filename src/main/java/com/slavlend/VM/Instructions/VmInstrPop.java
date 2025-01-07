@@ -5,7 +5,7 @@ import com.slavlend.VM.VmFrame;
 import com.slavlend.VM.VmInstr;
 
 /*
-Удаление значения из VM
+Удаление верхнего значения из стека VM
  */
 public class VmInstrPop implements VmInstr {
     @Override

@@ -5,7 +5,10 @@ import com.slavlend.VM.VmFrame;
 import com.slavlend.VM.VmInstr;
 
 /*
-Ломает текущее исполнение
+Ломает текущее выполнение, перед
+вызовом этой инструкции в стек помещается значение
+для возврата, которое в дальнейшем ловится
+инструкцией Store
  */
 public class VmInstrRet extends RuntimeException implements VmInstr {
     @Override

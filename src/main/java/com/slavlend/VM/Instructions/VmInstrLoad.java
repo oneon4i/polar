@@ -3,7 +3,7 @@ package com.slavlend.VM.Instructions;
 import com.slavlend.VM.*;
 
 /*
-Помещение переменной в VM
+Помещение переменной по имени в стек VM
  */
 public class VmInstrLoad implements VmInstr {
     private final String name;

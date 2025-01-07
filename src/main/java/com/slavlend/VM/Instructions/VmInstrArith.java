@@ -4,9 +4,11 @@ import com.slavlend.Parser.Operator;
 import com.slavlend.VM.*;
 
 /*
-Помещение значения в стек VM
+Инструкция арифметической операции
  */
+@SuppressWarnings({"SpellCheckingInspection", "RedundantCast", "ConstantValue"})
 public class VmInstrArith implements VmInstr {
+    // оператор
     private final Operator operator;
 
     public VmInstrArith(Operator operator) {
@@ -25,18 +27,10 @@ public class VmInstrArith implements VmInstr {
                 }
                 vm.push((float)l + (float)r);
             }
-            case "-" -> {
-                vm.push((float)l - (float)r);
-            }
-            case "*" -> {
-                vm.push((float)l * (float)r);
-            }
-            case "/" -> {
-                vm.push((float)l / (float)r);
-            }
-            case "%" -> {
-                vm.push((float)l % (float)r);
-            }
+            case "-" -> vm.push((float)l - (float)r);
+            case "*" -> vm.push((float)l * (float)r);
+            case "/" -> vm.push((float)l / (float)r);
+            case "%" -> vm.push((float)l % (float)r);
         }
     }
 

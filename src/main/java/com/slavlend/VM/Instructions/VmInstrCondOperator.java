@@ -4,9 +4,11 @@ import com.slavlend.Parser.Operator;
 import com.slavlend.VM.*;
 
 /*
-Помещение значения в стек VM
+Кодишен VM
  */
+@SuppressWarnings("ConstantValue")
 public class VmInstrCondOperator implements VmInstr {
+    // оператор
     private final Operator operator;
 
     public VmInstrCondOperator(Operator operator) {
@@ -18,27 +20,17 @@ public class VmInstrCondOperator implements VmInstr {
         Object r = vm.pop();
         Object l = vm.pop();
         switch (operator.operator) {
-            case "==" -> {
-                vm.push(equal(l, r));
-            }
-            case "!=" -> {
-                vm.push(!equal(l, r));
-            }
-            case "<" -> {
-                vm.push((float)l < (float)r);
-            }
-            case ">" -> {
-                vm.push((float)l > (float)r);
-            }
-            case "<=" -> {
-                vm.push((float)l <= (float)r);
-            }
-            case ">=" -> {
-                vm.push((float)l >= (float)r);
-            }
+            case "==" -> vm.push(equal(l, r));
+            case "!=" -> vm.push(!equal(l, r));
+            case "<" -> vm.push((float)l < (float)r);
+            case ">" -> vm.push((float)l > (float)r);
+            case "<=" -> vm.push((float)l <= (float)r);
+            case ">=" -> vm.push((float)l >= (float)r);
+            default -> throw new IllegalStateException("unexpected value: " + operator.operator);
         }
     }
 
+    // сравнивает два объекта
     public boolean equal(Object l, Object r) {
         if (l instanceof String && r instanceof String) {
             return ((String)l).equals(((String)r));

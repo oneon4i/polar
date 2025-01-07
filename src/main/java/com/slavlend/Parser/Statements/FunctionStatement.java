@@ -88,7 +88,7 @@ public class FunctionStatement implements Statement, Callable {
     @Override
     public void compile() {
         VmFunction f = new VmFunction(name, arguments);
-        Compiler.iceVm.defineFunction(f);
+        Compiler.code.defineFunction(f);
         Compiler.code.startWrite(f);
         for (Statement s : statements) {
             s.compile();

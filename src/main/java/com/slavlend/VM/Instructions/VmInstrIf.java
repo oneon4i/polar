@@ -8,13 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
-Помещение значения в стек VM
+Блок иф для VM
  */
 @Getter
 public class VmInstrIf implements VmInstr, VmInstrContainer {
+    // инструкции кондишенов
     private final List<VmInstr> condInstructions = new ArrayList<>();
+    // инструкции
     private final List<VmInstr> instructions = new ArrayList<>();
+    // блок иф для else
     private VmInstrIf elseCondition;
+    // пишем ли мы кондишены
     @Setter
     private boolean writingConditions;
 

@@ -1,9 +1,13 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
+import com.slavlend.Compiler.Compiler;
+import com.slavlend.Parser.Expressions.Expression;
+import com.slavlend.Parser.Operator;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ConditionExpression;
+import com.slavlend.VM.Instructions.*;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -73,7 +77,41 @@ public class WhileStatement implements Statement {
 
     @Override
     public void compile() {
+        VmInstrLoop loop = new VmInstrLoop();
+        Compiler.code.visitInstr(loop);
+        Compiler.code.startWrite(loop);
+        VmInstrIf ifInstr = new VmInstrIf();
+        Compiler.code.visitInstr(ifInstr);
+        Compiler.code.startWrite(ifInstr);
+        ifInstr.setWritingConditions(true);
+        compileConditions();
+        ifInstr.setWritingConditions(false);
+        for (Statement s : statements) {
+            s.compile();
+        }
+        Compiler.code.endWrite();
+        VmInstrIf elseInstr = new VmInstrIf();
+        Compiler.code.startWrite(elseInstr);
+        elseInstr.setWritingConditions(true);
+        elseInstr.visitInstr(new VmInstrPush(true));
+        elseInstr.setWritingConditions(false);
+        elseInstr.visitInstr(new VmInstrLoopEnd(false));
+        ifInstr.setElse(elseInstr);
+        Compiler.code.endWrite();
+        Compiler.code.endWrite();
+    }
 
+    private void compileConditions() {
+        int conditionsAmount = 0;
+        for (Expression cond : conditions) {
+            cond.compile();
+            if (conditionsAmount+1 == 2) {
+                Compiler.code.visitInstr(new VmInstrComputeConds(new Operator("&&")));
+            }
+            else {
+                conditionsAmount += 1;
+            }
+        }
     }
 
     // конструктор

@@ -1,9 +1,9 @@
 package com.slavlend.VM;
 
 import com.slavlend.Parser.Expressions.ArgumentExpression;
-import com.slavlend.VM.Instructions.VmInstrIf;
 import com.slavlend.VM.Instructions.VmInstrRet;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.List;
 /*
 Функция вм
  */
+@SuppressWarnings("UnnecessaryReturnStatement")
 @Getter
 public class VmFunction implements VmInstrContainer {
     // имя функции
@@ -18,46 +19,73 @@ public class VmFunction implements VmInstrContainer {
     // инструкции
     private List<VmInstr> instructions = new ArrayList<>();
     // аргументы
-    private ArrayList<ArgumentExpression> arguments;
+    private final ArrayList<ArgumentExpression> arguments;
     // скоуп
-    private VmFrame<Object> scope = new VmFrame<Object>();
+    private final ThreadLocal<VmFrame<Object>> scope = new ThreadLocal<>();
+    // объект чья функция
+    @Setter
+    private VmObj definedFor;
 
+    // конструкция
     public VmFunction(String name, ArrayList<ArgumentExpression> arguments) {
         this.name = name;
         this.arguments = arguments;
+        this.scope.set(new VmFrame<>());
     }
 
+    /**
+     * Добавление инструкции в
+     * функцию
+     * @param instr - инструкция
+     */
     public void add(VmInstr instr) {
         instructions.add(instr);
     }
 
+    /**
+     * Выполнение функции
+     * @param vm - ВМ
+     */
     public void exec(IceVm vm) {
-        scope = new VmFrame<>();
+        scope.set(new VmFrame<>());
         for (int i = arguments.size()-1; i >= 0; i--) {
             Object arg = vm.pop();
-            scope.set(arguments.get(i).data, arg);
+            scope.get().set(arguments.get(i).data, arg);
+        }
+        if (definedFor != null) {
+            scope.get().set("this", definedFor);
         }
         try {
-            // System.out.println("VmFunction: " + instructions);
             for (VmInstr instr : instructions) {
-                instr.run(vm, scope);
+                instr.run(vm, scope.get());
             }
         } catch (VmInstrRet e) {
             return;
         }
     }
 
+    /**
+     Копия функции
+     @return возвращает копию
+     */
     public VmFunction copy() {
         VmFunction fn = new VmFunction(name, arguments);
         fn.instructions = instructions;
         return fn;
     }
 
+    /**
+     * Добавляет инструкцию
+     * @param instr - инструкция
+     */
     @Override
     public void visitInstr(VmInstr instr) {
         this.instructions.add(instr);
     }
 
+    /**
+     * Выводит информацию о функции
+     */
     public void print() {
         System.out.println("╭─────────function─────────╮");
         for (VmInstr instr : instructions) {

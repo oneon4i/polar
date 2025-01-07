@@ -11,6 +11,7 @@ import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.FunctionStatement;
 import com.slavlend.VM.Instructions.VmInstrCall;
 import com.slavlend.VM.Instructions.VmInstrStore;
+import com.slavlend.VM.VmVarContainer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -332,10 +333,13 @@ public class CallAccess implements Access {
 
     @Override
     public void compile(boolean hasPrevious) {
+        VmVarContainer container = new VmVarContainer();
+        Compiler.code.startWrite(container);
         for (Expression e : params) {
             e.compile();
         }
-        Compiler.code.visitInstr(new VmInstrCall(funcName, params, hasPrevious));
+        Compiler.code.endWrite();
+        Compiler.code.visitInstr(new VmInstrCall(funcName, container, hasPrevious));
         if (hasNext()) {
             getNext().compile(true);
         }

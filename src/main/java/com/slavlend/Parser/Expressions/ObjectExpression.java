@@ -6,7 +6,10 @@ import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Parser.Address;
+import com.slavlend.VM.Instructions.VmInstrNewObj;
 import com.slavlend.VM.Instructions.VmInstrPush;
+import com.slavlend.VM.VmObj;
+import com.slavlend.VM.VmVarContainer;
 
 import java.util.ArrayList;
 
@@ -35,7 +38,13 @@ public class ObjectExpression implements Expression {
 
     @Override
     public void compile() {
-        Compiler.code.visitInstr(new VmInstrPush("not implemented"));
+        VmVarContainer container = new VmVarContainer();
+        Compiler.code.startWrite(container);
+        for (Expression e : constructor) {
+            e.compile();
+        }
+        Compiler.code.endWrite();
+        Compiler.code.visitInstr(new VmInstrNewObj(className, container));
     }
 
     public ObjectExpression(String className, ArrayList<Expression> constructor) {

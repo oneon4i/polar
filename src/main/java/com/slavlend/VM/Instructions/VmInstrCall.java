@@ -1,41 +1,53 @@
 package com.slavlend.VM.Instructions;
 
-import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.VM.*;
 import lombok.Getter;
 
-import java.util.ArrayList;
-
 /*
-Помещение переменной в VM
+Вызов функции в VM
  */
+@SuppressWarnings("ClassCanBeRecord")
 @Getter
 public class VmInstrCall implements VmInstr {
+    // имя
     private final String name;
+    // есть ли предыдущий аксесс
     private final boolean hasPrevious;
-    private final ArrayList<Expression> params;
+    // аргументы
+    private final VmVarContainer args;
 
-    public VmInstrCall(String name, ArrayList<Expression> params, boolean hasPrevious) {
-        this.name = name; this.params = params; this.hasPrevious = hasPrevious;
+    // конструктор
+    public VmInstrCall(String name, VmVarContainer args, boolean hasPrevious) {
+        this.name = name; this.args = args; this.hasPrevious = hasPrevious;
     }
 
     @Override
     public void run(IceVm vm, VmFrame<Object> frame) {
         if (!hasPrevious) {
-            vm.call(name);
+            passArgs(vm, frame);
+            vm.callGlobal(name);
         } else {
             Object last = vm.pop();
             if (last instanceof VmObj vmObj) {
+                passArgs(vm, frame);
                 vmObj.call(name, vm);
             } else {
+                passArgs(vm, frame);
                 ((VmClass)last).getFunctions().lookup(name).exec(vm);
             }
         }
     }
 
+    // помещает аргументы в стек
+    private void passArgs(IceVm vm, VmFrame<Object> frame) {
+        for (VmInstr instr : args.getVarContainer()) {
+            instr.run(vm, frame);
+        }
+    }
+
     @Override
     public String toString() {
-        return "CALL[" + name  + "]" + "(" + params.size() + ")";
+        return "CALL[" + name  + "]" + "(" + args.getVarContainer().size() + ")";
     }
 
     @Override
