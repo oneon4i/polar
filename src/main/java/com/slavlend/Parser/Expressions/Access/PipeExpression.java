@@ -1,7 +1,7 @@
 package com.slavlend.Parser.Expressions.Access;
 
 import com.slavlend.App;
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.Statement;

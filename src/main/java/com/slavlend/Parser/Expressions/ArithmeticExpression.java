@@ -6,9 +6,8 @@ import com.slavlend.Compiler.Compiler;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Operator;
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.VM.Instructions.VmInstrArith;
-import com.slavlend.VM.Instructions.VmInstrPush;
 import lombok.Getter;
 
 /*

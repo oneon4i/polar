@@ -1,6 +1,6 @@
 package com.slavlend.Polar;
 
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
 import lombok.Getter;
 

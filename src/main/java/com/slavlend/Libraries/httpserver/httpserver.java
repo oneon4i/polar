@@ -4,7 +4,7 @@ import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Storage;
 import com.slavlend.Colors;
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Libraries.json;
 import com.slavlend.Parser.Statements.FunctionStatement;
 

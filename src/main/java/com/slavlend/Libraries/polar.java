@@ -4,7 +4,7 @@ import com.slavlend.Polar.PolarClass;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Classes;
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 
 /*
 Библиотека ant, необходима для более глубокого

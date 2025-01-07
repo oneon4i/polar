@@ -1,4 +1,4 @@
-package com.slavlend.Ver;
+package com.slavlend.Polar.Ver;
 
 import lombok.Getter;
 

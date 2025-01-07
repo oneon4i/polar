@@ -19,10 +19,16 @@ public class VmInstrArith implements VmInstr {
     public void run(IceVm vm, VmFrame<Object> frame) {
         Object r = vm.pop();
         Object l = vm.pop();
+        if (r == null) {
+            r = "nil";
+        }
+        if (l == null) {
+            l = "nil";
+        }
         switch (operator.operator) {
             case "+" -> {
-                if (l instanceof String && r instanceof String) {
-                    vm.push((String)l + (String)r);
+                if (l instanceof String || r instanceof String) {
+                    vm.push(l.toString() + r.toString());
                     return;
                 }
                 vm.push((float)l + (float)r);

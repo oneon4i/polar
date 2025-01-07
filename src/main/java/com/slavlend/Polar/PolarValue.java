@@ -7,7 +7,7 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Statements.BreakStatement;
 import com.slavlend.Parser.Statements.ClassStatement;
 import com.slavlend.Parser.Statements.FunctionStatement;
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Parser.Statements.NextStatement;
 import lombok.Getter;
 

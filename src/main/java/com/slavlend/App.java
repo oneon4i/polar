@@ -4,10 +4,8 @@ import com.slavlend.Commands.CmplCommand;
 import com.slavlend.Commands.Command;
 import com.slavlend.Commands.InstallPkgCommand;
 import com.slavlend.Commands.RunCommand;
-import com.slavlend.Executor.Executor;
-import com.slavlend.Executor.ExecutorSettings;
 import com.slavlend.Parser.Parser;
-import com.slavlend.Ver.PolarVersion;
+import com.slavlend.Polar.Ver.PolarVersion;
 import lombok.Getter;
 
 import java.io.IOException;

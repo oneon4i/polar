@@ -11,7 +11,7 @@ import com.slavlend.Parser.Statements.*;
 import com.slavlend.Parser.Statements.Match.CaseStatement;
 import com.slavlend.Parser.Statements.Match.DefaultStatement;
 import com.slavlend.Parser.Statements.Match.MatchStatement;
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 import lombok.Getter;
 import lombok.Setter;
 

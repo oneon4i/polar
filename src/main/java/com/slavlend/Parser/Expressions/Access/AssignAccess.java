@@ -6,13 +6,12 @@ import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Reflected;
 import com.slavlend.Polar.Stack.Storage;
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Expressions.NumberExpression;
 import com.slavlend.Parser.Statements.FunctionStatement;
-import com.slavlend.VM.Instructions.VmInstrPush;
 import com.slavlend.VM.Instructions.VmInstrStore;
 import lombok.Getter;
 

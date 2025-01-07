@@ -19,13 +19,25 @@ public class VmInstrStore implements VmInstr {
     @Override
     public void run(IceVm vm, VmFrame<Object> frame) {
         if (!hasPrevious) {
-            frame.set(name, vm.getStack().get().pop());
+            if (!vm.getStack().get().isEmpty()) {
+                frame.set(name, vm.getStack().get().pop());
+            } else {
+                frame.set(name, "nil");
+            }
         } else {
             Object last = vm.pop();
             if (last instanceof VmObj vmObj) {
-                vmObj.getScope().set(name, vm.getStack().get().pop());
+                if (!vm.getStack().get().isEmpty()) {
+                    vmObj.getScope().set(name, vm.getStack().get().pop());
+                } else {
+                    vmObj.getScope().set(name, "nil");
+                }
             } else {
-                ((VmClass) last).getModValues().set(name, vm.getStack().get().pop());
+                if (!vm.getStack().get().isEmpty()) {
+                    ((VmClass) last).getModValues().set(name, vm.getStack().get().pop());
+                } else {
+                    ((VmClass) last).getModValues().set(name, "nil");
+                }
             }
         }
     }

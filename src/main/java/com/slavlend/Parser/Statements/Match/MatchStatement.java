@@ -1,7 +1,7 @@
 package com.slavlend.Parser.Statements.Match;
 
 import com.slavlend.App;
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;

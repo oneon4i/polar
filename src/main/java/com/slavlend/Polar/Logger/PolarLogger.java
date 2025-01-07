@@ -1,4 +1,4 @@
-package com.slavlend.Logger;
+package com.slavlend.Polar.Logger;
 
 import com.slavlend.Exceptions.PolarException;
 import com.slavlend.Polar.StackHistoryWriter;

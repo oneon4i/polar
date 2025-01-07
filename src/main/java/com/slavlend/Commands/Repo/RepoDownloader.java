@@ -1,4 +1,4 @@
-package com.slavlend.Repo;
+package com.slavlend.Commands.Repo;
 
 import java.io.*;
 import java.net.URL;

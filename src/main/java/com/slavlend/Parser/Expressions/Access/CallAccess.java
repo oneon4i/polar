@@ -4,13 +4,12 @@ import com.slavlend.Compiler.Compiler;
 import com.slavlend.Exceptions.PolarException;
 import com.slavlend.Polar.*;
 import com.slavlend.Polar.Stack.Storage;
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Functions.BuiltInFunctions;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.FunctionStatement;
 import com.slavlend.VM.Instructions.VmInstrCall;
-import com.slavlend.VM.Instructions.VmInstrStore;
 import com.slavlend.VM.VmVarContainer;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +17,6 @@ import lombok.Setter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /*
 Акссесс к функции

@@ -2,7 +2,7 @@ package com.slavlend.Libraries;
 
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.Stack.Classes;
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Polar.PolarValue;
 
 import java.io.BufferedWriter;

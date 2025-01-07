@@ -1,7 +1,7 @@
 package com.slavlend.Libraries;
 
 import com.slavlend.Polar.PolarValue;
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

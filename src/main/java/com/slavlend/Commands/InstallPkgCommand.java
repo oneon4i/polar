@@ -1,8 +1,8 @@
 package com.slavlend.Commands;
 
 import com.slavlend.App;
-import com.slavlend.Logger.PolarLogger;
-import com.slavlend.Repo.RepoDownloader;
+import com.slavlend.Polar.Logger.PolarLogger;
+import com.slavlend.Commands.Repo.RepoDownloader;
 
 import java.io.IOException;
 

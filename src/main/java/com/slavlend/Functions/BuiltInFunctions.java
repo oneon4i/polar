@@ -1,7 +1,7 @@
 package com.slavlend.Functions;
 
 import com.slavlend.Polar.PolarValue;
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
 
 import java.util.HashMap;

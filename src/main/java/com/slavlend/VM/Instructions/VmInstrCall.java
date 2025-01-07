@@ -3,6 +3,10 @@ package com.slavlend.VM.Instructions;
 import com.slavlend.VM.*;
 import lombok.Getter;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+
 /*
 Вызов функции в VM
  */
@@ -31,9 +35,39 @@ public class VmInstrCall implements VmInstr {
             if (last instanceof VmObj vmObj) {
                 passArgs(vm, frame);
                 vmObj.call(name, vm);
-            } else {
+            } else if (last instanceof VmClass vmClass){
                 passArgs(vm, frame);
-                ((VmClass)last).getFunctions().lookup(name).exec(vm);
+                ((VmFunction)vmClass.getModValues().lookup(name)).exec(vm);
+            } else {
+                // рефлексийный вызов
+                Method[] methods = last.getClass().getMethods();
+                Method func = null;
+                for (Method m : methods) {
+                    if (m.getName().equals(name) &&
+                        m.getParameterCount() == args.getVarContainer().size()) {
+                        func = m;
+                    }
+                }
+                if (func == null) {
+                    throw new RuntimeException("function not found: " + name + " in: " + last.getClass().getName());
+                }
+                else {
+                    passArgs(vm, frame);
+                    ArrayList<Object> callArgs = new ArrayList<>();
+                    for (int i = args.getVarContainer().size()-1; i >= 0; i--) {
+                        Object arg = vm.pop();
+                        callArgs.add(arg);
+                    }
+                    try {
+                        Object returned = func.invoke(last, callArgs.toArray());
+                        // 👇 НЕ ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
+                        if (returned != null) {
+                            vm.push(returned);
+                        }
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
     }

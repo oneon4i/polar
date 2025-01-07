@@ -20,6 +20,9 @@ public class VmObj {
             scope.set(clazz.getConstructor().get(i).data, arg);
         }
         scope.setRoot(vm.getVariables());
+        if (clazz.getFunctions().getValues().containsKey("init")) {
+            call("init", vm);
+        }
     }
 
     /**

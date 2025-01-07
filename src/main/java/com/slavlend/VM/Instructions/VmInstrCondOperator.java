@@ -31,7 +31,7 @@ public class VmInstrCondOperator implements VmInstr {
     }
 
     // сравнивает два объекта
-    public boolean equal(Object l, Object r) {
+    public static boolean equal(Object l, Object r) {
         if (l instanceof String && r instanceof String) {
             return ((String)l).equals(((String)r));
         }

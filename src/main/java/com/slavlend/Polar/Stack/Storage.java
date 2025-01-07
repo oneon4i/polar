@@ -3,7 +3,7 @@ package com.slavlend.Polar.Stack;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.StackHistoryWriter;
 import com.slavlend.Parser.Address;
-import com.slavlend.Logger.PolarLogger;
+import com.slavlend.Polar.Logger.PolarLogger;
 import lombok.Getter;
 
 import java.util.ArrayList;

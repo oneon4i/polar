@@ -85,6 +85,14 @@ public class IceVm {
      */
     public void push(Object val) {
         stack.get().push(val);
+        /*
+        if (val == null) {
+            StackTraceElement[] elems =  Thread.currentThread().getStackTrace();
+            for (StackTraceElement elem : elems) {
+                System.out.println(elem.toString());
+            }
+        }
+         */
     }
 
     /**
@@ -115,12 +123,20 @@ public class IceVm {
                 System.out.println(o);
             }
             case "scan" -> {
+                Object o = pop();
+                if (!((String)o).isEmpty()) {
+                    System.out.println(o);
+                }
                 Scanner sc = new Scanner(System.in);
                 push(sc.nextLine());
                 sc.close();
             }
             default -> {
-                functions.lookup(name).exec(this);
+                if (functions.getValues().containsKey(name)) {
+                    functions.lookup(name).exec(this);
+                } else {
+                    ((VmFunction)variables.lookup(name)).exec(this);
+                }
             }
         }
     }
