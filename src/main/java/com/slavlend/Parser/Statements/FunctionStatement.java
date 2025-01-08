@@ -93,7 +93,7 @@ public class FunctionStatement implements Statement, Callable {
         for (Statement s : statements) {
             s.compile();
         }
-        new BackStatement(new NilExpression()).compile();
+        new BackStatement(null).compile();
         Compiler.code.endWrite();
     }
 

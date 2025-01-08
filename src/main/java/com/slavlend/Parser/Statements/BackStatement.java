@@ -55,7 +55,9 @@ public class BackStatement implements Statement, Expression {
 
     @Override
     public void compile() {
-        expression.compile();
+        if (expression != null) {
+            expression.compile();
+        }
         Compiler.code.visitInstr(new VmInstrRet());
     }
 
