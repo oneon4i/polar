@@ -18,6 +18,10 @@ class Callback(c) = {
         put('callback:')
         this.c()
     }
+    func ret() = {
+        back(this);
+    }
 }
 
 new Callback(a).get_callback()
+a = new Callback(a).ret()

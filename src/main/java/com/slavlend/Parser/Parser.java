@@ -917,12 +917,8 @@ public class Parser {
 
     // парсинг праймари экспрешенна
     public Expression parsePrimary() {
-        // Проверка создания объекта
-        if (check(TokenType.NEW)) {
-            return objectExpr();
-        }
         // Обработка идентификаторов
-        if (check(TokenType.ID)) {
+        if (check(TokenType.ID) || check(TokenType.NEW)) {
             return parseAccess();
         }
         // Обработка текстовых литералов
