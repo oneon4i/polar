@@ -57,4 +57,20 @@ public class VmFrame<T> {
             getValues().put(name, val);
         }
     }
+
+    /**
+     * Возвращает бул показывающий
+     * на то, найдено ли во фрейме
+     * @return - найдено ли (бул)
+     */
+    public boolean has(String name) {
+        VmFrame<T> current = this;
+        while (!current.getValues().containsKey(name)) {
+            if (current.root == null) {
+                return false;
+            }
+            current = current.root;
+        }
+        return current.getValues().containsKey(name);
+    }
 }

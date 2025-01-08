@@ -32,7 +32,12 @@ public class VmObj {
      */
     public void call(String name, IceVm vm) {
         // копируем и вызываем функцию
-        VmFunction func = clazz.getFunctions().getValues().get(name).copy();
+        VmFunction func;
+        if (clazz.getFunctions().getValues().containsKey(name)) {
+            func = clazz.getFunctions().getValues().get(name).copy();
+        } else {
+            func = ((VmFunction)scope.lookup(name)).copy();
+        }
         func.setDefinedFor(this);
         func.getScope().get().setRoot(scope);
         func.exec(vm);

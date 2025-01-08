@@ -1,5 +1,5 @@
 use 'helloworld.polar'
-
+#
 A.a()
 
 func pipe() = {
@@ -11,3 +11,6 @@ func pipe2(first, second) = {
 }
 
 pipe() |> pipe2(' world!') |> put()
+#
+a = A.a
+a()
