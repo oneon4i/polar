@@ -125,7 +125,6 @@ public class ForStatement implements Statement {
         Compiler.code.endWrite();
         Compiler.code.endWrite();
         // удаление переменной
-        valueExpr.compile();
         Compiler.code.visitInstr(new VmInstrDelL(variable));
     }
 

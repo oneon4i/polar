@@ -24,7 +24,7 @@ public class IceVm {
      *             кода в виртуальной машине
      */
     public void run(VmCode code) {
-        // выводим псевдо-байткод
+        // выводим байткод
         printByteCode(code);
         // запускаем бенчмарк
         VmBenchmark benchmark = new VmBenchmark();
@@ -37,7 +37,8 @@ public class IceVm {
         }
         // останавливаем бенчмарк
         System.out.println(
-                Colors.ANSI_BLUE + "🧊 Exec time: " + benchmark.end() + ", stack size: " + stack.get().size() + Colors.ANSI_RESET
+                Colors.ANSI_BLUE + "🧊 Exec time: " + benchmark.end() + ", stack size: "
+                        + stack.get().size() + "(" + stack.get().toString() + ")" + Colors.ANSI_RESET
         );
     }
 
