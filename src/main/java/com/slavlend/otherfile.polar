@@ -24,4 +24,6 @@ class Callback(c) = {
 }
 
 new Callback(a).get_callback()
-a = new Callback(a).ret()
+b = new Callback(a).ret()
+c = new Callback(a)
+c.get_callback()
