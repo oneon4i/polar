@@ -58,13 +58,13 @@ if (0 == 0 and 1 == 1) {
     a = new Texter('hello world!')
     a.print()
 }
-#
+##
 for (i = 0, i < 1000000) {
     i = i + 1
     put('hello world')
     put(i)
 }
-#
+##
 i = 0
 while (i < 1000000) {
     i = i + 1
@@ -89,12 +89,10 @@ put(arr.get(2))##
 map = {'key': 2, 'key2': 9}
 put(map.get('key2'))
 a = put('123')
-put(a)##
+put(a)#
 class A() = {
     mod test = '123'
     mod func a() = {
         put(A.test)
     }
 }
-
-a = A.a()#

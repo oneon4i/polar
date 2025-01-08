@@ -1086,7 +1086,7 @@ public class Parser {
         return "(" + token.type + ", " + token.value + ", "  + token.line + ")" /*+ " №" + current + " L:"*/;
     }
 
-    // загрузка классов библиотеки
+    // получение классов
     public void loadClasses()  {
         // классы
         ArrayList<PolarClass> classes = new ArrayList<>();
