@@ -292,6 +292,10 @@ public class Parser {
         if (check(TokenType.THROW)) {
             return throwValue();
         }
+        // стэйтмент new
+        if (check(TokenType.NEW)) {
+            return parseAccess();
+        }
         // стэйтмент функции
         if (check(TokenType.FUNC)) {
             FunctionStatement func = (FunctionStatement) function();
