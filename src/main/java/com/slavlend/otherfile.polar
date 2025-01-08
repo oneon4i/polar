@@ -13,4 +13,9 @@ func pipe2(first, second) = {
 pipe() |> pipe2(' world!') |> put()
 #
 a = A.a
-a()
+func get_callback(c) = {
+    put('callback:')
+    c()
+}
+
+get_callback(a)

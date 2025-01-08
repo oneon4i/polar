@@ -29,7 +29,11 @@ public class VmInstrCall implements VmInstr {
     public void run(IceVm vm, VmFrame<Object> frame) {
         if (!hasPrevious) {
             passArgs(vm, frame);
-            vm.callGlobal(name);
+            if (frame.has(name)) {
+                ((VmFunction)frame.lookup(name)).exec(vm);
+            } else {
+                vm.callGlobal(name);
+            }
         } else {
             Object last = vm.pop();
             if (last instanceof VmObj vmObj) {
