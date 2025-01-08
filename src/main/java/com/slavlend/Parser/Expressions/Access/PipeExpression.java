@@ -78,6 +78,15 @@ public class PipeExpression implements Expression, Statement {
 
     @Override
     public void compile() {
-
+        if (r.getLast() instanceof CallAccess callAccess) {
+            ArrayList<Expression> params = new ArrayList<>();
+            params.add(l);
+            params.addAll(callAccess.getParams());
+            callAccess.setParams(params);
+            r.compile();
+        }
+        else {
+            PolarLogger.exception("Not A Call Access In Pipe Expr!", address());
+        }
     }
 }
