@@ -39,7 +39,11 @@ public class VmCode {
             Compiler.iceVm.getFunctions().getValues().put(fn.getName(), fn);
         } else {
             if (writeTo.lastElement() instanceof VmClass vmClass) {
-                vmClass.getFunctions().set(fn.getName(), fn);
+                if (!vmClass.isModuleFunctionsWriting()) {
+                    vmClass.getFunctions().set(fn.getName(), fn);
+                } else {
+                    vmClass.getModFunctions().set(fn.getName(), fn);
+                }
             }
             else {
                 throw new RuntimeException("cannot define functions in block, except class");

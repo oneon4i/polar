@@ -2,6 +2,7 @@ package com.slavlend.VM;
 
 import com.slavlend.Parser.Expressions.ArgumentExpression;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -13,11 +14,16 @@ public class VmClass implements VmInstrContainer {
     // имя класса
     private final String name;
     // функции
-    private final VmFrame<VmFunction>  functions = new VmFrame<>();
+    private final VmFrame<VmFunction> functions = new VmFrame<>();
     // модульные значения
     private final VmFrame<Object> modValues = new VmFrame<>();
     // конструктор для класса
     private final ArrayList<ArgumentExpression> constructor;
+    // модульные функции
+    private final VmFrame<VmFunction> modFunctions = new VmFrame<VmFunction>();
+    // пишется ли в модульные функции
+    @Setter
+    private boolean isModuleFunctionsWriting = false;
 
     // конструктор
     public VmClass(String name, ArrayList<ArgumentExpression> constructor) {
@@ -32,12 +38,7 @@ public class VmClass implements VmInstrContainer {
      */
     @Override
     public void visitInstr(VmInstr instr) {
-        if (instr instanceof VmFunction fn) {
-            functions.getValues().put(fn.getName(), fn);
-        }
-        else {
-            throw new RuntimeException("cannot visit instr: " + instr + " with class!");
-        }
+        throw new RuntimeException("cannot visit instr: " + instr + " with class!");
     }
 
     /**
@@ -48,6 +49,11 @@ public class VmClass implements VmInstrContainer {
         for (VmFunction instr : functions.getValues().values()) {
             instr.print();
         }
+        System.out.println("╭───────────mod────────────╮");
+        for (VmFunction instr : modFunctions.getValues().values()) {
+            instr.print();
+        }
+        System.out.println("╰──────────────────────────╯");
         System.out.println("╰──────────────────────────╯");
     }
 }

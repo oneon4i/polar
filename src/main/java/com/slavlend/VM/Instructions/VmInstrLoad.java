@@ -16,7 +16,11 @@ public class VmInstrLoad implements VmInstr {
     @Override
     public void run(IceVm vm, VmFrame<Object> frame) {
         if (!hasPrevious) {
-            vm.load(frame, name);
+            try {
+                vm.load(frame, name);
+            } catch (RuntimeException e) {
+                vm.push(vm.getClasses().lookup(name));
+            }
         } else {
             Object last = vm.pop();
             if (last instanceof VmObj vmObj) {

@@ -20,7 +20,7 @@ public class VmInstrStoreL implements VmInstr {
 
     @Override
     public String toString() {
-        return "STORE(" + name + ")";
+        return "STORE_L(" + name + ")";
     }
 
     @Override

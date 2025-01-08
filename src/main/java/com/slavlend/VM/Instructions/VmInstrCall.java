@@ -37,7 +37,7 @@ public class VmInstrCall implements VmInstr {
                 vmObj.call(name, vm);
             } else if (last instanceof VmClass vmClass){
                 passArgs(vm, frame);
-                ((VmFunction)vmClass.getModValues().lookup(name)).exec(vm);
+                vmClass.getModFunctions().lookup(name).exec(vm);
             } else {
                 // рефлексийный вызов
                 Method[] methods = last.getClass().getMethods();

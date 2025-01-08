@@ -7,8 +7,10 @@ import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ArgumentExpression;
 import com.slavlend.Parser.Expressions.Expression;
+import com.slavlend.VM.Instructions.VmInstrStoreM;
 import com.slavlend.VM.VmClass;
 import lombok.Getter;
+import org.jetbrains.kotlin.wasm.ir.WasmHeapType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,12 +70,25 @@ public class ClassStatement implements Statement {
 
     @Override
     public void compile() {
+        // пишем класс
         VmClass vmClass = new VmClass(polarClass.getName(), polarClass.getConstructor());
         Compiler.code.defineClass(vmClass);
         Compiler.code.startWrite(vmClass);
         for (FunctionStatement fn : polarClass.getFunctions().values()) {
             fn.compile();
         }
+        // пишем модульные функции
+        vmClass.setModuleFunctionsWriting(true);
+        for (FunctionStatement st : polarClass.getModuleFunctions().values()) {
+            st.compile();
+        }
+        vmClass.setModuleFunctionsWriting(false);
         Compiler.code.endWrite();
+        // пишем модульные переменные
+        for (String name : moduleVariables.keySet()) {
+            Expression e = moduleVariables.get(name);
+            e.compile();
+            Compiler.code.visitInstr(new VmInstrStoreM(vmClass, name));
+        }
     }
 }
