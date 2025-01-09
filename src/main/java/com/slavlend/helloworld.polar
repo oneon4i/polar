@@ -89,10 +89,27 @@ put(arr.get(2))##
 map = {'key': 2, 'key2': 9}
 put(map.get('key2'))
 a = put('123')
-put(a)#
+put(a)##
 class A() = {
     mod test = '123'
     mod func a() = {
         put(A.test)
+    }
+}#
+
+a = 5
+
+match(a) {
+    case (1) {
+        put('1')
+    }
+    case (3) {
+        put('3')
+    }
+    case (5) {
+        put('5')
+    }
+    default {
+        put('default')
     }
 }

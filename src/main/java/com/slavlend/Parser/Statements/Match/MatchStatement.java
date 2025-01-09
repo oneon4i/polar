@@ -1,12 +1,14 @@
 package com.slavlend.Parser.Statements.Match;
 
 import com.slavlend.App;
+import com.slavlend.Compiler.Compiler;
 import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.Statement;
+import com.slavlend.VM.Instructions.VmInstrIf;
 
 import java.util.ArrayList;
 
@@ -92,7 +94,27 @@ public class MatchStatement implements Statement {
 
     @Override
     public void compile() {
-
+        VmInstrIf first = null;
+        VmInstrIf last = null;
+        for (Statement s : statements) {
+            VmInstrIf compiled;
+            if (s instanceof CaseStatement caseStatement) {
+                compiled = caseStatement.getCompiled(matchExpr);
+            } else if (s instanceof DefaultStatement defStatement) {
+                compiled = defStatement.getCompiled();
+            } else {
+                PolarLogger.exception("Cannot Use: " + s + " In Match Statement!", address);
+                return;
+            }
+            if (last != null) {
+                last.setElse(compiled);
+            }
+            if (first == null) {
+                first = compiled;
+            }
+            last = compiled;
+        }
+        Compiler.code.visitInstr(first);
     }
 
     // конструктор

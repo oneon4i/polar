@@ -1,11 +1,14 @@
 package com.slavlend.Parser.Statements.Match;
 
 import com.slavlend.App;
+import com.slavlend.Parser.Expressions.ConditionExpression;
+import com.slavlend.Parser.Operator;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.*;
+import com.slavlend.VM.Instructions.VmInstrIf;
 import kotlin.NotImplementedError;
 import lombok.Getter;
 
@@ -83,11 +86,25 @@ public class CaseStatement implements Statement {
 
     @Override
     public void compile() {
-
     }
 
     // конструктор
     public CaseStatement(Expression e) {
         this.checkExpr = e;
+    }
+
+    // компиляция
+    public VmInstrIf getCompiled(Expression matchExpr) {
+        IfStatement ifStatement = new IfStatement(compileCondition(matchExpr));
+        for (Statement s : statements) {
+            ifStatement.add(s);
+        }
+        return ifStatement.getCompiled();
+    }
+
+    public ArrayList<Expression> compileCondition(Expression matchExpr) {
+        ArrayList<Expression> expressions = new ArrayList<>();
+        expressions.add(new ConditionExpression(checkExpr, new Operator("=="), matchExpr));
+        return expressions;
     }
 }

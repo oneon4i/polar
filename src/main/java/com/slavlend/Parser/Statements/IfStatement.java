@@ -125,7 +125,7 @@ public class IfStatement implements Statement {
         }
     }
 
-    private VmInstrIf getCompiled() {
+    public VmInstrIf getCompiled() {
         VmInstrIf ifInstr = new VmInstrIf();
         Compiler.code.startWrite(ifInstr);
         ifInstr.setWritingConditions(true);
