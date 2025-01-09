@@ -1,6 +1,6 @@
 package com.slavlend.Compiler.Libs;
 
-import com.slavlend.VM.Instructions.VmInstrCondOperator;
+import com.slavlend.Vm.Instructions.VmInstrCondOperator;
 
 import java.util.HashMap;
 

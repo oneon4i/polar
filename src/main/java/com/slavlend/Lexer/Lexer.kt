@@ -1,6 +1,6 @@
 package com.slavlend.Lexer
 
-import com.slavlend.Polar.Logger.PolarLogger
+import com.slavlend.PolarLogger
 import com.slavlend.Parser.Address
 
 /*
@@ -504,11 +504,6 @@ class Lexer // конструктор
     // char peek
     fun Peek(offset: Int): Char {
         return input[current + offset]
-    }
-
-    // next
-    fun Next() {
-        current++
     }
 
     // next overload

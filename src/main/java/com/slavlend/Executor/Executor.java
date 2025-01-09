@@ -1,15 +1,12 @@
 package com.slavlend.Executor;
 
-import com.slavlend.Commands.Command;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Statements.BlockStatement;
-import com.slavlend.Polar.Stack.Classes;
-import com.slavlend.Polar.Stack.Storage;
-import com.slavlend.Polar.StackHistoryWriter;
 import com.slavlend.App;
 import com.slavlend.Colors;
 import com.slavlend.Lexer.Lexer;
 import com.slavlend.Parser.Parser;
+import com.slavlend.PolarLogger;
 
 /*
 Исполнение файла с кодом.
@@ -18,15 +15,8 @@ import com.slavlend.Parser.Parser;
 public class Executor {
     // запуск polar-файла
     public static void exec(ExecutorSettings settings) {
-        // инициализируем cтэк
-        new Classes();
-        new Storage();
-        new StackHistoryWriter();
-        Storage.getInstance().threadInit();
-
         // статус - парсинг
         System.out.println("🗺️ Parsing...");
-
         // лексер
         Lexer lexer = new Lexer(settings.getCode());
         // токенизация
@@ -43,19 +33,14 @@ public class Executor {
         parser.setEnvironmentPath(envPath);
         parser.setFileName(filePath);
         App.parser = parser;
-
-        // интерпретация
-        System.out.println(Colors.ANSI_GREEN + "🐲 Done!" + Colors.ANSI_RESET);
-
-        // интерпретируем
-        if (settings.getCompilerMode()) {
-            System.out.println(Colors.ANSI_CYAN + "🧊 Compiling..." + Colors.ANSI_RESET);
-            BlockStatement statement = parser.parse();
-            statement.compile();
-            Compiler.iceVm.run(Compiler.code);
-        } else {
-            System.out.println(Colors.ANSI_CYAN + "❄️ Interpreting..." + Colors.ANSI_RESET);
-            parser.execute();
-        }
+        // парсим код
+        BlockStatement statement = parser.parse();
+        // компилируем
+        System.out.println(Colors.ANSI_CYAN + "🧊 Compiling..." + Colors.ANSI_RESET);
+        statement.compile();
+        // устанавливаем логгер
+        Compiler.iceVm.setLogger(PolarLogger.polarLogger);
+        // исполняем
+        Compiler.iceVm.run(Compiler.code);
     }
 }

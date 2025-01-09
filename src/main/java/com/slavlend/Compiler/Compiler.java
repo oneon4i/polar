@@ -1,7 +1,7 @@
 package com.slavlend.Compiler;
 
-import com.slavlend.VM.IceVm;
-import com.slavlend.VM.VmCode;
+import com.slavlend.Vm.IceVm;
+import com.slavlend.Vm.VmCode;
 
 /*
 Компилятор в VM инструкции

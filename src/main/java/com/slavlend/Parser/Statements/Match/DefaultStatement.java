@@ -7,7 +7,7 @@ import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Expressions.NumberExpression;
 import com.slavlend.Parser.Operator;
 import com.slavlend.Parser.Statements.*;
-import com.slavlend.VM.Instructions.VmInstrIf;
+import com.slavlend.Vm.Instructions.VmInstrIf;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -19,27 +19,8 @@ public class DefaultStatement implements Statement {
     // адресс
     private final Address address = App.parser.address();
 
-    @Override
-    public void execute() {
-        // оптимизируем
-        optimize();
-        // стэйтменты
-        for (Statement statement : statements) {
-            statement.execute();
-        }
-    }
     public void add(Statement statement) {
         statements.add(statement);
-    }
-
-    @Override
-    public void interrupt() {
-
-    }
-
-    @Override
-    public void optimize() {
-        // ...
     }
 
     // копирование

@@ -2,11 +2,9 @@ package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
-import com.slavlend.Polar.PolarValue;
-import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
-import com.slavlend.VM.Instructions.VmInstrRet;
+import com.slavlend.Vm.Instructions.VmInstrRet;
 import lombok.Getter;
 
 /*
@@ -15,37 +13,13 @@ import lombok.Getter;
 @Getter
 public class BackStatement implements Statement, Expression {
     // выражение для возврата
-    private Expression expression;
+    private final Expression expr;
     // адресс
     private final Address address = App.parser.address();
 
     @Override
-    public void execute() {
-        // оптимизируем
-        optimize();
-        // кидаем значение
-        throw expression.evaluate();
-    }
-
-    @Override
-    public void optimize() {
-        // оптимизируем константной сверткой
-        expression = Optimizations.optimize(expression);
-    }
-
-    @Override
-    public PolarValue evaluate() {
-        return new PolarValue(expression.evaluate());
-    }
-
-    @Override
-    public void interrupt() {
-
-    }
-
-    @Override
     public Statement copy() {
-        return new BackStatement(expression);
+        return new BackStatement(expr);
     }
 
     @Override
@@ -55,13 +29,14 @@ public class BackStatement implements Statement, Expression {
 
     @Override
     public void compile() {
-        if (expression != null) {
-            expression.compile();
+        if (expr != null) {
+            expr.compile();
         }
-        Compiler.code.visitInstr(new VmInstrRet());
+        Compiler.code.visitInstr(new VmInstrRet(address.convert()));
     }
 
-    public BackStatement(Expression expression) {
-        this.expression = expression;
+    // конструктор
+    public BackStatement(Expression expr) {
+        this.expr = expr;
     }
 }

@@ -1,8 +1,5 @@
 package com.slavlend.Parser;
 
-import com.slavlend.Exceptions.PolarException;
-import com.slavlend.Polar.PolarClass;
-import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Lexer.TokenType;
 import com.slavlend.Parser.Expressions.*;
 import com.slavlend.Lexer.Token;
@@ -11,7 +8,7 @@ import com.slavlend.Parser.Statements.*;
 import com.slavlend.Parser.Statements.Match.CaseStatement;
 import com.slavlend.Parser.Statements.Match.DefaultStatement;
 import com.slavlend.Parser.Statements.Match.MatchStatement;
-import com.slavlend.Polar.Logger.PolarLogger;
+import com.slavlend.PolarLogger;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +19,7 @@ import java.util.List;
 /*
 Парсер токенов в -> AST
  */
+@SuppressWarnings("unused")
 public class Parser {
     // токены
     @Getter
@@ -72,29 +70,6 @@ public class Parser {
         return new Address(tokens.get(current).line);
     }
 
-    // парсинг (экзекьют)
-    public void execute() {
-        try {
-            BlockStatement statement = new BlockStatement();
-
-            // парсим стэйтменты
-            while (current < tokens.size()) {
-                statement.add(statement());
-            }
-
-            // экзекьютим и ловим ошибки
-            try {
-                statement.execute();
-            } catch (PolarException e) {
-                PolarLogger.printError(e);
-            }
-        } catch (PolarException e) {
-            PolarLogger.printError(e);
-        } catch (Exception e) {
-            PolarLogger.printError(new PolarException("Unexpected Error: " + e.getMessage(), address().getLine(), null));
-        }
-    }
-
     // парсинг
     public BlockStatement parse() {
         try {
@@ -107,12 +82,9 @@ public class Parser {
 
             // экзекьютим и ловим ошибки
             return statement;
-        } catch (PolarException e) {
-            PolarLogger.printError(e);
         } catch (Exception e) {
-            PolarLogger.printError(new PolarException("Unexpected Error: " + e.getMessage(), address().getLine(), null));
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     public Operator condOperator() {
@@ -298,10 +270,7 @@ public class Parser {
         }
         // стэйтмент функции
         if (check(TokenType.FUNC)) {
-            FunctionStatement func = (FunctionStatement) function();
-            func.putToFunctions();
-
-            return func;
+            return (FunctionStatement) function();
         }
         // стэйтмент класса
         if (check(TokenType.CLASS)) {
@@ -575,10 +544,10 @@ public class Parser {
         // скобка
         consume(TokenType.BRACKET);
         // кондишены
-        ArrayList<ConditionExpression> _conditions = new ArrayList<>();
+        ArrayList<Expression> _conditions = new ArrayList<>();
         while (!match(")")) {
             if (!check(TokenType.AND)) {
-                _conditions.add((ConditionExpression) conditional());
+                _conditions.add(conditional());
             } else {
                 consume(TokenType.AND);
             }
@@ -627,7 +596,7 @@ public class Parser {
         consume(TokenType.BRACE);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
-            statement.addCatch(statement());
+            statement.addCatchStatement(statement());
         }
         // брэйс
         consume(TokenType.BRACE);
@@ -1084,115 +1053,5 @@ public class Parser {
         Token token = tokens.get(current);
         // инфа токена
         return "(" + token.type + ", " + token.value + ", "  + token.line + ")" /*+ " №" + current + " L:"*/;
-    }
-
-    // получение классов
-    public void loadClasses()  {
-        // классы
-        ArrayList<PolarClass> classes = new ArrayList<>();
-        // класс
-        while (current < tokens.size()) {
-            // стэйтмент юз
-            if (check(TokenType.USE)) {
-                // юзаем
-                consume(TokenType.USE);
-                // получаем название библиотеки
-                TextExpression id = (TextExpression) parseExpression();
-                // возвращаем
-                new UseLibStatement(id).execute();
-            }
-            // стэйтмент класс
-            else if (check(TokenType.CLASS)) {
-                // паттерн
-                // class (...) = { ... }
-                consume(TokenType.CLASS);
-                // имя класса
-                String name = consume(TokenType.ID).value;
-                consume(TokenType.BRACKET);
-                // конструктор
-                ArrayList<ArgumentExpression> constructor = new ArrayList<>();
-                // аргументы
-                while (!check(TokenType.BRACKET)) {
-                    if (!check(TokenType.COMMA)) {
-                        constructor.add(new ArgumentExpression(consume(TokenType.ID).value));
-                    } else {
-                        consume(TokenType.COMMA);
-                    }
-                }
-                // полное имя
-                String fullName = fileName + ":" + name;
-                // стэйтмент класса
-                ClassStatement classStatement = new ClassStatement(fullName, name, constructor);
-                // скобка
-                consume(TokenType.BRACKET);
-                // ассигн
-                consume(TokenType.ASSIGN);
-                // брэйс
-                consume(TokenType.BRACE);
-                // тело класса
-                while (!check(TokenType.BRACE)) {
-                    // функция
-                    if (check(TokenType.FUNC)) {
-                        // функция
-                        Statement statement = function();
-                        // добавляем в класс
-                        if (statement instanceof FunctionStatement) {
-                            classStatement.add((FunctionStatement) statement);
-                        }
-                        else {
-                            error("Cannot Use Any Statements Except Functions, Mod Function Or Mod Variables In Class: " + tokenInfo());
-                        }
-                    }
-                    else if (check(TokenType.MOD)) {
-                        consume(TokenType.MOD);
-                        // модульная функция
-                        if (check(TokenType.FUNC)) {
-                            Statement statement = function();
-                            if (statement instanceof FunctionStatement) {
-                                classStatement.addModule((FunctionStatement) statement);
-                            } else {
-                                error("Cannot Use Any Statements Except Functions, Mod Function Or Mod Variables In Class: " + tokenInfo());
-                            }
-                        }
-                        // модульная переменная
-                        else {
-                            String assignName = consume(TokenType.ID).value;
-                            consume(TokenType.ASSIGN);
-                            Expression expr = parseExpression();
-                            classStatement.addModuleVariable(assignName, expr);
-                        }
-                    }
-                    else {
-                        PolarLogger.exception("Invalid Statement Creation In Class: " + tokenInfo(), address());
-                    }
-                }
-                // брэйс
-                consume(TokenType.BRACE);
-                // удаляем если там такой класс есть
-                classes.removeIf(_clazz -> _clazz.getName().equals(classStatement.getPolarClass().getName()));
-                // добавляем
-                classes.add(classStatement.getPolarClass());
-            }
-            // стэйтмент функция
-            else if (check(TokenType.FUNC)) {
-                // помещаем функцию
-                ((FunctionStatement) function()).putToFunctions();
-            }
-            else {
-                // продвигаемся по токенам
-                current++;
-            }
-        }
-        // добавляем найденные классы в кучу
-        List<PolarClass> forRemove = new ArrayList<>();
-        for (PolarClass st: classes) {
-            for (PolarClass _st: Classes.getInstance().getClasses()) {
-                if (_st.getName().equals(st.getName())) {
-                    forRemove.add(st);
-                }
-            }
-        }
-        Classes.getInstance().getClasses().removeAll(forRemove);
-        Classes.getInstance().getClasses().addAll(classes);
     }
 }

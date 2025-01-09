@@ -4,11 +4,9 @@ import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Operator;
-import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
-import com.slavlend.VM.Instructions.VmInstrComputeConds;
-import com.slavlend.VM.Instructions.VmInstrIf;
-import com.slavlend.VM.VmInstr;
+import com.slavlend.Vm.Instructions.VmInstrComputeConds;
+import com.slavlend.Vm.Instructions.VmInstrIf;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,55 +24,12 @@ public class IfStatement implements Statement {
     // адресс
     private final Address address = App.parser.address();
 
-    @Override
-    public void optimize() {
-        // ...
-    }
-
-    @Override
-    public void execute() {
-        // оптимизурем
-        optimize();
-
-        // если условие сработало
-        if (conditions()) {
-            // стэйтменты
-            for (Statement statement : statements) {
-                 statement.execute();
-            }
-        }
-        else {
-            // если условие не сработало
-            // экзекьютим если есть что-то в ином случае
-            if (elseCondition != null) {
-                elseCondition.execute();
-            }
-        }
-    }
-
+    // добавление стейтмента в блок
     public void add(Statement statement) {
         statements.add(statement);
     }
 
-    // кодишены
-    public boolean conditions() {
-        for (Expression e : conditions) {
-            PolarValue v = e.evaluate();
-            if (!v.asBool()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public void interrupt() {
-
-    }
-
     // копирование
-
     @Override
     public Statement copy() {
         IfStatement _copy = new IfStatement(conditions);
@@ -97,7 +52,7 @@ public class IfStatement implements Statement {
 
     @Override
     public void compile() {
-        VmInstrIf ifInstr = new VmInstrIf();
+        VmInstrIf ifInstr = new VmInstrIf(address.convert());
         Compiler.code.visitInstr(ifInstr);
         Compiler.code.startWrite(ifInstr);
         ifInstr.setWritingConditions(true);
@@ -117,7 +72,7 @@ public class IfStatement implements Statement {
         for (Expression cond : conditions) {
             cond.compile();
             if (conditionsAmount+1 == 2) {
-                Compiler.code.visitInstr(new VmInstrComputeConds(new Operator("&&")));
+                Compiler.code.visitInstr(new VmInstrComputeConds(address.convert(), new Operator("&&")));
             }
             else {
                 conditionsAmount += 1;
@@ -126,7 +81,7 @@ public class IfStatement implements Statement {
     }
 
     public VmInstrIf getCompiled() {
-        VmInstrIf ifInstr = new VmInstrIf();
+        VmInstrIf ifInstr = new VmInstrIf(address.convert());
         Compiler.code.startWrite(ifInstr);
         ifInstr.setWritingConditions(true);
         compileConditions();

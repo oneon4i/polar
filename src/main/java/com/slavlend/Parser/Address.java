@@ -1,5 +1,6 @@
 package com.slavlend.Parser;
 
+import com.slavlend.Vm.VmInAddr;
 import lombok.Getter;
 
 /*
@@ -18,5 +19,10 @@ public class Address {
     @Override
     public String toString() {
         return "(line: " + line + ")";
+    }
+
+    // конвертация в VM адресс
+    public VmInAddr convert() {
+        return new VmInAddr(line);
     }
 }

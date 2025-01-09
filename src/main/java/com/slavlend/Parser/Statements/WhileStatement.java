@@ -4,10 +4,8 @@ import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Operator;
-import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Expressions.ConditionExpression;
-import com.slavlend.VM.Instructions.*;
+import com.slavlend.Vm.Instructions.*;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -15,49 +13,20 @@ import java.util.ArrayList;
 /*
 Вайл стэйтмент - цикл
  */
-@SuppressWarnings("PointlessBooleanExpression")
 @Getter
 public class WhileStatement implements Statement {
     // тело
     private final ArrayList<Statement> statements = new ArrayList<>();
     // кодишены
-    private final ArrayList<ConditionExpression> conditions;
+    private final ArrayList<Expression> conditions;
     // адресс
     private final Address address = App.parser.address();
-
-    @Override
-    public void optimize() {
-        // ...
-    }
-
-    @Override
-    public void execute() {
-        // оптимизурем
-        optimize();
-        // кондишены
-        while (conditions() == true) {
-            // стэйтменты
-            for (Statement statement : statements) {
-                try {
-                    statement.execute();
-                } catch (BreakStatement breakStatement) {
-                    return;
-                }
-            }
-        }
-    }
 
     public void add(Statement statement) {
         statements.add(statement);
     }
 
-    @Override
-    public void interrupt() {
-
-    }
-
     // копирование
-
     @Override
     public Statement copy() {
         WhileStatement _copy = new WhileStatement(conditions);
@@ -77,10 +46,10 @@ public class WhileStatement implements Statement {
 
     @Override
     public void compile() {
-        VmInstrLoop loop = new VmInstrLoop();
+        VmInstrLoop loop = new VmInstrLoop(address.convert());
         Compiler.code.visitInstr(loop);
         Compiler.code.startWrite(loop);
-        VmInstrIf ifInstr = new VmInstrIf();
+        VmInstrIf ifInstr = new VmInstrIf(address.convert());
         Compiler.code.visitInstr(ifInstr);
         Compiler.code.startWrite(ifInstr);
         ifInstr.setWritingConditions(true);
@@ -90,12 +59,12 @@ public class WhileStatement implements Statement {
             s.compile();
         }
         Compiler.code.endWrite();
-        VmInstrIf elseInstr = new VmInstrIf();
+        VmInstrIf elseInstr = new VmInstrIf(address.convert());
         Compiler.code.startWrite(elseInstr);
         elseInstr.setWritingConditions(true);
-        elseInstr.visitInstr(new VmInstrPush(true));
+        elseInstr.visitInstr(new VmInstrPush(address.convert(), true));
         elseInstr.setWritingConditions(false);
-        elseInstr.visitInstr(new VmInstrLoopEnd(false));
+        elseInstr.visitInstr(new VmInstrLoopEnd(address.convert(), false));
         ifInstr.setElse(elseInstr);
         Compiler.code.endWrite();
         Compiler.code.endWrite();
@@ -106,7 +75,7 @@ public class WhileStatement implements Statement {
         for (Expression cond : conditions) {
             cond.compile();
             if (conditionsAmount+1 == 2) {
-                Compiler.code.visitInstr(new VmInstrComputeConds(new Operator("&&")));
+                Compiler.code.visitInstr(new VmInstrComputeConds(address.convert(), new Operator("&&")));
             }
             else {
                 conditionsAmount += 1;
@@ -115,19 +84,7 @@ public class WhileStatement implements Statement {
     }
 
     // конструктор
-    public WhileStatement(ArrayList<ConditionExpression> _conditions) {
+    public WhileStatement(ArrayList<Expression> _conditions) {
         this.conditions = _conditions;
-    }
-
-    // кондишены
-    public boolean conditions() {
-        for (ConditionExpression e : conditions) {
-            PolarValue v = e.evaluate();
-            if (!v.asBool()) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

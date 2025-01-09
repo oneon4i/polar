@@ -2,14 +2,9 @@ package com.slavlend.Parser.Expressions;
 
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
-import com.slavlend.Polar.PolarObject;
-import com.slavlend.Polar.PolarValue;
-import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Parser.Address;
-import com.slavlend.VM.Instructions.VmInstrNewObj;
-import com.slavlend.VM.Instructions.VmInstrPush;
-import com.slavlend.VM.VmObj;
-import com.slavlend.VM.VmVarContainer;
+import com.slavlend.Vm.Instructions.VmInstrNewObj;
+import com.slavlend.Vm.VmVarContainer;
 
 import java.util.ArrayList;
 
@@ -22,14 +17,7 @@ public class ObjectExpression implements Expression {
     // конструктор
     private final ArrayList<Expression> constructor;
     // адресс
-    private Address address = App.parser.address();
-
-    @Override
-    public PolarValue evaluate() {
-        PolarObject obj = new PolarObject(Classes.getInstance().lookupClass(address, className), constructor);
-        obj.init();
-        return new PolarValue(obj);
-    }
+    private final Address address = App.parser.address();
 
     @Override
     public Address address() {
@@ -44,7 +32,7 @@ public class ObjectExpression implements Expression {
             e.compile();
         }
         Compiler.code.endWrite();
-        Compiler.code.visitInstr(new VmInstrNewObj(className, container));
+        Compiler.code.visitInstr(new VmInstrNewObj(address.convert(), className, container));
     }
 
     public ObjectExpression(String className, ArrayList<Expression> constructor) {

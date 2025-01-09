@@ -2,12 +2,8 @@ package com.slavlend.Parser.Expressions;
 
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
-import com.slavlend.Polar.PolarValue;
-import com.slavlend.Polar.Reflected;
-import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
-import com.slavlend.VM.Instructions.VmInstrPush;
-import com.slavlend.VM.Instructions.VmInstrRefl;
+import com.slavlend.Vm.Instructions.VmInstrRefl;
 import lombok.Getter;
 
 /*
@@ -22,24 +18,13 @@ public class ReflectExpression implements Expression {
     private final Address address = App.parser.address();
 
     @Override
-    public PolarValue evaluate() {
-        try {
-            return new PolarValue(new Reflected(address, Class.forName(className)));
-        }
-        catch (ClassNotFoundException e) {
-            PolarLogger.exception("Reflection Exception: " + e, address);
-            return new PolarValue(null);
-        }
-    }
-
-    @Override
     public Address address() {
         return address;
     }
 
     @Override
     public void compile() {
-        Compiler.code.visitInstr(new VmInstrRefl(className));
+        Compiler.code.visitInstr(new VmInstrRefl(address.convert(), className));
     }
 
     public ReflectExpression(String className) {

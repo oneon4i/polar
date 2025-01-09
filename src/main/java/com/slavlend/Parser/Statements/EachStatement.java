@@ -1,7 +1,5 @@
 package com.slavlend.Parser.Statements;
 
-import com.slavlend.Polar.PolarValue;
-import com.slavlend.Polar.Stack.Storage;
 import com.slavlend.App;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Access.AccessExpression;
@@ -27,53 +25,9 @@ public class EachStatement implements Statement {
     // имя переменной списка
     private final AccessExpression listVariable;
 
-    @Override
-    public void optimize() {
-        // ...
-    }
-
-    @Override
-    public void execute() {
-        // оптимизурем
-        optimize();
-        // создаём темповую переменную
-        ArrayList<PolarValue> arr = listVariable.evaluate().asList();
-        int index = 0;
-        if (arr.size() > index) { Storage.getInstance().put(variableName, arr.get(index)); }
-        else { return; }
-
-        // кондишены
-        while (conditions() == true) {
-            // плюсуем индекс
-            index++;
-            // стэйтменты
-            for (Statement statement : statements) {
-                try {
-                    statement.execute();
-                } catch (BreakStatement breakStatement) {
-                    return;
-                } catch (NextStatement nextStatement) {
-                    // continue
-                    break;
-                }
-            }
-            // удаляем значение и помещаем новое
-            Storage.getInstance().del(variableName);
-            if (index >= arr.size()) { return; }
-            Storage.getInstance().put(variableName, arr.get(index));
-        }
-
-        // удаляем темповую переменную
-        Storage.getInstance().del(variableName);
-    }
-
+    // добавка стейтмента в блок
     public void add(Statement statement) {
         statements.add(statement);
-    }
-
-    @Override
-    public void interrupt() {
-
     }
 
     // копирование
@@ -97,24 +51,12 @@ public class EachStatement implements Statement {
 
     @Override
     public void compile() {
-
+        // not implemented
     }
 
     // конструктор
     public EachStatement(AccessExpression arr, String name) {
         this.listVariable = arr;
         this.variableName = name;
-    }
-
-    // кондишены
-    public boolean conditions() {
-        for (ConditionExpression e : conditions) {
-            PolarValue v = e.evaluate();
-            if (!v.asBool()) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

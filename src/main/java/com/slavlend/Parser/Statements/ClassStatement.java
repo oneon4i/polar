@@ -2,15 +2,12 @@ package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
-import com.slavlend.Polar.PolarClass;
-import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ArgumentExpression;
 import com.slavlend.Parser.Expressions.Expression;
-import com.slavlend.VM.Instructions.VmInstrStoreM;
-import com.slavlend.VM.VmClass;
+import com.slavlend.Vm.Instructions.VmInstrStoreM;
+import com.slavlend.Vm.VmClass;
 import lombok.Getter;
-import org.jetbrains.kotlin.wasm.ir.WasmHeapType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,30 +15,33 @@ import java.util.HashMap;
 // стэтймент класса
 @Getter
 public class ClassStatement implements Statement {
-    // класс
-    private final PolarClass polarClass;
     // адресс
     private final Address address = App.parser.address();
+    // функции
+    private final HashMap<String, FunctionStatement> functions = new HashMap<>();
+    // модульные функции ( статические )
+    private final HashMap<String, FunctionStatement> moduleFunctions = new HashMap<>();
     // выражения для модульных переменных
     private final HashMap<String, Expression> moduleVariables = new HashMap<>();
-
-    @Override
-    public void optimize() {
-        // ...
-    }
+    // имя
+    private final String name;
+    private final String fullName;
+    // конструктор
+    private final ArrayList<ArgumentExpression> constructor;
 
     // конструктор
     public ClassStatement(String fullName, String name, ArrayList<ArgumentExpression> constructor) {
-        this.polarClass = new PolarClass(this, fullName, name, constructor, address);
-        Classes.getInstance().getClasses().add(this.polarClass);
+        this.fullName = fullName;
+        this.name = name;
+        this.constructor = constructor;
     }
 
     // эддеры функций
     public void add(FunctionStatement statement) {
-        polarClass.add(statement);
+        functions.put(statement.getName(), statement);
     }
     public void addModule(FunctionStatement statement) {
-        polarClass.addModule(statement);
+        moduleFunctions.put(statement.getName(), statement);
     }
 
     // эддер переменной
@@ -50,17 +50,8 @@ public class ClassStatement implements Statement {
     }
 
     @Override
-    public void execute() {
-    }
-
-    @Override
-    public void interrupt() {
-
-    }
-
-    @Override
     public Statement copy() {
-        return new ClassStatement(polarClass.getFullName(), polarClass.getName(), polarClass.getConstructor());
+        return new ClassStatement(getFullName(), getName(), getConstructor());
     }
 
     @Override
@@ -71,15 +62,15 @@ public class ClassStatement implements Statement {
     @Override
     public void compile() {
         // пишем класс
-        VmClass vmClass = new VmClass(polarClass.getName(), polarClass.getConstructor());
-        Compiler.code.defineClass(vmClass);
+        VmClass vmClass = new VmClass(getName(), getConstructor(), address.convert());
+        Compiler.code.defineClass(address.convert(), vmClass);
         Compiler.code.startWrite(vmClass);
-        for (FunctionStatement fn : polarClass.getFunctions().values()) {
+        for (FunctionStatement fn : getFunctions().values()) {
             fn.compile();
         }
         // пишем модульные функции
         vmClass.setModuleFunctionsWriting(true);
-        for (FunctionStatement st : polarClass.getModuleFunctions().values()) {
+        for (FunctionStatement st : getModuleFunctions().values()) {
             st.compile();
         }
         vmClass.setModuleFunctionsWriting(false);
@@ -88,7 +79,7 @@ public class ClassStatement implements Statement {
         for (String name : moduleVariables.keySet()) {
             Expression e = moduleVariables.get(name);
             e.compile();
-            Compiler.code.visitInstr(new VmInstrStoreM(vmClass, name));
+            Compiler.code.visitInstr(new VmInstrStoreM(address.convert(),vmClass, name));
         }
     }
 }

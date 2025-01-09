@@ -3,7 +3,7 @@ package com.slavlend.Parser.Statements;
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
-import com.slavlend.VM.Instructions.VmInstrLoopEnd;
+import com.slavlend.Vm.Instructions.VmInstrLoopEnd;
 import lombok.Getter;
 
 /*
@@ -13,24 +13,6 @@ import lombok.Getter;
 public class NextStatement extends RuntimeException implements Statement {
     // адресс
     private final Address address = App.parser.address();
-
-    @Override
-    public void optimize() {
-        // ...
-    }
-
-    @Override
-    public void execute() {
-        // оптимизурем
-        optimize();
-        // кидаем
-        throw this;
-    }
-
-    @Override
-    public void interrupt() {
-
-    }
 
     @Override
     public Statement copy() {
@@ -44,6 +26,6 @@ public class NextStatement extends RuntimeException implements Statement {
 
     @Override
     public void compile() {
-        Compiler.code.visitInstr(new VmInstrLoopEnd(true));
+        Compiler.code.visitInstr(new VmInstrLoopEnd(address.convert(), true));
     }
 }

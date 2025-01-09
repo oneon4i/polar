@@ -3,13 +3,10 @@ package com.slavlend.Parser.Statements;
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Operator;
-import com.slavlend.Polar.PolarValue;
-import com.slavlend.Polar.Stack.Storage;
-import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ConditionExpression;
 import com.slavlend.Parser.Expressions.Expression;
-import com.slavlend.VM.Instructions.*;
+import com.slavlend.Vm.Instructions.*;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -17,7 +14,6 @@ import java.util.ArrayList;
 /*
 Фор стэйтмент - цикл
  */
-@SuppressWarnings("PointlessBooleanExpression")
 @Getter
 public class ForStatement implements Statement {
     // тело
@@ -29,51 +25,14 @@ public class ForStatement implements Statement {
     // имя переменной
     private final String variable;
     // значение
-    private Expression valueExpr;
+    private final Expression valueExpr;
 
-    @Override
-    public void optimize() {
-        // оптимизируем константной сверткой
-        valueExpr = Optimizations.optimize(valueExpr);
-    }
-
-    @Override
-    public void execute() {
-        // оптимизурем
-        optimize();
-        // создаём темповую переменную
-        Storage.getInstance().put(variable, valueExpr.evaluate());
-
-        // кондишены
-        while (conditions() == true) {
-            // стэйтменты
-            for (Statement statement : statements) {
-                try {
-                    statement.execute();
-                } catch (BreakStatement breakStatement) {
-                    return;
-                } catch (NextStatement nextStatement) {
-                    // continue
-                    break;
-                }
-            }
-        }
-
-        // удаляем темповую переменную
-        Storage.getInstance().del(variable);
-    }
-
+    // добавка стейтмента в блок
     public void add(Statement statement) {
         statements.add(statement);
     }
 
-    @Override
-    public void interrupt() {
-
-    }
-
     // копирование
-
     @Override
     public Statement copy() {
         ForStatement _copy = new ForStatement(conditions, variable, valueExpr);
@@ -95,14 +54,14 @@ public class ForStatement implements Statement {
     public void compile() {
         // запись переменной
         valueExpr.compile();
-        Compiler.code.visitInstr(new VmInstrStoreL(variable));
+        Compiler.code.visitInstr(new VmInstrStoreL(address.convert(), variable));
         // цикл
-        VmInstrLoop loop = new VmInstrLoop();
+        VmInstrLoop loop = new VmInstrLoop(address.convert());
         Compiler.code.visitInstr(loop);
         // начинаем писать в цикл
         Compiler.code.startWrite(loop);
         // начинаем писать условие
-        VmInstrIf ifInstr = new VmInstrIf();
+        VmInstrIf ifInstr = new VmInstrIf(address.convert());
         Compiler.code.visitInstr(ifInstr);
         Compiler.code.startWrite(ifInstr);
         ifInstr.setWritingConditions(true);
@@ -113,19 +72,19 @@ public class ForStatement implements Statement {
         }
         // заканчиваем писать условие
         Compiler.code.endWrite();
-        VmInstrIf elseInstr = new VmInstrIf();
+        VmInstrIf elseInstr = new VmInstrIf(address.convert());
         // начинаем писать else-условие
         Compiler.code.startWrite(elseInstr);
         elseInstr.setWritingConditions(true);
-        elseInstr.visitInstr(new VmInstrPush(true));
+        elseInstr.visitInstr(new VmInstrPush(address.convert(),true));
         elseInstr.setWritingConditions(false);
-        elseInstr.visitInstr(new VmInstrLoopEnd(false));
+        elseInstr.visitInstr(new VmInstrLoopEnd(address.convert(), false));
         ifInstr.setElse(elseInstr);
         // выходим
         Compiler.code.endWrite();
         Compiler.code.endWrite();
         // удаление переменной
-        Compiler.code.visitInstr(new VmInstrDelL(variable));
+        Compiler.code.visitInstr(new VmInstrDelL(address.convert(), variable));
     }
 
     // конструктор
@@ -140,23 +99,11 @@ public class ForStatement implements Statement {
         for (Expression cond : conditions) {
             cond.compile();
             if (conditionsAmount+1 == 2) {
-                Compiler.code.visitInstr(new VmInstrComputeConds(new Operator("&&")));
+                Compiler.code.visitInstr(new VmInstrComputeConds(address.convert(), new Operator("&&")));
             }
             else {
                 conditionsAmount += 1;
             }
         }
-    }
-
-    // кондишены
-    public boolean conditions() {
-        for (ConditionExpression e : conditions) {
-            PolarValue v = e.evaluate();
-            if (!v.asBool()) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

@@ -1,11 +1,7 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
-import com.slavlend.Exceptions.PolarException;
-import com.slavlend.Exceptions.PolarThrowable;
 import com.slavlend.Parser.Address;
-import com.slavlend.Polar.PolarValue;
-import com.slavlend.Polar.Stack.Storage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,59 +22,14 @@ public class TryStatement implements Statement {
     // адресс
     private final Address address = App.parser.address();
 
-    @Override
-    public void optimize() {
-        // ...
-    }
-
-    @Override
-    public void execute() {
-        // оптимизурем
-        optimize();
-        // стэйтменты
-        for (Statement statement : statements) {
-            try {
-                statement.execute();
-            } catch (PolarThrowable value) {
-                // создаём переменную
-                Storage.getInstance().put(variableName, value.getValue());
-                // стэйтменты кэтча
-                for (Statement catchStatement : catchStatements) {
-                    catchStatement.execute();
-                }
-                // удаляем переменную
-                Storage.getInstance().del(variableName);
-                // выходим из блока
-                return;
-            } catch (PolarException e) {
-                // создаём переменную
-                Storage.getInstance().put(variableName, new PolarValue(e.getError()));
-                // стэйтменты кэтча
-                for (Statement catchStatement : catchStatements) {
-                    catchStatement.execute();
-                }
-                // удаляем переменную
-                Storage.getInstance().del(variableName);
-                // выходим из блока
-                return;
-            }
-        }
-    }
-
     public void add(Statement statement) {
         statements.add(statement);
     }
-    public void addCatch(Statement statement) {
+    public void addCatchStatement(Statement statement) {
         catchStatements.add(statement);
     }
 
-    @Override
-    public void interrupt() {
-
-    }
-
     // копирование
-
     @Override
     public Statement copy() {
         TryStatement _copy = new TryStatement(variableName);
@@ -88,7 +39,7 @@ public class TryStatement implements Statement {
         }
 
         for (Statement statement : catchStatements) {
-            _copy.addCatch(statement.copy());
+            _copy.addCatchStatement(statement.copy());
         }
 
         return _copy;

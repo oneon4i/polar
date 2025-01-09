@@ -2,9 +2,8 @@ package com.slavlend.Parser.Expressions;
 
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
-import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
-import com.slavlend.VM.Instructions.VmInstrPush;
+import com.slavlend.Vm.Instructions.VmInstrPush;
 import lombok.Getter;
 
 /*
@@ -23,18 +22,13 @@ public class TernaryExpression implements Expression {
     private final Address address = App.parser.address();
 
     @Override
-    public PolarValue evaluate() {
-        return condExpr.evaluate().asBool() ? left.evaluate() : right.evaluate();
-    }
-
-    @Override
     public Address address() {
         return address;
     }
 
     @Override
     public void compile() {
-        Compiler.code.visitInstr(new VmInstrPush("not implemented"));
+        Compiler.code.visitInstr(new VmInstrPush(address.convert(), "not implemented"));
     }
 
     public TernaryExpression(ConditionExpression condExpr, Expression left, Expression right) {

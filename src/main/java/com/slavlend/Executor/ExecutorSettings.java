@@ -11,13 +11,10 @@ public class ExecutorSettings {
     private final String filePath;
     // код
     private final String code;
-    // режим компиляции
-    private final Boolean compilerMode;
 
     // конструктор
-    public ExecutorSettings(String filePath, String code, Boolean compilerMode) {
+    public ExecutorSettings(String filePath, String code) {
         this.filePath = filePath;
         this.code = code;
-        this.compilerMode = compilerMode;
     }
 }
