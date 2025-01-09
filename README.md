@@ -1,6 +1,11 @@
 Dynamicly typed simple scripting
 programming language 💡
 
+> [!IMPORTANT]
+> Compiler & Vm still under dev. It doesn't
+> support the old libs (from interpreter), try, catch, 
+> throw stmts for now.
+
 > [!NOTE]
 > Requires kotlin 5.0 & jdk 21
 
