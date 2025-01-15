@@ -19,6 +19,9 @@ public class IceVm {
     private final VmFrame<Object> variables = new VmFrame<>();
     private final VmFrame<VmFunction> functions = new VmFrame<>();
     private final VmFrame<VmClass> classes = new VmFrame<>();
+    // рэйс ошибок
+    @Setter
+    public static VmErrRaiser raiser;
     // логгер
     @Setter
     public static VmErrLogger logger;
@@ -29,22 +32,29 @@ public class IceVm {
      *             кода в виртуальной машине
      */
     public void run(VmCode code) {
-        // выводим байткод
-        printByteCode(code);
-        // запускаем бенчмарк
-        VmBenchmark benchmark = new VmBenchmark();
-        benchmark.start();
-        // инициализация стека
-        initStackForThread();
-        // исполняем код
-        for (VmInstr instr : code.getInstructions()) {
-            instr.run(this, variables);
+        // запуск
+        try {
+            // выводим байткод
+            printByteCode(code);
+            // запускаем бенчмарк
+            VmBenchmark benchmark = new VmBenchmark();
+            benchmark.start();
+            // инициализация стека
+            initStackForThread();
+            // исполняем код
+            for (VmInstr instr : code.getInstructions()) {
+                instr.run(this, variables);
+            }
+            // останавливаем бенчмарк
+            System.out.println(
+                    Colors.ANSI_BLUE + "🧊 Exec time: " + benchmark.end() + ", stack size: "
+                            + stack.get().size() + "(" + stack.get().toString() + ")" + Colors.ANSI_RESET
+            );
+        } catch (VmException exception) {
+            logger.error(exception.getAddr(), exception.getMessage());
+        } catch (RuntimeException exception) {
+            logger.error(new VmInAddr(-1), "Unexpected JAVA error: " + exception.getMessage());
         }
-        // останавливаем бенчмарк
-        System.out.println(
-                Colors.ANSI_BLUE + "🧊 Exec time: " + benchmark.end() + ", stack size: "
-                        + stack.get().size() + "(" + stack.get().toString() + ")" + Colors.ANSI_RESET
-        );
     }
 
     /**

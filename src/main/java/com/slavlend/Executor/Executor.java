@@ -7,11 +7,13 @@ import com.slavlend.Colors;
 import com.slavlend.Lexer.Lexer;
 import com.slavlend.Parser.Parser;
 import com.slavlend.PolarLogger;
+import com.slavlend.Vm.IceVm;
 
 /*
 Исполнение файла с кодом.
 Экзекьютер.
  */
+@SuppressWarnings("ExtractMethodRecommender")
 public class Executor {
     // запуск polar-файла
     public static void exec(ExecutorSettings settings) {
@@ -39,7 +41,7 @@ public class Executor {
         System.out.println(Colors.ANSI_CYAN + "🧊 Compiling..." + Colors.ANSI_RESET);
         statement.compile();
         // устанавливаем логгер
-        Compiler.iceVm.setLogger(PolarLogger.polarLogger);
+        IceVm.setLogger(PolarLogger.polarLogger);
         // исполняем
         Compiler.iceVm.run(Compiler.code);
     }

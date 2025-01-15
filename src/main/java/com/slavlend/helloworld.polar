@@ -1,7 +1,6 @@
-class A() = {
-    func init() = {
-        this.a = 5
-    }
+safe {
+    raise('exception')
 }
-b = new A()
-put(b.a)
+handle(e) {
+    put('handled: ' + e)
+}

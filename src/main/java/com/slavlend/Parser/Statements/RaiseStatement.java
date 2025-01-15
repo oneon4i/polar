@@ -1,15 +1,17 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
+import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
+import com.slavlend.Vm.Instructions.VmInstrThrow;
 import lombok.Getter;
 
 /*
-Троу стейтмент - выкидывает throwable
+Рэйс стейтмент - выкидывает throwable
  */
 @Getter
-public class ThrowStatement implements Statement {
+public class RaiseStatement implements Statement {
     // выкидываемое
     private final Expression throwableExpr;
     // адресс
@@ -18,7 +20,7 @@ public class ThrowStatement implements Statement {
     // копирование
     @Override
     public Statement copy() {
-        return new ThrowStatement(throwableExpr);
+        return new RaiseStatement(throwableExpr);
     }
 
     // адресс
@@ -29,11 +31,12 @@ public class ThrowStatement implements Statement {
 
     @Override
     public void compile() {
-
+        throwableExpr.compile();
+        Compiler.code.visitInstr(new VmInstrThrow(address.convert()));
     }
 
     // конструктор
-    public ThrowStatement(Expression throwableExpr) {
+    public RaiseStatement(Expression throwableExpr) {
         this.throwableExpr = throwableExpr;
     }
 }

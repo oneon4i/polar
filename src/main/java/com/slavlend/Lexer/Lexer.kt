@@ -45,9 +45,9 @@ class Lexer // конструктор
         "each",
         "assert",
         "next",
-        "try",
-        "catch",
-        "throw"
+        "safe",
+        "handle",
+        "raise"
     )
 
     // типы токенов для кейвордов
@@ -77,9 +77,9 @@ class Lexer // конструктор
             put("each", TokenType.EACH)
             put("assert", TokenType.ASSERT)
             put("next", TokenType.NEXT)
-            put("try", TokenType.TRY)
-            put("catch", TokenType.CATCH)
-            put("throw", TokenType.THROW)
+            put("safe", TokenType.SAFE)
+            put("handle", TokenType.HANDLE)
+            put("raise", TokenType.RAISE)
         }
     }
 

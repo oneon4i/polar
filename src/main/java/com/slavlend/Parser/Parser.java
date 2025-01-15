@@ -256,13 +256,13 @@ public class Parser {
         if (check(TokenType.ASSERT)) {
             return polarAssert();
         }
-        // стэйтмент try
-        if (check(TokenType.TRY)) {
-            return tryCatch();
+        // стэйтмент safe
+        if (check(TokenType.SAFE)) {
+            return safeHandle();
         }
-        // стэйтмент throw
-        if (check(TokenType.THROW)) {
-            return throwValue();
+        // стэйтмент raise
+        if (check(TokenType.RAISE)) {
+            return raise();
         }
         // стэйтмент new
         if (check(TokenType.NEW)) {
@@ -568,15 +568,15 @@ public class Parser {
         return statement;
     }
 
-    // парсинг try
-    private Statement tryCatch() {
+    // парсинг safe
+    private Statement safeHandle() {
         // паттерн
-        // try { ... } catch (...) { ... }
-        consume(TokenType.TRY);
+        // safe { ... } handle (...) { ... }
+        consume(TokenType.SAFE);
         // брэйс
         consume(TokenType.BRACE);
         // стэйтмент трай
-        TryStatement statement = new TryStatement("");
+        SafeStatement statement = new SafeStatement("");
         // стэйтменты
         while (!check(TokenType.BRACE)) {
             statement.add(statement());
@@ -584,7 +584,7 @@ public class Parser {
         // брэйс
         consume(TokenType.BRACE);
         // кэтч
-        consume(TokenType.CATCH);
+        consume(TokenType.HANDLE);
         // брекет
         consume(TokenType.BRACKET);
         // имя переменной
@@ -596,7 +596,7 @@ public class Parser {
         consume(TokenType.BRACE);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
-            statement.addCatchStatement(statement());
+            statement.addHandleStatement(statement());
         }
         // брэйс
         consume(TokenType.BRACE);
@@ -605,10 +605,10 @@ public class Parser {
     }
 
     // парсинг throw
-    private Statement throwValue() {
+    private Statement raise() {
         // паттерн
-        // throw(...)
-        consume(TokenType.THROW);
+        // raise(...)
+        consume(TokenType.RAISE);
         // брэкет
         consume(TokenType.BRACKET);
         // выражение
@@ -616,7 +616,7 @@ public class Parser {
         // брэкет
         consume(TokenType.BRACKET);
         // возвращаем
-        return new ThrowStatement(expr);
+        return new RaiseStatement(expr);
     }
 
     // парсинг for

@@ -4,28 +4,27 @@ import com.slavlend.Vm.*;
 import lombok.Getter;
 
 /*
-Удаляет локальную переменную в ВМ
+Выкидывает значение
  */
 @Getter
-public class VmInstrDelL implements VmInstr {
+public class VmInstrThrow implements VmInstr {
     // адресс
     private final VmInAddr addr;
-    // имя переменной
-    private final String name;
 
-    public VmInstrDelL(VmInAddr addr, String name) {
+    // конструктор
+    public VmInstrThrow(VmInAddr addr) {
         this.addr = addr;
-        this.name = name;
     }
 
     @Override
     public void run(IceVm vm, VmFrame<Object> frame) {
-        frame.getValues().remove(name);
+        Object o = vm.pop();
+        throw new VmThrowable(o);
     }
 
     @Override
     public String toString() {
-        return "DEL_L(" + name + ")";
+        return "THROW()";
     }
 
     @Override

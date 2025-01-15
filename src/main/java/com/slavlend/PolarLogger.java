@@ -29,9 +29,12 @@ public class PolarLogger implements VmErrLogger {
         System.out.println("│ 📔 Line: " + addr.getLine());
         System.out.println("│ 📕 Error: " + message);
         System.out.println("╰──────────────────────────╯" + Colors.ANSI_RESET);
+        /*
         for (StackTraceElement elem : Thread.currentThread().getStackTrace()) {
             System.out.println(elem);
         }
+
+         */
         System.exit(1);
     }
 }
