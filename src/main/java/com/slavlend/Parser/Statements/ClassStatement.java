@@ -3,7 +3,6 @@ package com.slavlend.Parser.Statements;
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Expressions.ArgumentExpression;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Vm.Instructions.VmInstrStoreM;
 import com.slavlend.Vm.VmClass;
@@ -27,10 +26,10 @@ public class ClassStatement implements Statement {
     private final String name;
     private final String fullName;
     // конструктор
-    private final ArrayList<ArgumentExpression> constructor;
+    private final ArrayList<String> constructor;
 
     // конструктор
-    public ClassStatement(String fullName, String name, ArrayList<ArgumentExpression> constructor) {
+    public ClassStatement(String fullName, String name, ArrayList<String> constructor) {
         this.fullName = fullName;
         this.name = name;
         this.constructor = constructor;

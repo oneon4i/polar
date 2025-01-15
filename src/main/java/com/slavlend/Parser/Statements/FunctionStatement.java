@@ -3,7 +3,6 @@ package com.slavlend.Parser.Statements;
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Expressions.ArgumentExpression;
 import com.slavlend.Vm.VmFunction;
 import lombok.Getter;
 
@@ -17,7 +16,7 @@ public class FunctionStatement implements Statement {
     // тело функции
     private final ArrayList<Statement> statements = new ArrayList<>();
     // аргументы
-    private final ArrayList<ArgumentExpression> arguments;
+    private final ArrayList<String> arguments;
     // имя
     private final String name;
 
@@ -58,7 +57,7 @@ public class FunctionStatement implements Statement {
     }
 
     // конструктор
-    public FunctionStatement(String name, ArrayList<ArgumentExpression> arguments) {
+    public FunctionStatement(String name, ArrayList<String> arguments) {
         this.name = name;
         this.arguments = arguments;
     }

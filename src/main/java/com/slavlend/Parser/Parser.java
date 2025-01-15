@@ -193,10 +193,10 @@ public class Parser {
         // скобка
         consume(TokenType.BRACKET);
         // парсим аргументы функции
-        ArrayList<ArgumentExpression> arguments = new ArrayList<>();
+        ArrayList<String> arguments = new ArrayList<>();
         while (!check(TokenType.BRACKET)) {
             if (!check(TokenType.COMMA)) {
-                arguments.add(new ArgumentExpression(consume(TokenType.ID).value));
+                arguments.add(consume(TokenType.ID).value);
             }
             else {
                 consume(TokenType.COMMA);
@@ -464,11 +464,11 @@ public class Parser {
         // скобка
         consume(TokenType.BRACKET);
         // конструктор
-        ArrayList<ArgumentExpression> constructor = new ArrayList<>();
+        ArrayList<String> constructor = new ArrayList<>();
         // аргументы конструктора
         while (!check(TokenType.BRACKET)) {
             if (!check(TokenType.COMMA)) {
-                constructor.add(new ArgumentExpression(consume(TokenType.ID).value));
+                constructor.add(consume(TokenType.ID).value);
             } else {
                 consume(TokenType.COMMA);
             }

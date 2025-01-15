@@ -20,7 +20,7 @@ public class VmObj {
         this.addr = addr;
         for (int i = clazz.getConstructor().size()-1; i >= 0; i--) {
             Object arg = vm.pop();
-            scope.set(clazz.getConstructor().get(i).data, arg);
+            scope.set(clazz.getConstructor().get(i), arg);
         }
         scope.setRoot(vm.getVariables());
         if (clazz.getFunctions().getValues().containsKey("init")) {

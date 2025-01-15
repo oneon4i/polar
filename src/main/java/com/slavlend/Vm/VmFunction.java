@@ -1,6 +1,5 @@
 package com.slavlend.Vm;
 
-import com.slavlend.Parser.Expressions.ArgumentExpression;
 import com.slavlend.Vm.Instructions.VmInstrRet;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +18,7 @@ public class VmFunction implements VmInstrContainer {
     // инструкции
     private List<VmInstr> instructions = new ArrayList<>();
     // аргументы
-    private final ArrayList<ArgumentExpression> arguments;
+    private final ArrayList<String> arguments;
     // скоуп
     private final ThreadLocal<VmFrame<Object>> scope = new ThreadLocal<>();
     // объект чья функция
@@ -29,7 +28,7 @@ public class VmFunction implements VmInstrContainer {
     private final VmInAddr addr;
 
     // конструкция
-    public VmFunction(String name, ArrayList<ArgumentExpression> arguments, VmInAddr addr) {
+    public VmFunction(String name, ArrayList<String> arguments, VmInAddr addr) {
         this.name = name;
         this.arguments = arguments;
         this.addr = addr;
@@ -59,7 +58,7 @@ public class VmFunction implements VmInstrContainer {
             }
             Object arg = vm.pop();
             argsAmountGot += 1;
-            scope.get().set(arguments.get(i).data, arg);
+            scope.get().set(arguments.get(i), arg);
         }
         if (definedFor != null) {
             scope.get().set("this", definedFor);

@@ -1,6 +1,5 @@
 package com.slavlend.Vm;
 
-import com.slavlend.Parser.Expressions.ArgumentExpression;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +17,7 @@ public class VmClass implements VmInstrContainer {
     // модульные значения
     private final VmFrame<Object> modValues = new VmFrame<>();
     // конструктор для класса
-    private final ArrayList<ArgumentExpression> constructor;
+    private final ArrayList<String> constructor;
     // модульные функции
     private final VmFrame<VmFunction> modFunctions = new VmFrame<>();
     // адресс
@@ -28,7 +27,7 @@ public class VmClass implements VmInstrContainer {
     private boolean isModuleFunctionsWriting = false;
 
     // конструктор
-    public VmClass(String name, ArrayList<ArgumentExpression> constructor, VmInAddr addr) {
+    public VmClass(String name, ArrayList<String> constructor, VmInAddr addr) {
         this.name = name;
         this.constructor = constructor;
         this.addr = addr;
