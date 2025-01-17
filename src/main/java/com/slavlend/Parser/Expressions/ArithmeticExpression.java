@@ -29,7 +29,7 @@ public class ArithmeticExpression implements Expression {
     public void compile() {
         r.compile();
         l.compile();
-        Compiler.code.visitInstr(new VmInstrArith(address.convert(), operator));
+        Compiler.code.visitInstr(new VmInstrArith(address.convert(), operator.operator));
     }
 
     // конструктор

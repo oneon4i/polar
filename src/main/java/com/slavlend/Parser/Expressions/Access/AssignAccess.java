@@ -74,25 +74,25 @@ public class AssignAccess implements Access {
             }
             case MUL -> {
                 Compiler.code.visitInstr(new VmInstrPush(address.convert(), varName));
-                Compiler.code.visitInstr(new VmInstrArith(address.convert(), new Operator("*")));
+                Compiler.code.visitInstr(new VmInstrArith(address.convert(), "*"));
                 Compiler.code.endWrite();
                 Compiler.code.visitInstr(new VmInstrStore(address.convert(), varName, hasPrevious, assignArgs));
             }
             case DIVIDE -> {
                 Compiler.code.visitInstr(new VmInstrPush(address.convert(), varName));
-                Compiler.code.visitInstr(new VmInstrArith(address.convert(), new Operator("/")));
+                Compiler.code.visitInstr(new VmInstrArith(address.convert(), "/"));
                 Compiler.code.endWrite();
                 Compiler.code.visitInstr(new VmInstrStore(address.convert(), varName, hasPrevious, assignArgs));
             }
             case PLUS -> {
                 Compiler.code.visitInstr(new VmInstrPush(address.convert(), varName));
-                Compiler.code.visitInstr(new VmInstrArith(address.convert(), new Operator("+")));
+                Compiler.code.visitInstr(new VmInstrArith(address.convert(), "+"));
                 Compiler.code.endWrite();
                 Compiler.code.visitInstr(new VmInstrStore(address.convert(), varName, hasPrevious, assignArgs));
             }
             case MINUS -> {
                 Compiler.code.visitInstr(new VmInstrPush(address.convert(), varName));
-                Compiler.code.visitInstr(new VmInstrArith(address.convert(), new Operator("-")));
+                Compiler.code.visitInstr(new VmInstrArith(address.convert(), "-"));
                 Compiler.code.endWrite();
                 Compiler.code.visitInstr(new VmInstrStore(address.convert(), varName, hasPrevious, assignArgs));
             }

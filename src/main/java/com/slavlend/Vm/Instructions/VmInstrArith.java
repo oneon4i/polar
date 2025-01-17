@@ -13,9 +13,9 @@ public class VmInstrArith implements VmInstr {
     // адресс
     private final VmInAddr addr;
     // оператор
-    private final Operator operator;
+    private final String operator;
 
-    public VmInstrArith(VmInAddr addr, Operator operator) {
+    public VmInstrArith(VmInAddr addr, String operator) {
         this.addr = addr;
         this.operator = operator;
     }
@@ -30,7 +30,7 @@ public class VmInstrArith implements VmInstr {
         if (l == null) {
             l = "nil";
         }
-        switch (operator.operator) {
+        switch (operator) {
             case "+" -> {
                 if (l instanceof String || r instanceof String) {
                     vm.push(l.toString() + r.toString());
@@ -42,13 +42,13 @@ public class VmInstrArith implements VmInstr {
             case "*" -> vm.push((float)l * (float)r);
             case "/" -> vm.push((float)l / (float)r);
             case "%" -> vm.push((float)l % (float)r);
-            default -> IceVm.logger.error(addr, "operator not found: " + operator.operator);
+            default -> IceVm.logger.error(addr, "operator not found: " + operator);
         }
     }
 
     @Override
     public void print() {
-        System.out.println("ARITH("+operator.operator+")");
+        System.out.println("ARITH("+operator+")");
     }
 
     public boolean equal(Object l, Object r) {
@@ -84,6 +84,6 @@ public class VmInstrArith implements VmInstr {
 
     @Override
     public String toString() {
-        return "ARITH(" + operator.operator + ")";
+        return "ARITH(" + operator + ")";
     }
 }

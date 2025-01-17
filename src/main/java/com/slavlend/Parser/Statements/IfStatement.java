@@ -72,7 +72,7 @@ public class IfStatement implements Statement {
         for (Expression cond : conditions) {
             cond.compile();
             if (conditionsAmount+1 == 2) {
-                Compiler.code.visitInstr(new VmInstrComputeConds(address.convert(), new Operator("&&")));
+                Compiler.code.visitInstr(new VmInstrComputeConds(address.convert()));
             }
             else {
                 conditionsAmount += 1;

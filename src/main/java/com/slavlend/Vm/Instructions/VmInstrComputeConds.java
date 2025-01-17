@@ -11,13 +11,9 @@ import lombok.Getter;
 public class VmInstrComputeConds implements VmInstr {
     // адресс
     private final VmInAddr addr;
-    // оператор
-    private final Operator operator;
-
     // конструктор
-    public VmInstrComputeConds(VmInAddr addr, Operator operator) {
+    public VmInstrComputeConds(VmInAddr addr) {
         this.addr = addr;
-        this.operator = operator;
     }
 
     @Override
@@ -58,7 +54,7 @@ public class VmInstrComputeConds implements VmInstr {
 
     @Override
     public String toString() {
-        return "CCONDS(" + operator.operator + ")";
+        return "CCONDS()";
     }
 
     @Override
