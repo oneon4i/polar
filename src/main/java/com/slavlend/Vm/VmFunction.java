@@ -50,16 +50,10 @@ public class VmFunction implements VmInstrContainer {
      */
     public void exec(IceVm vm) {
         scope.set(new VmFrame<>());
-        int argsAmountGot = 0;
-        for (int i = arguments.size()-1; i >= 0; i--) {
-            if (vm.getStack().get().isEmpty()) {
-                IceVm.logger.error(addr,
-                        "args and params not match: (expected:"+arguments.size()+",got:"+argsAmountGot+")");
-            }
-            Object arg = vm.pop();
-            argsAmountGot += 1;
-            scope.get().set(arguments.get(i), arg);
+        if (definedFor == null) {
+            getScope().get().setRoot(vm.getVariables());
         }
+        loadArgs(vm);
         if (definedFor != null) {
             scope.get().set("this", definedFor);
         }
@@ -69,6 +63,21 @@ public class VmFunction implements VmInstrContainer {
             }
         } catch (VmInstrRet e) {
             return;
+        }
+    }
+
+    /**
+     * Загрузка аргументов в функции
+     */
+    private void loadArgs(IceVm vm) {
+        // загружаем аргументы
+        for (int i = arguments.size()-1; i >= 0; i--) {
+            if (vm.getStack().get().isEmpty()) {
+                IceVm.logger.error(addr,
+                        "stack is empty. cannot invoke function: " + name);
+            }
+            Object arg = vm.pop();
+            scope.get().set(arguments.get(i), arg);
         }
     }
 

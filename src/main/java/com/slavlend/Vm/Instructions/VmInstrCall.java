@@ -31,19 +31,45 @@ public class VmInstrCall implements VmInstr {
     @Override
     public void run(IceVm vm, VmFrame<Object> frame) {
         if (!hasPrevious) {
-            passArgs(vm, frame);
             if (frame.has(name)) {
-                ((VmFunction)frame.lookup(addr, name)).exec(vm);
+                // аргументы
+                int argsAmount = passArgs(vm, frame);
+                VmFunction fn = ((VmFunction)frame.lookup(addr, name));
+                checkArgs(fn.getArguments().size(), argsAmount);
+                // вызов
+                fn.exec(vm);
             } else {
-                vm.callGlobal(addr, name);
+                // аргументы
+                int argsAmount = passArgs(vm, frame);
+                // вызов
+                if (!vm.isCoreFunc(name)) {
+                    if (vm.getFunctions().has(name)) {
+                        checkArgs(vm.getFunctions().lookup(addr, name).getArguments().size(), argsAmount);
+                    }
+                    else {
+                        checkArgs(((VmFunction)vm.getVariables().lookup(addr, name)).getArguments().size(), argsAmount);
+                    }
+                    vm.callGlobal(addr, name);
+                } else {
+                    checkArgs(vm.getCoreFunctions().lookup(addr, name).argsAmount(), argsAmount);
+                    vm.callGlobal(addr, name);
+                }
             }
         } else {
             Object last = vm.pop();
             if (last instanceof VmObj vmObj) {
-                passArgs(vm, frame);
+                // аргументы
+                int argsAmount = passArgs(vm, frame);
+                VmFunction fn = vmObj.getClazz().getFunctions().lookup(addr, name);
+                checkArgs(fn.getArguments().size(), argsAmount);
+                // вызов
                 vmObj.call(addr, name, vm);
             } else if (last instanceof VmClass vmClass){
-                passArgs(vm, frame);
+                // аргументы
+                int argsAmount = passArgs(vm, frame);
+                VmFunction fn = vmClass.getModFunctions().lookup(addr, name);
+                checkArgs(fn.getArguments().size(), argsAmount);
+                // вызов модульной функции
                 vmClass.getModFunctions().lookup(addr, name).exec(vm);
             } else {
                 // аргументы

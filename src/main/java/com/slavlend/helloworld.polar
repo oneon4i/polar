@@ -66,3 +66,26 @@ each(b,a) {
     put('iter')
     put(b)
 }#
+#
+class A() = {
+    func a() = {
+        back(5)
+    }
+}
+
+func b(c,d) = {
+}
+
+e = new A()
+b(e.a(), 1)#
+func abs() = {
+    t = []
+    a = {}
+    t.add(a)
+    a.set('k1', 'v1')
+    a.set('k2', 'v2')
+
+    each (e, t) {
+        put(e.stringify())
+    }
+}
