@@ -8,6 +8,7 @@ use 'lib.crypto'
 use 'lib.http'
 use 'lib.map'
 use 'lib.json'
+use 'lib.statistics'
 
 func hello_world_test() = {
     put('Hello World!')
@@ -201,6 +202,12 @@ func http_test() = {
     put('Test passed')
 }
 
+func statistics_test() = {
+    marks = [3,4,2,2,4]
+    assert(Statistics.mean(marks) == 3)
+    put('Test passed')
+}
+
 Tests.test(
     [
      hello_world_test,
@@ -220,6 +227,7 @@ Tests.test(
      test_format,
      files_test,
      crypto_test,
-     http_test
+     http_test,
+     statistics_test
     ]
 )

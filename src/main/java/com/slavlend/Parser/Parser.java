@@ -52,6 +52,7 @@ public class Parser {
         put("lib.http.server", "Libraries/httpserver.polar");
         put("lib.graphics", "Libraries/graphics.polar");
         put("lib.colors", "Libraries/colors.polar");
+        put("lib.statistics", "Libraries/statistics.polar");
     }};
 
     // путь эвайронмента (окружения)
@@ -274,7 +275,10 @@ public class Parser {
         }
         // стэйтмент функции
         if (check(TokenType.FUNC)) {
-            return (FunctionStatement) function();
+            FunctionStatement func = (FunctionStatement) function();
+            func.putToFunctions();
+
+            return func;
         }
         // стэйтмент класса
         if (check(TokenType.CLASS)) {

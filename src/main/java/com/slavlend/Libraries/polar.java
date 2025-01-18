@@ -7,7 +7,7 @@ import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Polar.Logger.PolarLogger;
 
 /*
-Библиотека ant, необходима для более глубокого
+Библиотека polar, необходима для более глубокого
 понимания типизации и рефлексии.
  */
 @SuppressWarnings("unused")

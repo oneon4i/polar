@@ -73,6 +73,9 @@ public class PolarValue extends RuntimeException {
     public Float asNumber() {
         try {
             // если объект - число, возвращаем
+            if (data instanceof Integer i) {
+                return i.floatValue();
+            }
             return (Float) data;
         } catch (Exception e) {
             // в ином случае вызываем
