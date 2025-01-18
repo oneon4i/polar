@@ -144,6 +144,18 @@ public class IceVm {
                     throw new RuntimeException(e);
                 }
             }
+            case "len" -> {
+                Object o = pop();
+                push(((Integer)((String)o).length()).floatValue());
+            }
+            case "sleep" -> {
+                Object o = pop();
+                try {
+                    Thread.sleep(((Float)o).longValue());
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             default -> {
                 if (functions.getValues().containsKey(name)) {
                     functions.lookup(addr, name).exec(this);

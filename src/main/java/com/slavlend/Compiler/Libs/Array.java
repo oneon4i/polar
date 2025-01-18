@@ -31,4 +31,20 @@ public class Array {
 
         return false;
     }
+
+    public void set(Object i, Object v) {
+        array.set(((Float)i).intValue(), v);
+    }
+
+    public Object size() {
+        return ((Integer)array.size()).floatValue();
+    }
+
+    public Object stringify() {
+        StringBuilder s = new StringBuilder();
+        for (Object o : array) {
+            s.append(o);
+        }
+        return s.toString();
+    }
 }

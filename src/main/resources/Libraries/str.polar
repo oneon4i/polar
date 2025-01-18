@@ -1,7 +1,5 @@
-use 'lib.array'
-
 class Str() = {
-    mod reflected = reflect 'com.slavlend.Libraries.str'
+    mod reflected = reflect 'com.slavlend.Compiler.Libs.Str'
     mod func replace(str, what, to) = {
         back(Str.reflected.replace(str, what, to))
     }

@@ -36,6 +36,33 @@ class Test() = {
 test = new Test()
 test.b += 1
 put(test.b)#
-
+#
 name = scan('Введите имя.')
 age = scan('Введите возраст.')
+
+for (i = 0, i < 100) {
+	put('Отправляю данные в ЦРУ...')
+	i += 1
+}
+
+a = {'name': name, 'age': age}
+put('Данные в ЦРУ: (name:' + a.get('name') + ', age:' + a.get('age') + ')')
+put('Сейчас за вами выедут копы...')
+
+isRed = false
+for (i = 0, i < 10000000) {
+	if (isRed) {
+		put('🟥🟦')
+		isRed = false
+	} else {
+		put('🟦🟥')
+		isRed = true
+	}
+	i += 1
+}#
+#
+a = [1,2,3]
+each(b,a) {
+    put('iter')
+    put(b)
+}#

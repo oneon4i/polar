@@ -29,26 +29,8 @@ public class Parser {
     // библиотеки
     @Getter
     public static HashMap<String, String> libraries = new HashMap<>() {{
-        put("lib.random", "Libraries/random.polar");
-        put("lib.array", "Libraries/array.polar");
-        put("lib.map", "Libraries/map.polar");
-        put("lib.telegram", "Libraries/telegram.polar");
-        put("lib.tests", "Libraries/tests.polar");
-        put("lib.log", "Libraries/logger.polar");
-        put("lib.files", "Libraries/files.polar");
-        put("lib.sys", "Libraries/sys.polar");
-        put("lib.json", "Libraries/json.polar");
-        put("lib.tasks", "Libraries/tasks.polar");
         put("lib.str", "Libraries/str.polar");
-        put("lib.math", "Libraries/math.polar");
-        put("lib.polar", "Libraries/polar.polar");
         put("lib.console", "Libraries/console.polar");
-        put("lib.time", "Libraries/time.polar");
-        put("lib.crypto", "Libraries/crypto.polar");
-        put("lib.http", "Libraries/http.polar");
-        put("lib.http.server", "Libraries/httpserver.polar");
-        put("lib.graphics", "Libraries/graphics.polar");
-        put("lib.colors", "Libraries/colors.polar");
     }};
 
     // путь эвайронмента (окружения)

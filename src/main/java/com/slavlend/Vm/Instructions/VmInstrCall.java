@@ -46,12 +46,22 @@ public class VmInstrCall implements VmInstr {
                 passArgs(vm, frame);
                 vmClass.getModFunctions().lookup(addr, name).exec(vm);
             } else {
+                // аргументы
+                int argsAmount = passArgs(vm, frame);
+                ArrayList<Object> callArgs = new ArrayList<>();
+                for (int i = argsAmount-1; i >= 0; i--) {
+                    Object arg = vm.pop();
+                    callArgs.add(0, arg);
+                }
                 // рефлексийный вызов
                 Method[] methods = last.getClass().getMethods();
                 Method func = null;
                 for (Method m : methods) {
+                    if (m.getName().equals(name)) {
+                        // System.out.println("name: " + name + ":" + m.getParameterCount() + ", " + args.getVarContainer());
+                    }
                     if (m.getName().equals(name) &&
-                        m.getParameterCount() == args.getVarContainer().size()) {
+                        m.getParameterCount() == argsAmount) {
                         func = m;
                     }
                 }
@@ -59,12 +69,6 @@ public class VmInstrCall implements VmInstr {
                     IceVm.logger.error(addr, "function not found: " + name + " in: " + last.getClass().getName());
                 }
                 else {
-                    passArgs(vm, frame);
-                    ArrayList<Object> callArgs = new ArrayList<>();
-                    for (int i = args.getVarContainer().size()-1; i >= 0; i--) {
-                        Object arg = vm.pop();
-                        callArgs.add(arg);
-                    }
                     checkArgs(func.getParameterCount(), callArgs.size());
                     try {
                         Object returned = func.invoke(last, callArgs.toArray());
@@ -89,10 +93,12 @@ public class VmInstrCall implements VmInstr {
     }
 
     // помещает аргументы в стек
-    private void passArgs(IceVm vm, VmFrame<Object> frame) {
+    private int passArgs(IceVm vm, VmFrame<Object> frame) {
+        int size = vm.getStack().get().size();
         for (VmInstr instr : args.getVarContainer()) {
             instr.run(vm, frame);
         }
+        return vm.getStack().get().size()-size;
     }
 
     @Override

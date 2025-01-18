@@ -1,6 +1,6 @@
 class Console() = {
-    mod reflected = reflect 'com.slavlend.Libraries.console'
+    mod reflected = reflect 'com.slavlend.Compiler.Libs.Console'
     mod func cls() = {
-        Console.reflected.cls()
+        Console.reflected.clear()
     }
 }
