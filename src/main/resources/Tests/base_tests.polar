@@ -208,6 +208,14 @@ func statistics_test() = {
     put('Test passed')
 }
 
+func statistics_median_test() = {
+    marks = [3,4,2,2,4]
+    marks2 = [3,4,10,2,4,7]
+    assert(Statistics.median(marks) == 2)
+    assert(Statistics.median(marks2) == 6)
+    put('Test passed')
+}
+
 Tests.test(
     [
      hello_world_test,
@@ -228,6 +236,7 @@ Tests.test(
      files_test,
      crypto_test,
      http_test,
-     statistics_test
+     statistics_test,
+     statistics_median_test
     ]
 )

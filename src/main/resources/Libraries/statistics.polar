@@ -5,4 +5,7 @@ class Statistics() = {
     mod func mean(arr) = {
         back(Statistics.reflected.mean(arr))
     }
+    mod func median(arr) = {
+        back(Statistics.reflected.median(arr))
+    }
 }

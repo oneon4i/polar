@@ -38,7 +38,7 @@ public class array {
 
     // размер всего списка
     public PolarValue size() {
-        return new PolarValue(valueArrayList.size());
+        return new PolarValue(((Integer)valueArrayList.size()).floatValue());
     }
 
     // получение элемента по индексу
