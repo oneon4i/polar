@@ -62,7 +62,7 @@ public class VmInstrCondOperator implements VmInstr {
             return (((VmClass)l) == ((VmClass)r));
         }
         else {
-            throw new RuntimeException("invalid comparable types: " + l + ", " + r);
+            throw new RuntimeException("invalid comparables: " + l + ", " + r);
         }
     }
 

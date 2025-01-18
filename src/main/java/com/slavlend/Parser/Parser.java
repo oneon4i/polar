@@ -31,6 +31,7 @@ public class Parser {
     public static HashMap<String, String> libraries = new HashMap<>() {{
         put("lib.str", "Libraries/str.polar");
         put("lib.console", "Libraries/console.polar");
+        put("lib.tasks", "Libraries/tasks.polar");
     }};
 
     // путь эвайронмента (окружения)

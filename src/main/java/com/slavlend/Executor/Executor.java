@@ -1,6 +1,7 @@
 package com.slavlend.Executor;
 
 import com.slavlend.Compiler.Compiler;
+import com.slavlend.Compiler.Functions.PolarFunctions;
 import com.slavlend.Parser.Statements.BlockStatement;
 import com.slavlend.App;
 import com.slavlend.Colors;
@@ -42,6 +43,8 @@ public class Executor {
         statement.compile();
         // устанавливаем логгер
         IceVm.setLogger(PolarLogger.polarLogger);
+        // помещаем функции Полара
+        PolarFunctions.provide();
         // исполняем
         Compiler.iceVm.run(Compiler.code);
     }

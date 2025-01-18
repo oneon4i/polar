@@ -2,11 +2,12 @@ package com.slavlend;
 
 import com.slavlend.Vm.*;
 import com.slavlend.Vm.Instructions.*;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+
 
 // Тесты ВМ
 public class VmTests {

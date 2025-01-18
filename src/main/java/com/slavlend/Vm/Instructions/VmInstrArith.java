@@ -51,37 +51,6 @@ public class VmInstrArith implements VmInstr {
         System.out.println("ARITH("+operator+")");
     }
 
-    public boolean equal(Object l, Object r) {
-        if (l instanceof String && r instanceof String) {
-            return ((String)l).equals(((String)r));
-        }
-        else if (l == null && r != null) {
-            return false;
-        }
-        else if (l != null && r == null) {
-            return false;
-        }
-        else if (l == null && r == null) {
-            return true;
-        }
-        else if (l instanceof VmObj && r instanceof VmObj) {
-            return (l == r);
-        }
-        else if (l instanceof Boolean && r instanceof Boolean) {
-            return (l == r);
-        }
-        else if (l instanceof Float && r instanceof Float) {
-            return (l == r);
-        }
-        else if (l instanceof VmClass && r instanceof VmClass) {
-            return (l == r);
-        }
-        else {
-            IceVm.logger.error(addr, "invalid comparable types: " + l + ", " + r);
-            return false;
-        }
-    }
-
     @Override
     public String toString() {
         return "ARITH(" + operator + ")";

@@ -22,6 +22,7 @@ public class IceVm {
     private final VmFrame<Object> variables = new VmFrame<>();
     private final VmFrame<VmFunction> functions = new VmFrame<>();
     private final VmFrame<VmClass> classes = new VmFrame<>();
+    private final VmFrame<VmCoreFunction> coreFunctions = new VmFrame<>();
     // рэйс ошибок
     @Setter
     public static VmErrRaiser raiser;
@@ -126,43 +127,24 @@ public class IceVm {
      * @param name - имя для вызова
      */
     public void callGlobal(VmInAddr addr, String name) {
-        switch (name) {
-            case "put" -> {
-                Object o = pop();
-                System.out.println(o);
-            }
-            case "scan" -> {
-                Object o = pop();
-                if (!((String)o).isEmpty()) {
-                    System.out.println(o);
-                }
-                try {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-                    String s = br.readLine();
-                    push(s);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            case "len" -> {
-                Object o = pop();
-                push(((Integer)((String)o).length()).floatValue());
-            }
-            case "sleep" -> {
-                Object o = pop();
-                try {
-                    Thread.sleep(((Float)o).longValue());
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            default -> {
-                if (functions.getValues().containsKey(name)) {
-                    functions.lookup(addr, name).exec(this);
-                } else {
-                    ((VmFunction)variables.lookup(addr, name)).exec(this);
-                }
+        if (functions.getValues().containsKey(name)) {
+            functions.lookup(addr, name).exec(this);
+        } else if (variables.getValues().containsKey(name)){
+            ((VmFunction)variables.lookup(addr, name)).exec(this);
+        } else {
+            Object res = coreFunctions.lookup(addr, name).exec();
+            if (res != null) {
+                push(res);
             }
         }
+    }
+
+    /**
+     * Функция ли это - из ядра
+     * @param name - имя функции
+     * @return да или нет
+     */
+    public boolean isCoreFunc(String name) {
+        return coreFunctions.has(name);
     }
 }

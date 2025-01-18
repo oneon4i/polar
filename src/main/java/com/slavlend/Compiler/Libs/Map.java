@@ -22,6 +22,10 @@ public class Map {
         }
     }
 
+    public Object stringify() {
+        return map.toString();
+    }
+
     public Object get(Object k) {
         for (Object o : map.keySet()) {
             if (VmInstrCondOperator.equal(k, o)) {

@@ -1,5 +1,6 @@
 package com.slavlend.Compiler;
 
+import com.slavlend.Compiler.Functions.PolarFunctions;
 import com.slavlend.Vm.IceVm;
 import com.slavlend.Vm.VmCode;
 
@@ -9,8 +10,4 @@ import com.slavlend.Vm.VmCode;
 public class Compiler {
     public static VmCode code = new VmCode();
     public static IceVm iceVm = new IceVm();
-
-    public static void exec() {
-        iceVm.run(code);
-    }
 }

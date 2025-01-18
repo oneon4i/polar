@@ -32,8 +32,8 @@ public class MapContainerExpression implements Expression {
             Compiler.code.visitInstr(new VmInstrDup(address.convert()));
             VmVarContainer _container = new VmVarContainer();
             Compiler.code.startWrite(_container);
-            container.get(e).compile();
             e.compile();
+            container.get(e).compile();
             Compiler.code.endWrite();
             Compiler.code.visitInstr(new VmInstrCall(address.convert(), "set", _container, true));
         }

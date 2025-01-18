@@ -1,12 +1,14 @@
 package com.slavlend.Compiler.Libs;
 
 import com.slavlend.Vm.Instructions.VmInstrCondOperator;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
 /*
 Библиотека списков для VM
  */
+@Getter
 public class Array {
     private final ArrayList<Object> array = new ArrayList<>();
 
