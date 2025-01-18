@@ -37,7 +37,5 @@ test = new Test()
 test.b += 1
 put(test.b)#
 
-a = 4
-if (((a == 5) or (a > 3)) and true == true) {
-    put(3)
-}
+name = scan('Введите имя.')
+age = scan('Введите возраст.')

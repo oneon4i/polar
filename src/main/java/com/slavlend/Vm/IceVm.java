@@ -4,6 +4,9 @@ import com.slavlend.Colors;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -52,8 +55,6 @@ public class IceVm {
             );
         } catch (VmException exception) {
             logger.error(exception.getAddr(), exception.getMessage());
-        } catch (RuntimeException exception) {
-            logger.error(new VmInAddr(-1), "Unexpected JAVA error: " + exception.getMessage());
         }
     }
 
@@ -135,9 +136,13 @@ public class IceVm {
                 if (!((String)o).isEmpty()) {
                     System.out.println(o);
                 }
-                Scanner sc = new Scanner(System.in);
-                push(sc.nextLine());
-                sc.close();
+                try {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                    String s = br.readLine();
+                    push(s);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             default -> {
                 if (functions.getValues().containsKey(name)) {
