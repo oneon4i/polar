@@ -1,11 +1,11 @@
 package com.slavlend.Parser.Statements;
 
-import com.slavlend.Polar.PolarValue;
-import com.slavlend.Polar.Stack.Storage;
 import com.slavlend.App;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Access.AccessExpression;
 import com.slavlend.Parser.Expressions.ConditionExpression;
+import com.slavlend.Polar.PolarValue;
+import com.slavlend.Polar.Stack.Storage;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -93,11 +93,6 @@ public class EachStatement implements Statement {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-
     }
 
     // конструктор

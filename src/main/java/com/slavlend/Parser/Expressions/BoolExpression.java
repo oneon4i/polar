@@ -1,10 +1,8 @@
 package com.slavlend.Parser.Expressions;
 
 import com.slavlend.App;
-import com.slavlend.Compiler.Compiler;
-import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
-import com.slavlend.VM.Instructions.VmInstrPush;
+import com.slavlend.Polar.PolarValue;
 import lombok.Getter;
 
 /*
@@ -27,13 +25,7 @@ public class BoolExpression implements Expression {
         return address;
     }
 
-    @Override
-    public void compile() {
-        Compiler.code.visitInstr(new VmInstrPush(Boolean.parseBoolean(data)));
-    }
-
     public BoolExpression(String data) {
         this.data = data;
     }
-
 }

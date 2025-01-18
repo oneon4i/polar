@@ -33,6 +33,7 @@ public enum TokenType {
     ELIF, // elif
     ELSE, // else
     AND, // logical and
+    OR, // logical or
     USE, // use
     ASSIGN_ADD, // assign add
     ASSIGN_SUB, // assign sub
@@ -51,7 +52,7 @@ public enum TokenType {
     EACH, // each loop
     ASSERT, // assert
     NEXT, // next
-    TRY, // try
-    CATCH, // catch
-    THROW // throw
+    SAFE, // try
+    HANDLE, // handle
+    RAISE // raise
 }

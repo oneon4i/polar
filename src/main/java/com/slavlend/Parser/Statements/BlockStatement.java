@@ -49,11 +49,4 @@ public class BlockStatement implements Statement {
     public Address address() {
         return address;
     }
-
-    @Override
-    public void compile() {
-        for (Statement s : statements) {
-            s.compile();
-        }
-    }
 }

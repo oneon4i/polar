@@ -7,10 +7,10 @@ import com.slavlend.Parser.Expressions.Expression;
 import lombok.Getter;
 
 /*
-Троу стейтмент - выкидывает throwable
+Рэйс стейтмент - выкидывает throwable
  */
 @Getter
-public class ThrowStatement implements Statement {
+public class RaiseStatement implements Statement {
     // выкидываемое
     private final Expression throwableExpr;
     // адресс
@@ -38,7 +38,7 @@ public class ThrowStatement implements Statement {
 
     @Override
     public Statement copy() {
-        return new ThrowStatement(throwableExpr);
+        return new RaiseStatement(throwableExpr);
     }
 
     // адресс
@@ -47,13 +47,8 @@ public class ThrowStatement implements Statement {
         return address;
     }
 
-    @Override
-    public void compile() {
-
-    }
-
     // конструктор
-    public ThrowStatement(Expression throwableExpr) {
+    public RaiseStatement(Expression throwableExpr) {
         this.throwableExpr = throwableExpr;
     }
 }

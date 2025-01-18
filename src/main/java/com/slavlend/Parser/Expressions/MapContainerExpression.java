@@ -1,15 +1,12 @@
 package com.slavlend.Parser.Expressions;
 
 import com.slavlend.App;
-import com.slavlend.Compiler.Compiler;
 import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Polar.Stack.Storage;
 import com.slavlend.Parser.Address;
-import com.slavlend.VM.Instructions.*;
-import com.slavlend.VM.VmVarContainer;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -59,19 +56,5 @@ public class MapContainerExpression implements Expression {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-        Compiler.code.visitInstr(new VmInstrRefl("com.slavlend.Compiler.Libs.Map"));
-        for (Expression e : container.keySet()) {
-            Compiler.code.visitInstr(new VmInstrDup());
-            VmVarContainer _container = new VmVarContainer();
-            Compiler.code.startWrite(_container);
-            container.get(e).compile();
-            e.compile();
-            Compiler.code.endWrite();
-            Compiler.code.visitInstr(new VmInstrCall("set", _container, true));
-        }
     }
 }

@@ -1,9 +1,9 @@
 package com.slavlend.Parser.Expressions.Access;
 
-import com.slavlend.Polar.PolarValue;
-import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ObjectExpression;
+import com.slavlend.Polar.Logger.PolarLogger;
+import com.slavlend.Polar.PolarValue;
 import lombok.Getter;
 
 /*
@@ -74,12 +74,4 @@ public class TempAccess implements Access {
 
     @Override
     public Access getNext() { return next; }
-
-    @Override
-    public void compile(boolean hasPrevious) {
-        objectExpr.compile();
-        if (hasNext()) {
-            getNext().compile(true);
-        }
-    }
 }

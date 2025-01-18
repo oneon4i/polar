@@ -1,7 +1,7 @@
 package com.slavlend.Lexer
 
-import com.slavlend.Polar.Logger.PolarLogger
 import com.slavlend.Parser.Address
+import com.slavlend.Polar.Logger.PolarLogger
 
 /*
 Лексер - переводит символы в лексемы (токены)
@@ -34,6 +34,7 @@ class Lexer // конструктор
         "elif",
         "else",
         "and",
+        "or",
         "use",
         "mod",
         "break",
@@ -45,9 +46,9 @@ class Lexer // конструктор
         "each",
         "assert",
         "next",
-        "try",
-        "catch",
-        "throw"
+        "safe",
+        "handle",
+        "raise"
     )
 
     // типы токенов для кейвордов
@@ -66,6 +67,7 @@ class Lexer // конструктор
             put("elif", TokenType.ELIF)
             put("else", TokenType.ELSE)
             put("and", TokenType.AND)
+            put("or", TokenType.OR)
             put("use", TokenType.USE)
             put("mod", TokenType.MOD)
             put("break", TokenType.BREAK)
@@ -77,9 +79,9 @@ class Lexer // конструктор
             put("each", TokenType.EACH)
             put("assert", TokenType.ASSERT)
             put("next", TokenType.NEXT)
-            put("try", TokenType.TRY)
-            put("catch", TokenType.CATCH)
-            put("throw", TokenType.THROW)
+            put("safe", TokenType.SAFE)
+            put("handle", TokenType.HANDLE)
+            put("raise", TokenType.RAISE)
         }
     }
 
@@ -504,11 +506,6 @@ class Lexer // конструктор
     // char peek
     fun Peek(offset: Int): Char {
         return input[current + offset]
-    }
-
-    // next
-    fun Next() {
-        current++
     }
 
     // next overload

@@ -2,7 +2,7 @@ package com.slavlend.Parser.Statements.Match;
 
 import com.slavlend.App;
 import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Statements.*;
+import com.slavlend.Parser.Statements.Statement;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -52,11 +52,6 @@ public class DefaultStatement implements Statement {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-
     }
 
     // конструктор

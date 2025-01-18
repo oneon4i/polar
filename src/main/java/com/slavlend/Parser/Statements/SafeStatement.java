@@ -12,10 +12,11 @@ import lombok.Setter;
 import java.util.ArrayList;
 
 /*
-Трай стэйтмент - ловит исключения
+Сэйф стэйтмент - ловит исключения и другое.
+Берёт на себя ответсвтвенность за безопасность кода
  */
 @Getter
-public class TryStatement implements Statement {
+public class SafeStatement implements Statement {
     // тело
     private final ArrayList<Statement> statements = new ArrayList<>();
     // тело при пойманом throwable
@@ -68,7 +69,7 @@ public class TryStatement implements Statement {
     public void add(Statement statement) {
         statements.add(statement);
     }
-    public void addCatch(Statement statement) {
+    public void addStatementToHandle(Statement statement) {
         catchStatements.add(statement);
     }
 
@@ -81,14 +82,14 @@ public class TryStatement implements Statement {
 
     @Override
     public Statement copy() {
-        TryStatement _copy = new TryStatement(variableName);
+        SafeStatement _copy = new SafeStatement(variableName);
 
         for (Statement statement : statements) {
             _copy.add(statement.copy());
         }
 
         for (Statement statement : catchStatements) {
-            _copy.addCatch(statement.copy());
+            _copy.addStatementToHandle(statement.copy());
         }
 
         return _copy;
@@ -100,13 +101,8 @@ public class TryStatement implements Statement {
         return address;
     }
 
-    @Override
-    public void compile() {
-
-    }
-
     // конструктор
-    public TryStatement(String variableName) {
+    public SafeStatement(String variableName) {
         this.variableName = variableName;
     }
 }

@@ -69,7 +69,7 @@ public class UseLibStatement implements Statement{
         // импортируем классы
         Parser tempParser = new Parser(tempLexer.getTokens());
         tempParser.setFileName(libName.getData().replace(".polar", ""));
-        tempParser.loadClasses();
+        tempParser.loadAsAdditionalFile();
     }
 
     @Override
@@ -85,10 +85,5 @@ public class UseLibStatement implements Statement{
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-
     }
 }

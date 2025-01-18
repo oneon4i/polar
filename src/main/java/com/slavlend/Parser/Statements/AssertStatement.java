@@ -1,10 +1,10 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
-import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ConditionExpression;
+import com.slavlend.Polar.Logger.PolarLogger;
 import lombok.Getter;
 
 /*
@@ -56,10 +56,5 @@ public class AssertStatement implements Statement {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-
     }
 }

@@ -1,14 +1,9 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
-import com.slavlend.Compiler.Compiler;
-import com.slavlend.Parser.Expressions.Expression;
-import com.slavlend.Parser.Operator;
-import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
-import com.slavlend.VM.Instructions.VmInstrComputeConds;
-import com.slavlend.VM.Instructions.VmInstrIf;
-import com.slavlend.VM.VmInstr;
+import com.slavlend.Parser.Expressions.Expression;
+import com.slavlend.Polar.PolarValue;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +17,7 @@ public class IfStatement implements Statement {
     @Setter
     private IfStatement elseCondition = null;
     // кодишены для ифа
-    private final ArrayList<Expression> conditions;
+    private final Expression logical;
     // адресс
     private final Address address = App.parser.address();
 
@@ -37,7 +32,7 @@ public class IfStatement implements Statement {
         optimize();
 
         // если условие сработало
-        if (conditions()) {
+        if (logical.evaluate().asBool()) {
             // стэйтменты
             for (Statement statement : statements) {
                  statement.execute();
@@ -56,18 +51,6 @@ public class IfStatement implements Statement {
         statements.add(statement);
     }
 
-    // кодишены
-    public boolean conditions() {
-        for (Expression e : conditions) {
-            PolarValue v = e.evaluate();
-            if (!v.asBool()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     @Override
     public void interrupt() {
 
@@ -77,7 +60,7 @@ public class IfStatement implements Statement {
 
     @Override
     public Statement copy() {
-        IfStatement _copy = new IfStatement(conditions);
+        IfStatement _copy = new IfStatement(logical);
 
         for (Statement statement : statements) {
             _copy.add(statement.copy());
@@ -95,54 +78,8 @@ public class IfStatement implements Statement {
         return address;
     }
 
-    @Override
-    public void compile() {
-        VmInstrIf ifInstr = new VmInstrIf();
-        Compiler.code.visitInstr(ifInstr);
-        Compiler.code.startWrite(ifInstr);
-        ifInstr.setWritingConditions(true);
-        compileConditions();
-        ifInstr.setWritingConditions(false);
-        for (Statement s : statements) {
-            s.compile();
-        }
-        Compiler.code.endWrite();
-        if (elseCondition != null) {
-            ifInstr.setElse(elseCondition.getCompiled());
-        }
-    }
-
-    private void compileConditions() {
-        int conditionsAmount = 0;
-        for (Expression cond : conditions) {
-            cond.compile();
-            if (conditionsAmount+1 == 2) {
-                Compiler.code.visitInstr(new VmInstrComputeConds(new Operator("&&")));
-            }
-            else {
-                conditionsAmount += 1;
-            }
-        }
-    }
-
-    private VmInstrIf getCompiled() {
-        VmInstrIf ifInstr = new VmInstrIf();
-        Compiler.code.startWrite(ifInstr);
-        ifInstr.setWritingConditions(true);
-        compileConditions();
-        ifInstr.setWritingConditions(false);
-        for (Statement s : statements) {
-            s.compile();
-        }
-        Compiler.code.endWrite();
-        if (elseCondition != null) {
-            ifInstr.setElse(elseCondition.getCompiled());
-        }
-        return ifInstr;
-    }
-
     // конструктор
-    public IfStatement(ArrayList<Expression> expressions) {
-        this.conditions = expressions;
+    public IfStatement(Expression expression) {
+        this.logical = expression;
     }
 }

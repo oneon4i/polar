@@ -1,12 +1,10 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
-import com.slavlend.Compiler.Compiler;
-import com.slavlend.Polar.PolarValue;
 import com.slavlend.Optimization.Optimizations;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
-import com.slavlend.VM.Instructions.VmInstrRet;
+import com.slavlend.Polar.PolarValue;
 import lombok.Getter;
 
 /*
@@ -51,12 +49,6 @@ public class BackStatement implements Statement, Expression {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-        expression.compile();
-        Compiler.code.visitInstr(new VmInstrRet());
     }
 
     public BackStatement(Expression expression) {

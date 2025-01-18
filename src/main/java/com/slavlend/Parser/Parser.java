@@ -1,8 +1,6 @@
 package com.slavlend.Parser;
 
 import com.slavlend.Exceptions.PolarException;
-import com.slavlend.Polar.PolarClass;
-import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Lexer.TokenType;
 import com.slavlend.Parser.Expressions.*;
 import com.slavlend.Lexer.Token;
@@ -12,6 +10,8 @@ import com.slavlend.Parser.Statements.Match.CaseStatement;
 import com.slavlend.Parser.Statements.Match.DefaultStatement;
 import com.slavlend.Parser.Statements.Match.MatchStatement;
 import com.slavlend.Polar.Logger.PolarLogger;
+import com.slavlend.Polar.PolarClass;
+import com.slavlend.Polar.Stack.Classes;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +22,7 @@ import java.util.List;
 /*
 Парсер токенов в -> AST
  */
+@SuppressWarnings("unused")
 public class Parser {
     // токены
     @Getter
@@ -72,29 +73,6 @@ public class Parser {
         return new Address(tokens.get(current).line);
     }
 
-    // парсинг (экзекьют)
-    public void execute() {
-        try {
-            BlockStatement statement = new BlockStatement();
-
-            // парсим стэйтменты
-            while (current < tokens.size()) {
-                statement.add(statement());
-            }
-
-            // экзекьютим и ловим ошибки
-            try {
-                statement.execute();
-            } catch (PolarException e) {
-                PolarLogger.printError(e);
-            }
-        } catch (PolarException e) {
-            PolarLogger.printError(e);
-        } catch (Exception e) {
-            PolarLogger.printError(new PolarException("Unexpected Error: " + e.getMessage(), address().getLine(), null));
-        }
-    }
-
     // парсинг
     public BlockStatement parse() {
         try {
@@ -109,8 +87,6 @@ public class Parser {
             return statement;
         } catch (PolarException e) {
             PolarLogger.printError(e);
-        } catch (Exception e) {
-            PolarLogger.printError(new PolarException("Unexpected Error: " + e.getMessage(), address().getLine(), null));
         }
         return null;
     }
@@ -138,7 +114,7 @@ public class Parser {
         Expression _l = additive();
         // если это кондишенал то парсим
         if (check(TokenType.LOWER_EQUAL) || check(TokenType.BIGGER_EQUAL) || check(TokenType.EQUAL) ||
-            check(TokenType.NOT_EQUAL) || check(TokenType.BIGGER_EQUAL) || check(TokenType.LOWER) || check(TokenType.BIGGER) ||
+                check(TokenType.NOT_EQUAL) || check(TokenType.BIGGER_EQUAL) || check(TokenType.LOWER) || check(TokenType.BIGGER) ||
                 check(TokenType.IS)) {
             // оператор
             Operator _o = condOperator();
@@ -284,20 +260,21 @@ public class Parser {
         if (check(TokenType.ASSERT)) {
             return polarAssert();
         }
-        // стэйтмент try
-        if (check(TokenType.TRY)) {
-            return tryCatch();
+        // стэйтмент safe
+        if (check(TokenType.SAFE)) {
+            return safeHandle();
         }
-        // стэйтмент throw
-        if (check(TokenType.THROW)) {
-            return throwValue();
+        // стэйтмент raise
+        if (check(TokenType.RAISE)) {
+            return raise();
+        }
+        // стэйтмент new
+        if (check(TokenType.NEW)) {
+            return parseAccess();
         }
         // стэйтмент функции
         if (check(TokenType.FUNC)) {
-            FunctionStatement func = (FunctionStatement) function();
-            func.putToFunctions();
-
-            return func;
+            return (FunctionStatement) function();
         }
         // стэйтмент класса
         if (check(TokenType.CLASS)) {
@@ -563,6 +540,30 @@ public class Parser {
         return classStatement;
     }
 
+    // логика <<или>>
+    private Expression logicalOr() {
+        Expression expression = logicalAnd();
+
+        while (check(TokenType.OR)) {
+            consume(TokenType.OR);
+            expression = new LogicExpression(expression, new Operator("||"), parseExpression());
+        }
+
+        return expression;
+    }
+
+    // логика <<и>>
+    private Expression logicalAnd() {
+        Expression expression = conditional();
+
+        while (check(TokenType.AND)) {
+            consume(TokenType.AND);
+            expression = new LogicExpression(expression, new Operator("&&"), parseExpression());
+        }
+
+        return expression;
+    }
+
     // парсинг while
     private Statement whileLoop() {
         // паттерн
@@ -570,21 +571,14 @@ public class Parser {
         consume(TokenType.WHILE);
         // скобка
         consume(TokenType.BRACKET);
-        // кондишены
-        ArrayList<ConditionExpression> _conditions = new ArrayList<>();
-        while (!match(")")) {
-            if (!check(TokenType.AND)) {
-                _conditions.add((ConditionExpression) conditional());
-            } else {
-                consume(TokenType.AND);
-            }
-        }
+        // логика
+        Expression expr = logicalOr();
         // брэкет
         consume(TokenType.BRACKET);
         // брэйкс
         consume(TokenType.BRACE);
         // стэйтмент вайл
-        WhileStatement statement = new WhileStatement(_conditions);
+        WhileStatement statement = new WhileStatement(expr);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
             statement.add(statement());
@@ -595,15 +589,15 @@ public class Parser {
         return statement;
     }
 
-    // парсинг try
-    private Statement tryCatch() {
+    // парсинг safe
+    private Statement safeHandle() {
         // паттерн
-        // try { ... } catch (...) { ... }
-        consume(TokenType.TRY);
+        // safe { ... } handle (...) { ... }
+        consume(TokenType.SAFE);
         // брэйс
         consume(TokenType.BRACE);
         // стэйтмент трай
-        TryStatement statement = new TryStatement("");
+        SafeStatement statement = new SafeStatement("");
         // стэйтменты
         while (!check(TokenType.BRACE)) {
             statement.add(statement());
@@ -611,7 +605,7 @@ public class Parser {
         // брэйс
         consume(TokenType.BRACE);
         // кэтч
-        consume(TokenType.CATCH);
+        consume(TokenType.HANDLE);
         // брекет
         consume(TokenType.BRACKET);
         // имя переменной
@@ -623,7 +617,7 @@ public class Parser {
         consume(TokenType.BRACE);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
-            statement.addCatch(statement());
+            statement.addStatementToHandle(statement());
         }
         // брэйс
         consume(TokenType.BRACE);
@@ -632,10 +626,10 @@ public class Parser {
     }
 
     // парсинг throw
-    private Statement throwValue() {
+    private Statement raise() {
         // паттерн
-        // throw(...)
-        consume(TokenType.THROW);
+        // raise(...)
+        consume(TokenType.RAISE);
         // брэкет
         consume(TokenType.BRACKET);
         // выражение
@@ -643,7 +637,7 @@ public class Parser {
         // брэкет
         consume(TokenType.BRACKET);
         // возвращаем
-        return new ThrowStatement(expr);
+        return new RaiseStatement(expr);
     }
 
     // парсинг for
@@ -739,22 +733,13 @@ public class Parser {
         // кондишены
         ArrayList<Expression> conditions = new ArrayList<>();
         // уровень скобок
-        while (!match(")")) {
-            // and
-            if (check(TokenType.AND)) {
-                consume(TokenType.AND);
-            }
-            // expr
-            else {
-                conditions.add(conditional());
-            }
-        }
+        Expression e = logicalOr();
         // брэкет
         consume(TokenType.BRACKET);
         // брэйс
         consume(TokenType.BRACE);
         // иф стэйтмент
-        IfStatement statement = new IfStatement(conditions);
+        IfStatement statement = new IfStatement(e);
         IfStatement last = statement;
         // стэйтменты
         while (!check(TokenType.BRACE)) {
@@ -772,20 +757,13 @@ public class Parser {
                 // скобка
                 consume(TokenType.BRACKET);
                 // кондишены
-                ArrayList<Expression> _conditions = new ArrayList<>();
-                while (!match(")")) {
-                    if (!check(TokenType.AND)) {
-                        _conditions.add(conditional());
-                    } else {
-                        consume(TokenType.AND);
-                    }
-                }
+                Expression _e = logicalOr();
                 // брэкет
                 consume(TokenType.BRACKET);
                 // брэйс
                 consume(TokenType.BRACE);
                 // иф стэйтмент
-                IfStatement _statement = new IfStatement(_conditions);
+                IfStatement _statement = new IfStatement(_e);
                 // тело функции
                 while (!check(TokenType.BRACE)) {
                     _statement.add(statement());
@@ -802,10 +780,9 @@ public class Parser {
                 // брэйс
                 consume(TokenType.BRACE);
                 // кондишены
-                ArrayList<Expression> conditionalExpressions = new ArrayList<>();
-                conditionalExpressions.add(new ConditionExpression(new NumberExpression("0"), new Operator("=="), new NumberExpression("0")));
+                Expression _e = new ConditionExpression(new NumberExpression("0"), new Operator("=="), new NumberExpression("0"));
                 // стэйтмент
-                IfStatement _statement = new IfStatement(conditionalExpressions);
+                IfStatement _statement = new IfStatement(_e);
                 // стэйтменты
                 while (!check(TokenType.BRACE)) {
                     _statement.add(statement());
@@ -890,11 +867,11 @@ public class Parser {
 
     // Парсинг pipe-выражения
     private Expression pipe() {
-        Expression expr = conditional();
+        Expression expr = logicalOr();
 
         while (match("|>")) {
             consume(TokenType.OPERATOR);
-            Expression _expr = conditional();
+            Expression _expr = logicalOr();
             if (_expr instanceof AccessExpression accessExpression) {
                 expr = new PipeExpression(expr, accessExpression);
             }
@@ -913,12 +890,8 @@ public class Parser {
 
     // парсинг праймари экспрешенна
     public Expression parsePrimary() {
-        // Проверка создания объекта
-        if (check(TokenType.NEW)) {
-            return objectExpr();
-        }
         // Обработка идентификаторов
-        if (check(TokenType.ID)) {
+        if (check(TokenType.ID) || check(TokenType.NEW)) {
             return parseAccess();
         }
         // Обработка текстовых литералов
@@ -1086,8 +1059,10 @@ public class Parser {
         return "(" + token.type + ", " + token.value + ", "  + token.line + ")" /*+ " №" + current + " L:"*/;
     }
 
+    // подгрузка доп файла
+
     // загрузка классов библиотеки
-    public void loadClasses()  {
+    public void loadAsAdditionalFile()  {
         // классы
         ArrayList<PolarClass> classes = new ArrayList<>();
         // класс

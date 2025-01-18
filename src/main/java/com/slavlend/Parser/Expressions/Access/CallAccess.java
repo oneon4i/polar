@@ -1,16 +1,13 @@
 package com.slavlend.Parser.Expressions.Access;
 
-import com.slavlend.Compiler.Compiler;
 import com.slavlend.Exceptions.PolarException;
-import com.slavlend.Polar.*;
-import com.slavlend.Polar.Stack.Storage;
-import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Functions.BuiltInFunctions;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.FunctionStatement;
-import com.slavlend.VM.Instructions.VmInstrCall;
-import com.slavlend.VM.VmVarContainer;
+import com.slavlend.Polar.Logger.PolarLogger;
+import com.slavlend.Polar.*;
+import com.slavlend.Polar.Stack.Storage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -328,18 +325,4 @@ public class CallAccess implements Access {
 
     @Override
     public Access getNext() { return next; }
-
-    @Override
-    public void compile(boolean hasPrevious) {
-        VmVarContainer container = new VmVarContainer();
-        Compiler.code.startWrite(container);
-        for (Expression e : params) {
-            e.compile();
-        }
-        Compiler.code.endWrite();
-        Compiler.code.visitInstr(new VmInstrCall(funcName, container, hasPrevious));
-        if (hasNext()) {
-            getNext().compile(true);
-        }
-    }
 }

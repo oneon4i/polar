@@ -2,12 +2,10 @@ package com.slavlend.Parser.Expressions;
 
 
 import com.slavlend.App;
-import com.slavlend.Compiler.Compiler;
-import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Operator;
 import com.slavlend.Polar.Logger.PolarLogger;
-import com.slavlend.VM.Instructions.VmInstrArith;
+import com.slavlend.Polar.PolarValue;
 import lombok.Getter;
 
 /*
@@ -74,13 +72,6 @@ public class ArithmeticExpression implements Expression {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-        r.compile();
-        l.compile();
-        Compiler.code.visitInstr(new VmInstrArith(operator));
     }
 
     // конструктор

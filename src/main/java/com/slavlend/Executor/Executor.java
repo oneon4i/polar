@@ -1,15 +1,16 @@
 package com.slavlend.Executor;
 
-import com.slavlend.Commands.Command;
-import com.slavlend.Compiler.Compiler;
+import com.slavlend.App;
+import com.slavlend.Colors;
+import com.slavlend.Exceptions.PolarException;
+import com.slavlend.Lexer.Lexer;
+import com.slavlend.Parser.Parser;
 import com.slavlend.Parser.Statements.BlockStatement;
+import com.slavlend.Polar.Logger.PolarLogger;
+import com.slavlend.Polar.PolarBench;
 import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Polar.Stack.Storage;
 import com.slavlend.Polar.StackHistoryWriter;
-import com.slavlend.App;
-import com.slavlend.Colors;
-import com.slavlend.Lexer.Lexer;
-import com.slavlend.Parser.Parser;
 
 /*
 Исполнение файла с кодом.
@@ -32,7 +33,7 @@ public class Executor {
         // токенизация
         lexer.Tokenize();
 
-        // парсер
+        // парсинг
         Parser parser = new Parser(
                 lexer.getTokens()
         );
@@ -43,19 +44,18 @@ public class Executor {
         parser.setEnvironmentPath(envPath);
         parser.setFileName(filePath);
         App.parser = parser;
-
-        // интерпретация
+        BlockStatement statement = parser.parse();
+        // вывод сообщения о готовности
         System.out.println(Colors.ANSI_GREEN + "🐲 Done!" + Colors.ANSI_RESET);
 
         // интерпретируем
-        if (settings.getCompilerMode()) {
-            System.out.println(Colors.ANSI_CYAN + "🧊 Compiling..." + Colors.ANSI_RESET);
-            BlockStatement statement = parser.parse();
-            statement.compile();
-            Compiler.iceVm.run(Compiler.code);
-        } else {
-            System.out.println(Colors.ANSI_CYAN + "❄️ Interpreting..." + Colors.ANSI_RESET);
-            parser.execute();
+        PolarBench bench = new PolarBench();
+        bench.start();
+        try {
+            statement.execute();
+        } catch (PolarException e) {
+            PolarLogger.printError(e);
         }
+        System.out.println(Colors.ANSI_BLUE + "🧊 Execution time: " + (float)bench.end()/1000f + "s" + Colors.ANSI_RESET); bench.end();
     }
 }

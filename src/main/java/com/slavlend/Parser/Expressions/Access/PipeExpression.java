@@ -1,10 +1,10 @@
 package com.slavlend.Parser.Expressions.Access;
 
 import com.slavlend.App;
-import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.Statement;
+import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Polar.PolarValue;
 import lombok.Getter;
 
@@ -74,10 +74,5 @@ public class PipeExpression implements Expression, Statement {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-
     }
 }

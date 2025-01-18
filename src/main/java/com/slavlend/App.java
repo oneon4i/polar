@@ -1,16 +1,12 @@
 package com.slavlend;
 
-import com.slavlend.Commands.CmplCommand;
-import com.slavlend.Commands.Command;
-import com.slavlend.Commands.InstallPkgCommand;
-import com.slavlend.Commands.RunCommand;
+import com.slavlend.Executor.Executor;
+import com.slavlend.Executor.ExecutorSettings;
 import com.slavlend.Parser.Parser;
 import com.slavlend.Polar.Ver.PolarVersion;
-import lombok.Getter;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /*
@@ -20,14 +16,6 @@ public class App
 {
     // парсер
     public static Parser parser;
-
-    // список комманд
-    @Getter
-    private final static HashMap<String, Command> commandList = new HashMap() {{
-       put("pkg", new InstallPkgCommand());
-       put("run", new RunCommand());
-       put("cmpl", new CmplCommand());
-    }};
 
     /*
     Точка входа в приложение
@@ -39,29 +27,33 @@ public class App
         System.out.println("╰───────────────────╯");
         System.out.println();
         // комманды
-        showCommandMenu();
+        if (args.length != 1) {
+            System.out.println("🥶 Invalid usage. Valid: polar script.polar");
+            return;
+        }
+        // читаем код из файла
+        String code = readCode(args[0]);
+        // исполняем
+        Executor.exec(new ExecutorSettings(args[0], code));
     }
 
-    /*
-    Меню выбора команды
-     */
-    public static void showCommandMenu() throws IOException {
-        System.out.println("🐸 Choose command:");
-        System.out.println(" > run (script name)");
-        System.out.println(" > cmpl (script name)");
-        System.out.println(" > pkg (git repo)");
-        // аргументы
-        String[] inputArgs = new Scanner(System.in).nextLine().split(" ");
-        String[] commandArgs = Arrays.copyOfRange(inputArgs, 1, inputArgs.length);
-        // выполняем команду
-        if (inputArgs.length > 0 &&
-                commandList.containsKey(inputArgs[0])) {
-            commandList.get(inputArgs[0]).execute(commandArgs);
+    // чтение кода
+    public static String readCode(String fileName) {
+        File file = new File(fileName);
+        StringBuilder code = new StringBuilder();
+        Scanner sc = null;
+        try {
+            sc = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        else {
-            System.out.println("🍕 Invalid Command.");
-            showCommandMenu();
-        }
+
+        // парсим на код лайны
+        while (sc.hasNextLine()) {
+            code.append(sc.nextLine()).append("\n");
+        };
+
+        return code.toString();
     }
 }
 

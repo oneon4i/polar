@@ -1,14 +1,11 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
-import com.slavlend.Compiler.Compiler;
-import com.slavlend.Parser.Expressions.NilExpression;
+import com.slavlend.Parser.Address;
+import com.slavlend.Parser.Expressions.ArgumentExpression;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Storage;
-import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Expressions.ArgumentExpression;
-import com.slavlend.VM.VmFunction;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -83,18 +80,6 @@ public class FunctionStatement implements Statement, Callable {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-        VmFunction f = new VmFunction(name, arguments);
-        Compiler.code.defineFunction(f);
-        Compiler.code.startWrite(f);
-        for (Statement s : statements) {
-            s.compile();
-        }
-        new BackStatement(new NilExpression()).compile();
-        Compiler.code.endWrite();
     }
 
     // вызов функции

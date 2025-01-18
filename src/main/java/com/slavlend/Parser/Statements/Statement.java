@@ -9,5 +9,4 @@ public interface Statement {
     abstract void interrupt();
     abstract Statement copy();
     abstract Address address();
-    abstract void compile();
 }

@@ -86,8 +86,16 @@ arr.add(2)
 arr.add(3)
 put(arr.get(1))##
 arr = [1, 12, 27]
-put(arr.get(2))#
+put(arr.get(2))##
 map = {'key': 2, 'key2': 9}
 put(map.get('key2'))
 a = put('123')
-put(a)
+put(a)#
+class A() = {
+    mod test = '123'
+    mod func a() = {
+        put(A.test)
+    }
+}
+
+a = A.a()

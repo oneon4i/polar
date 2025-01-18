@@ -1,15 +1,12 @@
 package com.slavlend.Parser.Expressions;
 
 import com.slavlend.App;
-import com.slavlend.Compiler.Compiler;
 import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Polar.Stack.Storage;
 import com.slavlend.Parser.Address;
-import com.slavlend.VM.Instructions.*;
-import com.slavlend.VM.VmVarContainer;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -52,20 +49,6 @@ public class ContainerExpression implements Expression {
     public Address address() {
         return address;
     }
-
-    @Override
-    public void compile() {
-        Compiler.code.visitInstr(new VmInstrRefl("com.slavlend.Compiler.Libs.Array"));
-        for (Expression e : container) {
-            Compiler.code.visitInstr(new VmInstrDup());
-            VmVarContainer container = new VmVarContainer();
-            Compiler.code.startWrite(container);
-            e.compile();
-            Compiler.code.endWrite();
-            Compiler.code.visitInstr(new VmInstrCall("add", container, true));
-        }
-    }
-
 
     public ContainerExpression(ArrayList<Expression> container) {
         this.container = container;

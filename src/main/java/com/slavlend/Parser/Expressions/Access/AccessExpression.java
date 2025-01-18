@@ -1,9 +1,9 @@
 package com.slavlend.Parser.Expressions.Access;
 
-import com.slavlend.Polar.PolarValue;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.Statement;
+import com.slavlend.Polar.PolarValue;
 import lombok.Getter;
 
 /*
@@ -84,10 +84,5 @@ public class AccessExpression implements Expression, Statement {
     @Override
     public Address address() {
         return address;
-    }
-
-    @Override
-    public void compile() {
-        access.compile(false);
     }
 }
