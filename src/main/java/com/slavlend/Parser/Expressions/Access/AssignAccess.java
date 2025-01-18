@@ -6,6 +6,7 @@ import com.slavlend.PolarLogger;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Vm.Instructions.VmInstrArith;
+import com.slavlend.Vm.Instructions.VmInstrLoad;
 import com.slavlend.Vm.Instructions.VmInstrPush;
 import com.slavlend.Vm.Instructions.VmInstrStore;
 import com.slavlend.Vm.VmVarContainer;
@@ -26,9 +27,12 @@ public class AssignAccess implements Access {
     private final Expression to;
     // аккссес тип
     private final AccessType type;
+    // весь акссесс (вся цепь)
+    private final AccessExpression accessExpression;
 
     // конструктор
-    public AssignAccess(Address address, Access next, String varName, Expression to, AccessType type) {
+    public AssignAccess(AccessExpression accessExpression, Address address, Access next, String varName, Expression to, AccessType type) {
+        this.accessExpression = accessExpression;
         this.address = address;
         this.next = next;
         this.varName = varName;
@@ -73,25 +77,33 @@ public class AssignAccess implements Access {
                 Compiler.code.visitInstr(new VmInstrStore(address.convert(), varName, hasPrevious, assignArgs));
             }
             case MUL -> {
-                Compiler.code.visitInstr(new VmInstrPush(address.convert(), varName));
+                AccessExpression e = (AccessExpression) accessExpression.copy();
+                e.set(new VarAccess(address, next, varName));
+                e.compile();
                 Compiler.code.visitInstr(new VmInstrArith(address.convert(), "*"));
                 Compiler.code.endWrite();
                 Compiler.code.visitInstr(new VmInstrStore(address.convert(), varName, hasPrevious, assignArgs));
             }
             case DIVIDE -> {
-                Compiler.code.visitInstr(new VmInstrPush(address.convert(), varName));
+                AccessExpression e = (AccessExpression) accessExpression.copy();
+                e.set(new VarAccess(address, next, varName));
+                e.compile();
                 Compiler.code.visitInstr(new VmInstrArith(address.convert(), "/"));
                 Compiler.code.endWrite();
                 Compiler.code.visitInstr(new VmInstrStore(address.convert(), varName, hasPrevious, assignArgs));
             }
             case PLUS -> {
-                Compiler.code.visitInstr(new VmInstrPush(address.convert(), varName));
+                AccessExpression e = (AccessExpression) accessExpression.copy();
+                e.set(new VarAccess(address, next, varName));
+                e.compile();
                 Compiler.code.visitInstr(new VmInstrArith(address.convert(), "+"));
                 Compiler.code.endWrite();
                 Compiler.code.visitInstr(new VmInstrStore(address.convert(), varName, hasPrevious, assignArgs));
             }
             case MINUS -> {
-                Compiler.code.visitInstr(new VmInstrPush(address.convert(), varName));
+                AccessExpression e = (AccessExpression) accessExpression.copy();
+                e.set(new VarAccess(address, next, varName));
+                e.compile();
                 Compiler.code.visitInstr(new VmInstrArith(address.convert(), "-"));
                 Compiler.code.endWrite();
                 Compiler.code.visitInstr(new VmInstrStore(address.convert(), varName, hasPrevious, assignArgs));
@@ -99,6 +111,15 @@ public class AssignAccess implements Access {
         }
         if (hasNext()) {
             PolarLogger.exception("How You Want Use Something After Assign? 😂", address);
+        }
+    }
+
+    @Override
+    public Access copy() {
+        if (next != null) {
+            return new AssignAccess(accessExpression, address, next.copy(), varName, to, type);
+        } else {
+            return new AssignAccess(accessExpression, address, null, varName, to, type);
         }
     }
 }

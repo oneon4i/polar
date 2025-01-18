@@ -56,7 +56,7 @@ public class AccessExpression implements Expression, Statement {
 
     @Override
     public Statement copy() {
-        return new AccessExpression(address, access);
+        return new AccessExpression(address, access.copy());
     }
 
     @Override

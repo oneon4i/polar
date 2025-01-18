@@ -72,4 +72,13 @@ public class CallAccess implements Access {
             getNext().compile(true);
         }
     }
+
+    @Override
+    public Access copy() {
+        if (next != null) {
+            return new CallAccess(address, next.copy(), funcName, params);
+        } else {
+            return new CallAccess(address, null, funcName, params);
+        }
+    }
 }

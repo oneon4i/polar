@@ -56,4 +56,13 @@ public class TempAccess implements Access {
             getNext().compile(true);
         }
     }
+
+    @Override
+    public Access copy() {
+        if (next != null) {
+            return new TempAccess(address, next.copy(), objectExpr);
+        } else {
+            return new TempAccess(address, null, objectExpr);
+        }
+    }
 }

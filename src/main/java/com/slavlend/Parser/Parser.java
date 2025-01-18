@@ -291,7 +291,7 @@ public class Parser {
                 // expression
                 Expression value = parseExpression();
                 VarAccess last = ((VarAccess) id.getLast());
-                id.set(new AssignAccess(id.address(), null, last.varName, value, AccessType.SET));
+                id.set(new AssignAccess(id, id.address(), null, last.varName, value, AccessType.SET));
             }
             // +=
             else if (check(TokenType.ASSIGN_ADD)) {
@@ -299,7 +299,7 @@ public class Parser {
                 // expression
                 Expression value = parseExpression();
                 VarAccess last = ((VarAccess) id.getLast());
-                id.set(new AssignAccess(id.address(), null, last.varName, value, AccessType.PLUS));
+                id.set(new AssignAccess(id, id.address(), null, last.varName, value, AccessType.PLUS));
             }
             // -=
             else if (check(TokenType.ASSIGN_SUB)) {
@@ -307,7 +307,7 @@ public class Parser {
                 // expression
                 Expression value = parseExpression();
                 VarAccess last = ((VarAccess) id.getLast());
-                id.set(new AssignAccess(id.address(), null, last.varName, value, AccessType.MINUS));
+                id.set(new AssignAccess(id, id.address(), null, last.varName, value, AccessType.MINUS));
             }
             // *=
             else if (check(TokenType.ASSIGN_MUL)) {
@@ -315,7 +315,7 @@ public class Parser {
                 // expression
                 Expression value = parseExpression();
                 VarAccess last = ((VarAccess) id.getLast());
-                id.set(new AssignAccess(id.address(), null, last.varName, value, AccessType.MUL));
+                id.set(new AssignAccess(id, id.address(), null, last.varName, value, AccessType.MUL));
             }
             // /=
             else if (check(TokenType.ASSIGN_DIVIDE)) {
@@ -323,7 +323,7 @@ public class Parser {
                 // expression
                 Expression value = parseExpression();
                 VarAccess last = ((VarAccess) id.getLast());
-                id.set(new AssignAccess(id.address(), null, last.varName, value, AccessType.DIVIDE));
+                id.set(new AssignAccess(id, id.address(), null, last.varName, value, AccessType.DIVIDE));
             }
             // |>
             else if (match("|>")) {

@@ -55,4 +55,13 @@ public class VarAccess implements Access {
             getNext().compile(true);
         }
     }
+
+    @Override
+    public Access copy() {
+        if (next != null) {
+            return new VarAccess(address, next.copy(), varName);
+        } else {
+            return new VarAccess(address, null, varName);
+        }
+    }
 }

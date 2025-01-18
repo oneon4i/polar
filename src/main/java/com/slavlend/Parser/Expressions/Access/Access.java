@@ -9,4 +9,5 @@ public interface Access {
     abstract boolean hasNext();
     abstract Access getNext();
     abstract void compile(boolean hasPrevious);
+    abstract Access copy();
 }
