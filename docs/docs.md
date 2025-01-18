@@ -12,12 +12,10 @@
 @put('Hello world!')
 ```
 
-[INSTALLATION](installationg.md)
+[INSTALLATION](installation)
 
 [GET STARTED](get_started.md)
 
-[FUNCTIONS](functions.md)
+[STATEMENTS](statements.md)
 
 [OOP](oop.md)
-
-[LIBS](lib.md)

@@ -60,9 +60,7 @@ public class CaseStatement implements Statement {
         return ifStatement.getCompiled();
     }
 
-    public ArrayList<Expression> compileCondition(Expression matchExpr) {
-        ArrayList<Expression> expressions = new ArrayList<>();
-        expressions.add(new ConditionExpression(checkExpr, new Operator("=="), matchExpr));
-        return expressions;
+    public Expression compileCondition(Expression matchExpr) {
+        return new ConditionExpression(checkExpr, new Operator("=="), matchExpr);
     }
 }

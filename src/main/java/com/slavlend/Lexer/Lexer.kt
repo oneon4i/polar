@@ -34,6 +34,7 @@ class Lexer // конструктор
         "elif",
         "else",
         "and",
+        "or",
         "use",
         "mod",
         "break",
@@ -66,6 +67,7 @@ class Lexer // конструктор
             put("elif", TokenType.ELIF)
             put("else", TokenType.ELSE)
             put("and", TokenType.AND)
+            put("or", TokenType.OR)
             put("use", TokenType.USE)
             put("mod", TokenType.MOD)
             put("break", TokenType.BREAK)

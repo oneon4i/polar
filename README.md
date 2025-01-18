@@ -1,10 +1,11 @@
 Dynamicly typed simple scripting
 programming language 💡
 
+Compiles to IceVM 🥶
+
 > [!IMPORTANT]
 > Compiler & Vm still under dev. It doesn't
-> support the old libs (from interpreter), try, catch, 
-> throw stmts for now.
+> support the old libs (from interpreter)
 
 > [!NOTE]
 > Requires kotlin 5.0 & jdk 21
@@ -33,6 +34,3 @@ while (1 == 1) {
 
 > [!WARNING]
 > Documentation is work in progress
-
-Roadmap 🗺️:
-> Write own VM

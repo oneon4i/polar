@@ -3,7 +3,6 @@ package com.slavlend.Parser.Statements;
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Expressions.Expression;
-import com.slavlend.Parser.Operator;
 import com.slavlend.Parser.Address;
 import com.slavlend.Vm.Instructions.VmInstrComputeConds;
 import com.slavlend.Vm.Instructions.VmInstrIf;
@@ -19,8 +18,8 @@ public class IfStatement implements Statement {
     // в ином случае
     @Setter
     private IfStatement elseCondition = null;
-    // кодишены для ифа
-    private final ArrayList<Expression> conditions;
+    // логическое выражение для ифа
+    private final Expression expression;
     // адресс
     private final Address address = App.parser.address();
 
@@ -32,7 +31,7 @@ public class IfStatement implements Statement {
     // копирование
     @Override
     public Statement copy() {
-        IfStatement _copy = new IfStatement(conditions);
+        IfStatement _copy = new IfStatement(expression);
 
         for (Statement statement : statements) {
             _copy.add(statement.copy());
@@ -56,7 +55,7 @@ public class IfStatement implements Statement {
         Compiler.code.visitInstr(ifInstr);
         Compiler.code.startWrite(ifInstr);
         ifInstr.setWritingConditions(true);
-        compileConditions();
+        expression.compile();
         ifInstr.setWritingConditions(false);
         for (Statement s : statements) {
             s.compile();
@@ -67,24 +66,11 @@ public class IfStatement implements Statement {
         }
     }
 
-    private void compileConditions() {
-        int conditionsAmount = 0;
-        for (Expression cond : conditions) {
-            cond.compile();
-            if (conditionsAmount+1 == 2) {
-                Compiler.code.visitInstr(new VmInstrComputeConds(address.convert()));
-            }
-            else {
-                conditionsAmount += 1;
-            }
-        }
-    }
-
     public VmInstrIf getCompiled() {
         VmInstrIf ifInstr = new VmInstrIf(address.convert());
         Compiler.code.startWrite(ifInstr);
         ifInstr.setWritingConditions(true);
-        compileConditions();
+        expression.compile();
         ifInstr.setWritingConditions(false);
         for (Statement s : statements) {
             s.compile();
@@ -97,7 +83,7 @@ public class IfStatement implements Statement {
     }
 
     // конструктор
-    public IfStatement(ArrayList<Expression> expressions) {
-        this.conditions = expressions;
+    public IfStatement(Expression e) {
+        this.expression = e;
     }
 }

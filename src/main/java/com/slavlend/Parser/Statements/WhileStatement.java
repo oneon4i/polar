@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class WhileStatement implements Statement {
     // тело
     private final ArrayList<Statement> statements = new ArrayList<>();
-    // кодишены
-    private final ArrayList<Expression> conditions;
+    // логическое выражение
+    private final Expression expression;
     // адресс
     private final Address address = App.parser.address();
 
@@ -29,7 +29,7 @@ public class WhileStatement implements Statement {
     // копирование
     @Override
     public Statement copy() {
-        WhileStatement _copy = new WhileStatement(conditions);
+        WhileStatement _copy = new WhileStatement(expression);
 
         for (Statement statement : statements) {
             _copy.add(statement.copy());
@@ -53,7 +53,7 @@ public class WhileStatement implements Statement {
         Compiler.code.visitInstr(ifInstr);
         Compiler.code.startWrite(ifInstr);
         ifInstr.setWritingConditions(true);
-        compileConditions();
+        expression.compile();
         ifInstr.setWritingConditions(false);
         for (Statement s : statements) {
             s.compile();
@@ -70,21 +70,8 @@ public class WhileStatement implements Statement {
         Compiler.code.endWrite();
     }
 
-    private void compileConditions() {
-        int conditionsAmount = 0;
-        for (Expression cond : conditions) {
-            cond.compile();
-            if (conditionsAmount+1 == 2) {
-                Compiler.code.visitInstr(new VmInstrComputeConds(address.convert()));
-            }
-            else {
-                conditionsAmount += 1;
-            }
-        }
-    }
-
     // конструктор
-    public WhileStatement(ArrayList<Expression> _conditions) {
-        this.conditions = _conditions;
+    public WhileStatement(Expression e) {
+        this.expression = e;
     }
 }

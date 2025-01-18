@@ -26,7 +26,7 @@ for (i = 0, i < 1000000) {
     put('Hello world!')
     i += 1
 }#
-
+#
 class Test() = {
     func init() = {
         this.b = 0
@@ -35,4 +35,9 @@ class Test() = {
 
 test = new Test()
 test.b += 1
-put(test.b)
+put(test.b)#
+
+a = 4
+if (((a == 5) or (a > 3)) and true == true) {
+    put(3)
+}

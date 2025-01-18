@@ -58,15 +58,12 @@ public class DefaultStatement implements Statement {
         return ifStatement.getCompiled();
     }
 
-    public ArrayList<Expression> compileCondition() {
-        ArrayList<Expression> expressions = new ArrayList<>();
-        expressions.add(
-                new ConditionExpression(
+    public Expression compileCondition() {
+        Expression e = new ConditionExpression(
                         new NumberExpression("0"),
                         new Operator("=="),
                         new NumberExpression("0")
-                )
-        );
-        return expressions;
+                );
+        return e;
     }
 }

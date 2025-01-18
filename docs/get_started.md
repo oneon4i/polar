@@ -40,31 +40,34 @@ b = 1.253
 c = 9.736
 # etc #
  ```
-2. Text (string under the hood), declaring in single quotes 💬:
+2. Text, declaring in single quotes 💬:
 ```polar
 a = '12345'
 b = ''
 # etc #
 ```
-3. Bool (boolean under the hood), declaring like this 🤖:
+3. Bool, declaring like this 🤖:
 ```polar
 a = true
 b = false
 # etc #
  ```
-4. PolarObject (instance of PolarClass under the hood), declaring with new keyword 🐩: 
+4. Object, declaring with new keyword 🐩: 
 ```polar
 a = new SomeClass()
 ```
-4. Reflected (java object under the hood), declaring like this:
+4. Class, declaring like this:
+```polar
+a = SomeExistingClass
+a.some_mod_func()
+```
+4. Java object, declaring like this:
 ```polar
 a = reflect 'some_awesome_java_class_name'
 ```
+^^^
 Needs for java reflection such as a method call, class creation, etc...
-5. Func (FunctionStatement under the hood)
+5. Func, declaring like this...
 ```polar
 a = some_avesome_exists_function
 ```
-
-> [!WARNING]
-> The documentation is under development

@@ -33,6 +33,7 @@ public enum TokenType {
     ELIF, // elif
     ELSE, // else
     AND, // logical and
+    OR, // logical or
     USE, // use
     ASSIGN_ADD, // assign add
     ASSIGN_SUB, // assign sub
