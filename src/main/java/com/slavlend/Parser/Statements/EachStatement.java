@@ -16,7 +16,6 @@ import java.util.UUID;
 /*
 Фор стэйтмент - цикл
  */
-@SuppressWarnings("PointlessBooleanExpression")
 @Getter
 public class EachStatement implements Statement {
     // тело
@@ -54,56 +53,77 @@ public class EachStatement implements Statement {
         return address;
     }
 
-    @Override
-    public void compile() {
-        // ЮИД
-        String uuid = UUID.randomUUID().toString();
-        // сохраняем переменную
-        Compiler.code.visitInstr(new VmInstrPush(address.convert(), 0f));
+    private void saveTempVarCompile(String uuid) {
+        Compiler.code.visitInstr(new VmInstrPush(address.convert(), -1f));
         Compiler.code.visitInstr(new VmInstrStoreL(address.convert(), uuid));
-        // цикл
-        VmInstrLoop loop = new VmInstrLoop(address.convert());
-        Compiler.code.visitInstr(loop);
-        // начинаем писать в цикл
-        Compiler.code.startWrite(loop);
-        // начинаем писать условие
-        VmInstrIf ifInstr = new VmInstrIf(address.convert());
-        Compiler.code.visitInstr(ifInstr);
-        Compiler.code.startWrite(ifInstr);
-        ifInstr.setWritingConditions(true);
-        Compiler.code.visitInstr(new VmInstrLoad(address.convert(), uuid, false));
-        listVariable.compile();
-        Compiler.code.visitInstr(new VmInstrCall(address.convert(), "size", new VmVarContainer(), true));
-        Compiler.code.visitInstr(new VmInstrCondOperator(address.convert(), new Operator("<")));
-        ifInstr.setWritingConditions(false);
-        VmVarContainer args = new VmVarContainer();
-        Compiler.code.startWrite(args);
-        listVariable.compile();
-        VmVarContainer fnArgs = new VmVarContainer();
-        Compiler.code.startWrite(fnArgs);
-        Compiler.code.visitInstr(new VmInstrLoad(address.convert(), uuid, false));
-        Compiler.code.endWrite();
-        listVariable.compile();
-        Compiler.code.visitInstr(new VmInstrCall(address.convert(), "get", fnArgs, true));
-        Compiler.code.endWrite();
-        Compiler.code.visitInstr(new VmInstrStore(address.convert(), variableName, false, args));
-        for (Statement s : statements) {
-            s.compile();
-        }
+    }
+
+    private void addOneTempVarCompile(String uuid) {
         Compiler.code.visitInstr(new VmInstrLoad(address.convert(), uuid, false));
         Compiler.code.visitInstr(new VmInstrPush(address.convert(), 1f));
         Compiler.code.visitInstr(new VmInstrArith(address.convert(), "+"));
         Compiler.code.visitInstr(new VmInstrStoreL(address.convert(), uuid));
-        // заканчиваем писать условие
-        Compiler.code.endWrite();
-        VmInstrIf elseInstr = new VmInstrIf(address.convert());
-        // начинаем писать else-условие
+    }
+
+    private void checkSizeCompile(String uuid) {
+        Compiler.code.visitInstr(new VmInstrLoad(address.convert(), uuid, false));
+        listVariable.compile();
+        Compiler.code.visitInstr(new VmInstrCall(address.convert(), "size", new VmVarContainer(), true));
+        Compiler.code.visitInstr(new VmInstrCondOperator(address.convert(), new Operator("<")));
+    }
+
+    private void compileElseLogic(VmInstrIf ifInstr, VmInstrIf elseInstr) {
         Compiler.code.startWrite(elseInstr);
         elseInstr.setWritingConditions(true);
         elseInstr.visitInstr(new VmInstrPush(address.convert(),true));
         elseInstr.setWritingConditions(false);
         elseInstr.visitInstr(new VmInstrLoopEnd(address.convert(), false));
         ifInstr.setElse(elseInstr);
+    }
+
+    private void loadElementCompile(String uuid) {
+        VmVarContainer storeArgs = new VmVarContainer();
+        Compiler.code.startWrite(storeArgs);
+        listVariable.compile();
+        VmVarContainer callGetElemArgs = new VmVarContainer();
+        Compiler.code.startWrite(callGetElemArgs);
+        Compiler.code.visitInstr(new VmInstrLoad(address.convert(), uuid, false));
+        Compiler.code.endWrite();
+        Compiler.code.visitInstr(new VmInstrCall(address.convert(), "get", callGetElemArgs, true));
+        Compiler.code.endWrite();
+        Compiler.code.visitInstr(new VmInstrStore(address.convert(), variableName, false, storeArgs));
+    }
+
+    @Override
+    public void compile() {
+        // ЮИД
+        String uuid = UUID.randomUUID().toString();
+        // сохраняем переменную
+        saveTempVarCompile(uuid);
+        // цикл
+        VmInstrLoop loop = new VmInstrLoop(address.convert());
+        Compiler.code.visitInstr(loop);
+        // начинаем писать в цикл
+        Compiler.code.startWrite(loop);
+        // начинаем писать if
+        VmInstrIf ifInstr = new VmInstrIf(address.convert());
+        addOneTempVarCompile(uuid);
+        Compiler.code.visitInstr(ifInstr);
+        Compiler.code.startWrite(ifInstr);
+        // условие
+        ifInstr.setWritingConditions(true);
+        checkSizeCompile(uuid);
+        ifInstr.setWritingConditions(false);
+        // загружаем элемент
+        loadElementCompile(uuid);
+        for (Statement s : statements) {
+            s.compile();
+        }
+        // заканчиваем писать условие
+        Compiler.code.endWrite();
+        // начинаем писать else-условие
+        VmInstrIf elseInstr = new VmInstrIf(address.convert());
+        compileElseLogic(ifInstr, elseInstr);
         // выходим
         Compiler.code.endWrite();
         Compiler.code.endWrite();
