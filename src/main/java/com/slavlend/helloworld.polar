@@ -90,7 +90,7 @@ put(arr.get(2))##
 map = {'key': 2, 'key2': 9}
 put(map.get('key2'))
 a = put('123')
-put(a)#
+put(a)##
 class A() = {
     mod test = '123'
     mod func a() = {
@@ -98,4 +98,4 @@ class A() = {
     }
 }
 
-a = A.a()
+a = A.a()#

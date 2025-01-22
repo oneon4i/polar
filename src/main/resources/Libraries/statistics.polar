@@ -8,4 +8,10 @@ class Statistics() = {
     mod func median(arr) = {
         back(Statistics.reflected.median(arr))
     }
+    mod func mode(arr) = {
+        back(Statistics.reflected.mode(arr))
+    }
+    mod func hmean(arr) = {
+        back(Statistics.reflected.hmean(arr))
+    }
 }

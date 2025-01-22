@@ -54,5 +54,6 @@ public enum TokenType {
     NEXT, // next
     SAFE, // try
     HANDLE, // handle
-    RAISE // raise
+    RAISE, // raise
+    JUSE // juse
 }

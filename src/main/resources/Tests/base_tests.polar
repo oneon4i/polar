@@ -1,3 +1,4 @@
+juse 'Abc.class'
 use 'lib.polar'
 use 'lib.tests'
 use 'lib.array'
@@ -216,6 +217,24 @@ func statistics_median_test() = {
     put('Test passed')
 }
 
+func statistics_mode_test() = {
+    marks = [3,3,3,3,2,4,5,3,2,2,2,2,3,4,5]
+    assert(Statistics.mode(marks) == 3)
+    put('Test passed')
+}
+
+func statistics_hmean_test() = {
+    music_notes = [1,2,4]
+    assert(Statistics.hmean(music_notes) == 1.7142857)
+    put('Test passed')
+}
+
+func juse_test() = {
+    a = reflect 'com.slavlend.Abc'
+    assert(a.testRuntimeJuse() == 'Juse works perfect!')
+    put('Test passed')
+}
+
 Tests.test(
     [
      hello_world_test,
@@ -237,6 +256,9 @@ Tests.test(
      crypto_test,
      http_test,
      statistics_test,
-     statistics_median_test
+     statistics_median_test,
+     statistics_mode_test,
+     statistics_hmean_test,
+     juse_test
     ]
 )

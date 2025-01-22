@@ -269,6 +269,15 @@ public class Parser {
         if (check(TokenType.RAISE)) {
             return raise();
         }
+        // стэйтмент juse
+        if (check(TokenType.JUSE)) {
+            // ДжЮз
+            consume(TokenType.JUSE);
+            // айдишник
+            TextExpression id = (TextExpression) parseExpression();
+            // библиотека
+            return new JUseStatement(id);
+        }
         // стэйтмент new
         if (check(TokenType.NEW)) {
             return parseAccess();

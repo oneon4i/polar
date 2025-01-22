@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.Scanner;
 
 /*
-Стэйтмент - использование библиотеки. Подгружает ее.
+Юз Стэйтмент - использование библиотеки Полара. Подгружает ее.
  */
 @Getter
 public class UseLibStatement implements Statement{
