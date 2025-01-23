@@ -19,6 +19,9 @@ public class VmInstrThrow implements VmInstr {
     @Override
     public void run(IceVm vm, VmFrame<Object> frame) {
         Object o = vm.pop();
+        if (o instanceof VmException exception) {
+            throw exception;
+        }
         throw new VmThrowable(o);
     }
 
