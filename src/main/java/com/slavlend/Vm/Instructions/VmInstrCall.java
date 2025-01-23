@@ -48,7 +48,12 @@ public class VmInstrCall implements VmInstr {
     private void callObjFunc(IceVm vm, VmFrame<Object> frame, VmObj vmObj) {
         // аргументы
         int argsAmount = passArgs(vm, frame);
-        VmFunction fn = vmObj.getClazz().getFunctions().lookup(addr, name);
+        VmFunction fn;
+        if (vmObj.getClazz().getFunctions().has(name)) {
+            fn = vmObj.getClazz().getFunctions().lookup(addr, name);
+        } else {
+            fn = (VmFunction)vmObj.getScope().lookup(addr, name);
+        }
         checkArgs(fn.getArguments().size(), argsAmount);
         // вызов
         vmObj.call(addr, name, vm);
@@ -58,7 +63,12 @@ public class VmInstrCall implements VmInstr {
     private void callClassFunc(IceVm vm, VmFrame<Object> frame, VmClass vmClass) {
         // аргументы
         int argsAmount = passArgs(vm, frame);
-        VmFunction fn = vmClass.getModFunctions().lookup(addr, name);
+        VmFunction fn;
+        if (vmClass.getModFunctions().has(name)) {
+            fn = vmClass.getModFunctions().lookup(addr, name);
+        } else {
+            fn = (VmFunction)vmClass.getModValues().lookup(addr, name);
+        }
         checkArgs(fn.getArguments().size(), argsAmount);
         // вызов модульной функции
         vmClass.getModFunctions().lookup(addr, name).exec(vm);

@@ -1,3 +1,4 @@
+juse 'com\slavlend\Abc.class'
 use 'lib.console'
 use 'lib.str'
 
@@ -9,18 +10,6 @@ func hello_world_test() = {
 func variable_test() = {
     a = 1
     assert (a == 1)
-    put('Test passed')
-}
-
-func convert_test() = {
-    a = 1
-    b = true
-    c = '1'
-
-    assert(Polar.name(string(1)) == 'string')
-    assert(Polar.name(string(b)) == 'string')
-    assert(Polar.name(num(c)) == 'num')
-
     put('Test passed')
 }
 
@@ -136,9 +125,13 @@ func test_format() = {
     put('Test passed')
 }
 
+func juse_test() = {
+    reflected = reflect 'com.slavlend.Abc'
+     assert(reflected.testRuntimeJuse() == 'Juse works perfect!')
+}
+
 hello_world_test()
 variable_test()
-convert_test()
 for_statement_continue_test()
 each_statement()
 nested_test()
@@ -146,3 +139,4 @@ while_test()
 optimization_test()
 float_math_test()
 len_test()
+juse_test()

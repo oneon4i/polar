@@ -1,8 +1,13 @@
 package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
+import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ConditionExpression;
+import com.slavlend.Vm.Instructions.VmInstrErr;
+import com.slavlend.Vm.Instructions.VmInstrIf;
+import com.slavlend.Vm.Instructions.VmInstrPush;
+import com.slavlend.Vm.VmException;
 import lombok.Getter;
 
 /*
@@ -27,7 +32,26 @@ public class AssertStatement implements Statement {
 
     @Override
     public void compile() {
-        // not implemented
+        // условие
+        VmInstrIf ifInstr = new VmInstrIf(address.convert());
+        Compiler.code.visitInstr(ifInstr);
+        Compiler.code.startWrite(ifInstr);
+        ifInstr.setWritingConditions(true);
+        expr.compile();
+        ifInstr.setWritingConditions(false);
+        Compiler.code.endWrite();
+        // else
+        VmInstrIf elseInstr = new VmInstrIf(address.convert());
+        Compiler.code.visitInstr(ifInstr);
+        Compiler.code.startWrite(elseInstr);
+        elseInstr.setWritingConditions(true);
+        Compiler.code.visitInstr(new VmInstrPush(address.convert(), true));
+        elseInstr.setWritingConditions(false);
+        Compiler.code.visitInstr(
+                new VmInstrErr(address.convert(), new VmException(address.convert(), "assertion error"))
+        );
+        Compiler.code.endWrite();
+        ifInstr.setElse(elseInstr);
     }
 
     // конструктор

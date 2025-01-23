@@ -48,7 +48,8 @@ class Lexer // конструктор
         "next",
         "safe",
         "handle",
-        "raise"
+        "raise",
+        "juse"
     )
 
     // типы токенов для кейвордов
@@ -82,6 +83,7 @@ class Lexer // конструктор
             put("safe", TokenType.SAFE)
             put("handle", TokenType.HANDLE)
             put("raise", TokenType.RAISE)
+            put("juse", TokenType.JUSE)
         }
     }
 
