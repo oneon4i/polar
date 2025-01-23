@@ -3,13 +3,16 @@ package com.slavlend.Parser.Statements;
 import com.slavlend.App;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.TextExpression;
+import com.slavlend.Polar.JvmClasses;
 import com.slavlend.Polar.Logger.PolarLogger;
+import com.slavlend.Polar.PolarClassLoader;
 import lombok.Getter;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Arrays;
 
 /*
 ДжЮз Стэйтмент - использование джава модуля. Подгружает его.
@@ -38,13 +41,11 @@ public class JUseStatement implements Statement{
         optimize();
         // подгружаем класс в JVM
         String fullPath = App.parser.getEnvironmentPath() + "\\" + libName.getData();
-        try {
-            URL url = new File(fullPath).toURI().toURL();
-            URL[] urls = new URL[]{url};
-            new URLClassLoader(urls);
-        } catch (MalformedURLException e) {
-            PolarLogger.exception("Cannot Load Jvm Class: " + fullPath + ", e: " + e.getMessage(), address);
-        }
+        // загрузка
+        PolarClassLoader urlClassLoader = new PolarClassLoader(fullPath);
+        JvmClasses.define(urlClassLoader.defineJvmClass(
+                libName.getData().replace("\\", ".")
+        ));
     }
 
     @Override

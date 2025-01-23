@@ -1,4 +1,4 @@
-juse 'Abc.class'
+juse 'com\slavlend\Abc.class'
 use 'lib.polar'
 use 'lib.tests'
 use 'lib.array'

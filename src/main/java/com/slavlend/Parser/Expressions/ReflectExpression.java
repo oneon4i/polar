@@ -2,6 +2,7 @@ package com.slavlend.Parser.Expressions;
 
 import com.slavlend.App;
 import com.slavlend.Parser.Address;
+import com.slavlend.Polar.JvmClasses;
 import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Reflected;
@@ -11,6 +12,7 @@ import lombok.Getter;
 Экспрешенн рефлексии -> создание
 Java класса с использованием рефлексии
  */
+@SuppressWarnings("DataFlowIssue")
 @Getter
 public class ReflectExpression implements Expression {
     // имя класса для создания объекта
@@ -20,13 +22,7 @@ public class ReflectExpression implements Expression {
 
     @Override
     public PolarValue evaluate() {
-        try {
-            return new PolarValue(new Reflected(address, Class.forName(className)));
-        }
-        catch (ClassNotFoundException e) {
-            PolarLogger.exception("Reflection Exception: " + e, address);
-            return new PolarValue(null);
-        }
+        return new PolarValue(new Reflected(address, JvmClasses.lookup(address, className)));
     }
 
     @Override
