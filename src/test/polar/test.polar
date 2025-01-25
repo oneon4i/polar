@@ -45,7 +45,7 @@ func if_test() = {
 func each_statement() = {
     lst = [5, 3, 1]
     each (elem, lst) {
-        put(elem)
+        # put(elem) #
         next
     }
     put('Test passed')
@@ -133,6 +133,7 @@ func juse_test() = {
 hello_world_test()
 variable_test()
 for_statement_continue_test()
+if_test()
 each_statement()
 nested_test()
 while_test()

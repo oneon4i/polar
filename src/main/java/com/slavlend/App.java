@@ -49,9 +49,17 @@ public class App
             }
             sc.close();
 
+            // нужно ли вывести инструкции и тд
+            boolean debugMode = false;
+            if (args.length > 1) {
+                if (args[1].equals("--debug")) {
+                    debugMode = true;
+                }
+            }
+
             // исполняем код на VM
             Executor.exec(
-                    new ExecutorSettings(args[0], code.toString())
+                    new ExecutorSettings(args[0], code.toString(), debugMode)
             );
         }
     }

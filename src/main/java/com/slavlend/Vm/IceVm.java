@@ -4,10 +4,6 @@ import com.slavlend.Colors;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Scanner;
 import java.util.Stack;
 
 /*
@@ -35,11 +31,13 @@ public class IceVm {
      * @param code - код для запуска
      *             кода в виртуальной машине
      */
-    public void run(VmCode code) {
+    public void run(VmCode code, boolean isDebugMode) {
         // запуск
         try {
-            // выводим байткод
-            printByteCode(code);
+            // выводим байткод (инструкции вм)
+            if (isDebugMode) {
+                printByteCode(code);
+            }
             // запускаем бенчмарк
             VmBenchmark benchmark = new VmBenchmark();
             benchmark.start();
@@ -49,7 +47,9 @@ public class IceVm {
             for (VmInstr instr : code.getInstructions()) {
                 instr.run(this, variables);
             }
-            // останавливаем бенчмарк
+            // останавливаем бенчмарк и
+            // выводим время исполнения
+            System.out.println();
             System.out.println(
                     Colors.ANSI_BLUE + "🧊 Exec time: " + benchmark.end() + ", stack size: "
                             + stack.get().size() + "(" + stack.get().toString() + ")" + Colors.ANSI_RESET
@@ -102,7 +102,7 @@ public class IceVm {
      * @param val - объект, для помещения в стек
      */
     public void push(Object val) {
-        stack.get().push(val);
+        stack().push(val);
     }
 
     /**
@@ -110,7 +110,7 @@ public class IceVm {
      * @return - отдаёт объект с верхушки стека
      */
     public Object pop() {
-        return stack.get().pop();
+        return stack().pop();
     }
 
     /**
@@ -119,7 +119,15 @@ public class IceVm {
      * @param name - имя переменной для поиска
      */
     public void load(VmInAddr addr, VmFrame<Object> frame, String name) {
-        stack.get().push(frame.lookup(addr, name));
+        stack().push(frame.lookup(addr, name));
+    }
+
+    /**
+     * Получение стека текущего потока
+     * @return - стэк
+     */
+    public Stack<Object> stack() {
+        return getStack().get();
     }
 
     /**

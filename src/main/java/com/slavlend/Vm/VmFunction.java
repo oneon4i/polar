@@ -58,6 +58,7 @@ public class VmFunction implements VmInstrContainer {
             scope.get().set("this", definedFor);
         }
         try {
+            // исполняем функцию
             for (VmInstr instr : instructions) {
                 instr.run(vm, scope.get());
             }

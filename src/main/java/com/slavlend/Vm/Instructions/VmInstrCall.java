@@ -148,11 +148,11 @@ public class VmInstrCall implements VmInstr {
 
     // помещает аргументы в стек
     private int passArgs(IceVm vm, VmFrame<Object> frame) {
-        int size = vm.getStack().get().size();
+        int size = vm.stack().size();
         for (VmInstr instr : args.getVarContainer()) {
             instr.run(vm, frame);
         }
-        return vm.getStack().get().size()-size;
+        return vm.stack().size()-size;
     }
 
     @Override

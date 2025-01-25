@@ -11,10 +11,13 @@ public class ExecutorSettings {
     private final String filePath;
     // код
     private final String code;
+    // дебаг мод
+    private final boolean debugMode;
 
     // конструктор
-    public ExecutorSettings(String filePath, String code) {
+    public ExecutorSettings(String filePath, String code, boolean debugMode) {
         this.filePath = filePath;
         this.code = code;
+        this.debugMode = debugMode;
     }
 }

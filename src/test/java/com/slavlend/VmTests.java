@@ -45,7 +45,7 @@ public class VmTests {
                         container
                 )
         );
-        test.run(code);
+        test.run(code, true);
         assertTrue(test.getVariables().has("a"));
     }
 
@@ -81,7 +81,7 @@ public class VmTests {
                 new VmVarContainer(),
                 false
         ));
-        test.run(code);
+        test.run(code, true);
         assertTrue(test.getFunctions().has("fn"));
         assertFalse(test.getVariables().has("a"));
     }
@@ -134,7 +134,7 @@ public class VmTests {
                         sVarContainer
                 )
         );
-        test.run(code);
+        test.run(code, true);
         assertFalse(test.getVariables().has("a"));
         assertNotEquals(
                 ((VmObj)test.getVariables().lookup(new VmInAddr(-1), "b"))

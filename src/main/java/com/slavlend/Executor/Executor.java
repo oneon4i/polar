@@ -19,7 +19,7 @@ public class Executor {
     // запуск polar-файла
     public static void exec(ExecutorSettings settings) {
         // статус - парсинг
-        System.out.println("🗺️ Parsing...");
+        System.out.println(Colors.ANSI_GREEN + "🗺️ Parsing..." + Colors.ANSI_RESET);
         // лексер
         Lexer lexer = new Lexer(settings.getCode());
         // токенизация
@@ -39,13 +39,17 @@ public class Executor {
         // парсим код
         BlockStatement statement = parser.parse();
         // компилируем
-        System.out.println(Colors.ANSI_CYAN + "🧊 Compiling..." + Colors.ANSI_RESET);
+        System.out.println(Colors.ANSI_BLUE + "🧊 Compiling..." + Colors.ANSI_RESET);
         statement.compile();
+        // говорим что исполняем код
+        System.out.println(Colors.ANSI_DARK_BLUE + "🥶 Compiled!" + Colors.ANSI_RESET);
         // устанавливаем логгер
         IceVm.setLogger(PolarLogger.polarLogger);
         // помещаем функции Полара
         PolarFunctions.provide();
+        // выводим пустую строку
+        System.out.println();
         // исполняем
-        Compiler.iceVm.run(Compiler.code);
+        Compiler.iceVm.run(Compiler.code, settings.isDebugMode());
     }
 }
