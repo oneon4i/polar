@@ -99,16 +99,9 @@ class Lexer // конструктор
                 Next(1)
                 continue
             } else if (cur == '\n') {
-                /*
-                val previousLine = Peek(-1);
-                println("current line: $line at: $previousLine")
-                 */
-                line += 1
                 Next(1)
                 continue
             } else if (cur == '\r' && Peek(1) == '\n') {
-                println("new line 2")
-                line += 1
                 Next(2)
                 continue
             } else if (cur == '.') {
@@ -522,6 +515,9 @@ class Lexer // конструктор
     // next overload
     fun Next(amount: Int) {
         for (i in 0 until amount) {
+            if (input[current] == '\n') {
+                line += 1
+            }
             current += 1
         }
     }
