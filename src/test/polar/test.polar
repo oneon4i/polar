@@ -1,6 +1,7 @@
 juse 'com\slavlend\Abc.class'
 use 'lib.console'
 use 'lib.str'
+use 'lib.math'
 
 func hello_world_test() = {
     put('Hello World!')
@@ -127,7 +128,38 @@ func test_format() = {
 
 func juse_test() = {
     reflected = reflect 'com.slavlend.Abc'
-     assert(reflected.testRuntimeJuse() == 'Juse works perfect!')
+    assert(reflected.testRuntimeJuse() == 'Juse works perfect!')
+}
+
+func infinity_test() = {
+    # Проверка значений Infinity и NegativeInfinity #
+    assert(1 / 0 == Math.Infinity)
+    assert(-1 / 0 == Math.NegativeInfinity)
+    assert(Math.Infinity > 1000)
+    assert(Math.NegativeInfinity < -1000)
+
+    # Операции с Infinity #
+    assert(Math.Infinity + 1000 == Math.Infinity)
+    assert(Math.Infinity - 1000 == Math.Infinity)
+    assert(Math.Infinity * 2 == Math.Infinity)
+    assert(Math.Infinity / 2 == Math.Infinity)
+
+    # Операции с NegativeInfinity #
+    assert(Math.NegativeInfinity + 1000 == Math.NegativeInfinity)
+    assert(Math.NegativeInfinity - 1000 == Math.NegativeInfinity)
+    assert(Math.NegativeInfinity * 2 == Math.NegativeInfinity)
+    assert(Math.NegativeInfinity / 2 == Math.NegativeInfinity)
+
+    # Взаимодействие Infinity и NegativeInfinity #
+    assert(Math.Infinity + Math.NegativeInfinity != Math.NaN)
+    assert(Math.NegativeInfinity + Math.Infinity != Math.NaN)
+    assert(Math.Infinity - Math.Infinity != Math.Infinity)
+    assert(Math.NegativeInfinity - Math.NegativeInfinity != Math.NegativeInfinity)
+
+    # Проверка NaN #
+    assert(0 / 0 != 0 / 0)  # NaN не равно самому себе #
+    assert((0 / 0 > 0 or 0 / 0 < 0) == false)  # NaN не больше и не меньше любого числа #
+    put('Test passed')
 }
 
 hello_world_test()
@@ -141,3 +173,4 @@ optimization_test()
 float_math_test()
 len_test()
 juse_test()
+infinity_test()

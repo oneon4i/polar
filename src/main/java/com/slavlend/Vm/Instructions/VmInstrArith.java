@@ -1,13 +1,12 @@
 package com.slavlend.Vm.Instructions;
 
-import com.slavlend.Parser.Operator;
 import com.slavlend.Vm.*;
 import lombok.Getter;
 
 /*
 Инструкция арифметической операции
  */
-@SuppressWarnings({"SpellCheckingInspection", "RedundantCast", "ConstantValue"})
+@SuppressWarnings({"SpellCheckingInspection", "UnnecessaryToStringCall", "ClassCanBeRecord", "UnnecessaryReturnStatement"})
 @Getter
 public class VmInstrArith implements VmInstr {
     // адресс
@@ -30,6 +29,7 @@ public class VmInstrArith implements VmInstr {
         if (l == null) {
             l = "nil";
         }
+        checkForTypes(r, l);
         switch (operator) {
             case "+" -> {
                 if (l instanceof String || r instanceof String) {
@@ -43,6 +43,20 @@ public class VmInstrArith implements VmInstr {
             case "/" -> vm.push((float)l / (float)r);
             case "%" -> vm.push((float)l % (float)r);
             default -> IceVm.logger.error(addr, "operator not found: " + operator);
+        }
+    }
+
+    // проверка на типы
+    private void checkForTypes(Object r, Object l) {
+        boolean stringOrFloatRight = !(r instanceof String) && !(r instanceof Float);
+        boolean stringOrFloatLeft = !(l instanceof String) && !(l instanceof Float);
+        if (stringOrFloatRight || (r instanceof String && !operator.equals("+"))) {
+            IceVm.logger.error(addr, "invalid value type for operator (" + operator + "): " + r);
+            return;
+        }
+        if (stringOrFloatLeft || (l instanceof String && !operator.equals("+"))) {
+            IceVm.logger.error(addr, "invalid value type for operator (" + operator + "): " + l);
+            return;
         }
     }
 

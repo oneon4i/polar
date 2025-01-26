@@ -32,6 +32,7 @@ public class Parser {
         put("lib.str", "Libraries/str.polar");
         put("lib.console", "Libraries/console.polar");
         put("lib.tasks", "Libraries/tasks.polar");
+        put("lib.math", "Libraries/math.polar");
     }};
 
     // путь эвайронмента (окружения)
@@ -50,7 +51,12 @@ public class Parser {
     // адресс
     public Address address() {
         if (tokens.size() == current) return new Address(-1);
-        return new Address(tokens.get(current).line);
+        if (current - 1 < 0) {
+            return new Address(0);
+        }
+        else {
+            return new Address(tokens.get(current - 1).line);
+        }
     }
 
     // парсинг

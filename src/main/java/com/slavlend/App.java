@@ -45,7 +45,8 @@ public class App
 
             // парсим на код линии
             while (sc.hasNextLine()) {
-                code.append(sc.nextLine()).append("\n");
+                String line = sc.nextLine();
+                code.append(line).append("\n");
             }
             sc.close();
 
