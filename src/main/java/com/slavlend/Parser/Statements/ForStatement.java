@@ -2,6 +2,7 @@ package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
+import com.slavlend.Parser.Expressions.LogicExpression;
 import com.slavlend.Parser.Operator;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ConditionExpression;
@@ -19,7 +20,7 @@ public class ForStatement implements Statement {
     // тело
     private final ArrayList<Statement> statements = new ArrayList<>();
     // кодишены
-    private final ArrayList<ConditionExpression> conditions;
+    private final Expression logic;
     // адресс
     private final Address address = App.parser.address();
     // имя переменной
@@ -35,7 +36,7 @@ public class ForStatement implements Statement {
     // копирование
     @Override
     public Statement copy() {
-        ForStatement _copy = new ForStatement(conditions, variable, valueExpr);
+        ForStatement _copy = new ForStatement(logic, variable, valueExpr);
 
         for (Statement statement : statements) {
             _copy.add(statement.copy());
@@ -65,7 +66,7 @@ public class ForStatement implements Statement {
         Compiler.code.visitInstr(ifInstr);
         Compiler.code.startWrite(ifInstr);
         ifInstr.setWritingConditions(true);
-        compileConditions();
+        logic.compile();
         ifInstr.setWritingConditions(false);
         for (Statement s : statements) {
             s.compile();
@@ -88,22 +89,9 @@ public class ForStatement implements Statement {
     }
 
     // конструктор
-    public ForStatement(ArrayList<ConditionExpression> _conditions, String variable, Expression valueExpr) {
-        this.conditions = _conditions;
+    public ForStatement(Expression logic, String variable, Expression valueExpr) {
+        this.logic = logic;
         this.variable = variable;
         this.valueExpr = valueExpr;
-    }
-
-    private void compileConditions() {
-        int conditionsAmount = 0;
-        for (Expression cond : conditions) {
-            cond.compile();
-            if (conditionsAmount+1 == 2) {
-                Compiler.code.visitInstr(new VmInstrComputeConds(address.convert()));
-            }
-            else {
-                conditionsAmount += 1;
-            }
-        }
     }
 }

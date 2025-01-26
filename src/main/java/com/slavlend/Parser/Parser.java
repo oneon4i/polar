@@ -658,13 +658,13 @@ public class Parser {
         // правый экспрешен
         Expression _r = parseExpression();
         // кондишен
-        _conditions.add(new ConditionExpression(_l, _o, _r));
+        Expression expr = new ConditionExpression(_l, _o, _r);
         // скобка
         consume(TokenType.BRACKET);
         // брэйкс
         consume(TokenType.BRACE);
         // стэйтмент вайл
-        ForStatement statement = new ForStatement(_conditions, assignVariableName, assignVariableExpr);
+        ForStatement statement = new ForStatement(expr, assignVariableName, assignVariableExpr);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
             statement.add(statement());

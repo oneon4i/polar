@@ -4,8 +4,6 @@ import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Operator;
-import com.slavlend.Vm.Instructions.VmInstrComputeConds;
-import com.slavlend.Vm.Instructions.VmInstrCondOperator;
 import com.slavlend.Vm.Instructions.VmInstrLgcl;
 import lombok.Getter;
 
