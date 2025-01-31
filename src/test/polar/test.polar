@@ -181,8 +181,9 @@ func test_repeat() = {
 }
 
 func math_module_test() = {
-    put(Math.sin(10) == -0.5440211)
-    put(Math.cos(10) == -0.8390715)
+    assert(Math.sin(10) == -0.5440211)
+    assert(Math.cos(10) == -0.8390715)
+    put('Test passed')
 }
 
 hello_world_test()
