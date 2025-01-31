@@ -8,4 +8,11 @@ class Math() = {
     mod Ln10 = 2.3026
     mod Log2E = 1.4427
     mod Log10E = 0.4343
+    mod reflected = reflect 'com.slavlend.Compiler.Libs.Math'
+    mod func sin(a) = {
+        back(Math.reflected.sin(a))
+    }
+    mod func cos(a) = {
+        back(Math.reflected.cos(a))
+    }
 }

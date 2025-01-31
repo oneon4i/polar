@@ -32,6 +32,7 @@ public class VmInstrLoad implements VmInstr {
             } else if (vm.getFunctions().has(name))  {
                 vm.push(vm.getFunctions().lookup(addr, name));
             } else {
+                IceVm.logger.error(addr, "var not found: " + name);
             }
         } else {
             Object last = vm.pop();

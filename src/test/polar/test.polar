@@ -180,6 +180,11 @@ func test_repeat() = {
     put('Test passed')
 }
 
+func math_module_test() = {
+    put(Math.sin(10) == -0.5440211)
+    put(Math.cos(10) == -0.8390715)
+}
+
 hello_world_test()
 variable_test()
 for_statement_continue_test()
@@ -194,3 +199,4 @@ juse_test()
 infinity_test()
 lambda_test()
 test_repeat()
+math_module_test()
