@@ -40,13 +40,13 @@ public class Executor {
         App.parser = parser;
         // парсим код
         BlockStatement statement = parser.parse();
+        // устанавливаем логгер
+        IceVm.setLogger(PolarLogger.polarLogger);
         // компилируем
         System.out.println(Colors.ANSI_BLUE + "🧊 Compiling..." + Colors.ANSI_RESET);
         statement.compile();
         // говорим что исполняем код
         System.out.println(Colors.ANSI_DARK_BLUE + "🥶 Compiled!" + Colors.ANSI_RESET);
-        // устанавливаем логгер
-        IceVm.setLogger(PolarLogger.polarLogger);
         // помещаем функции Полара
         PolarFunctions.provide();
         // выводим пустую строку

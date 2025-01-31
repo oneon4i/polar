@@ -134,7 +134,7 @@ public class Parser {
 
                 while (!match(")")) {
                     if (!check(TokenType.COMMA)) {
-                        params.add(parseExpression());
+                        params.add(expression());
                     }
                     else {
                         consume(TokenType.COMMA);
@@ -210,13 +210,35 @@ public class Parser {
         return functionStatement;
     }
 
+    // репит цикл
+    private Statement repeat() {
+        // паттерн
+        // repeat(times) { ... }
+        // репит
+        consume(TokenType.REPEAT);
+        // сколько раз повторить
+        consume(TokenType.BRACKET);
+        Expression times = expression();
+        consume(TokenType.BRACKET);
+        // тело
+        consume(TokenType.BRACE);
+        RepeatStatement repeatStatement = new RepeatStatement(times);
+        while (!check(TokenType.BRACE)) {
+            repeatStatement.add(statement());
+        }
+        // фигурная скобка
+        consume(TokenType.BRACE);
+        // возвращаем стейтмент
+        return repeatStatement;
+    }
+
     // парсим стэйтмент
     public Statement statement() {
         // стэйтмент back
         if (check(TokenType.BACK)) {
             consume(TokenType.BACK);
             consume(TokenType.BRACKET);
-            Expression e = parseExpression();
+            Expression e = expression();
             consume(TokenType.BRACKET);
             return new BackStatement(e);
         }
@@ -241,6 +263,10 @@ public class Parser {
         if (check(TokenType.EACH)) {
             return eachLoop();
         }
+        // стэйтмент repeat
+        if (check(TokenType.REPEAT)) {
+            return repeat();
+        }
         // стэйтмент ассерт
         if (check(TokenType.ASSERT)) {
             return polarAssert();
@@ -258,7 +284,7 @@ public class Parser {
             // ДжЮз
             consume(TokenType.JUSE);
             // айдишник
-            TextExpression id = (TextExpression) parseExpression();
+            TextExpression id = (TextExpression) expression();
             // библиотека
             return new JUseStatement(id);
         }
@@ -287,7 +313,7 @@ public class Parser {
             if (check(TokenType.ASSIGN)) {
                 consume(TokenType.ASSIGN);
                 // expression
-                Expression value = parseExpression();
+                Expression value = expression();
                 VarAccess last = ((VarAccess) id.getLast());
                 id.set(new AssignAccess(id, id.address(), null, last.varName, value, AccessType.SET));
             }
@@ -295,7 +321,7 @@ public class Parser {
             else if (check(TokenType.ASSIGN_ADD)) {
                 consume(TokenType.ASSIGN_ADD);
                 // expression
-                Expression value = parseExpression();
+                Expression value = expression();
                 VarAccess last = ((VarAccess) id.getLast());
                 id.set(new AssignAccess(id, id.address(), null, last.varName, value, AccessType.PLUS));
             }
@@ -303,7 +329,7 @@ public class Parser {
             else if (check(TokenType.ASSIGN_SUB)) {
                 consume(TokenType.ASSIGN_SUB);
                 // expression
-                Expression value = parseExpression();
+                Expression value = expression();
                 VarAccess last = ((VarAccess) id.getLast());
                 id.set(new AssignAccess(id, id.address(), null, last.varName, value, AccessType.MINUS));
             }
@@ -311,7 +337,7 @@ public class Parser {
             else if (check(TokenType.ASSIGN_MUL)) {
                 consume(TokenType.ASSIGN_MUL);
                 // expression
-                Expression value = parseExpression();
+                Expression value = expression();
                 VarAccess last = ((VarAccess) id.getLast());
                 id.set(new AssignAccess(id, id.address(), null, last.varName, value, AccessType.MUL));
             }
@@ -319,7 +345,7 @@ public class Parser {
             else if (check(TokenType.ASSIGN_DIVIDE)) {
                 consume(TokenType.ASSIGN_DIVIDE);
                 // expression
-                Expression value = parseExpression();
+                Expression value = expression();
                 VarAccess last = ((VarAccess) id.getLast());
                 id.set(new AssignAccess(id, id.address(), null, last.varName, value, AccessType.DIVIDE));
             }
@@ -357,7 +383,7 @@ public class Parser {
             // юз
             consume(TokenType.USE);
             // айдишник
-            TextExpression id = (TextExpression) parseExpression();
+            TextExpression id = (TextExpression) expression();
             // библиотека
             return new UseLibStatement(id);
         }
@@ -389,7 +415,7 @@ public class Parser {
         // скобка
         consume(TokenType.BRACKET);
         // экспрешен
-        Expression expr = parseExpression();
+        Expression expr = expression();
         // скобка
         consume(TokenType.BRACKET);
         // тело блока
@@ -431,7 +457,7 @@ public class Parser {
         // скобка
         consume(TokenType.BRACKET);
         // экспрешен
-        Expression expr = parseExpression();
+        Expression expr = expression();
         // скобка
         consume(TokenType.BRACKET);
         // мэтч
@@ -519,7 +545,7 @@ public class Parser {
                     // ассигн
                     consume(TokenType.ASSIGN);
                     // экспрешенн
-                    Expression expr = parseExpression();
+                    Expression expr = expression();
                     // добавляем модульную переменную
                     classStatement.addModuleVariable(idData, expr);
                 }
@@ -540,7 +566,7 @@ public class Parser {
 
         while (check(TokenType.OR)) {
             consume(TokenType.OR);
-            expression = new LogicExpression(expression, new Operator("||"), parseExpression());
+            expression = new LogicExpression(expression, new Operator("||"), expression());
         }
 
         return expression;
@@ -552,7 +578,7 @@ public class Parser {
 
         while (check(TokenType.AND)) {
             consume(TokenType.AND);
-            expression = new LogicExpression(expression, new Operator("&&"), parseExpression());
+            expression = new LogicExpression(expression, new Operator("&&"), expression());
         }
 
         return expression;
@@ -627,7 +653,7 @@ public class Parser {
         // брэкет
         consume(TokenType.BRACKET);
         // выражение
-        Expression expr = parseExpression();
+        Expression expr = expression();
         // брэкет
         consume(TokenType.BRACKET);
         // возвращаем
@@ -648,7 +674,7 @@ public class Parser {
         // ассигн
         consume(TokenType.ASSIGN);
         // присваивание
-        Expression assignVariableExpr = parseExpression();
+        Expression assignVariableExpr = expression();
         // запятая
         consume(TokenType.COMMA);
         // левый экспрешен
@@ -656,7 +682,7 @@ public class Parser {
         // оператор
         Operator _o = condOperator();
         // правый экспрешен
-        Expression _r = parseExpression();
+        Expression _r = expression();
         // кондишен
         Expression expr = new ConditionExpression(_l, _o, _r);
         // скобка
@@ -811,7 +837,7 @@ public class Parser {
         // конструктор
         while (!match(")")) {
             if (!check(TokenType.COMMA)) {
-                params.add(parseExpression());
+                params.add(expression());
             }
             else {
                 consume(TokenType.COMMA);
@@ -877,9 +903,38 @@ public class Parser {
         return expr;
     }
 
-    // парсинг экспрешенна
-    public Expression parseExpression() {
+    // лямбда выражение
+    private Expression lambda() {
+        if (check(TokenType.LAMBDA)) {
+            consume(TokenType.LAMBDA);
+            consume(TokenType.BRACKET);
+            ArrayList<String> arguments = new ArrayList<>();
+            while (!check(TokenType.BRACKET)) {
+                if (!check(TokenType.COMMA)) {
+                    arguments.add(consume(TokenType.ID).value);
+                }
+                else {
+                    consume(TokenType.COMMA);
+                }
+            }
+            consume(TokenType.BRACKET);
+            consume(TokenType.GO);
+            consume(TokenType.BRACE);
+            LambdaExpression lambdaExpression
+                    = new LambdaExpression(arguments);
+            while (!check(TokenType.BRACE)) {
+                Statement statement = statement();
+                lambdaExpression.add(statement);
+            }
+            consume(TokenType.BRACE);
+            return lambdaExpression;
+        }
         return pipe();
+    }
+
+    // парсинг экспрешенна
+    public Expression expression() {
+        return lambda();
     }
 
     // парсинг праймари экспрешенна
@@ -912,7 +967,7 @@ public class Parser {
         // Обработка скобочных выражений
         if (check(TokenType.BRACKET)) {
             consume(TokenType.BRACKET);  // Открывающая скобка
-            Expression expression = parseExpression();  // Рекурсивный вызов parseExpression
+            Expression expression = expression();  // Рекурсивный вызов parseExpression
             consume(TokenType.BRACKET);  // Закрывающая скобка
             return expression;
         }
@@ -937,9 +992,9 @@ public class Parser {
             Expression expr = conditional();
             consume(TokenType.BRACKET); // Закрывающая скобка
             consume(TokenType.BRACKET); // Открывающая скобка
-            Expression lExpr = parseExpression();
+            Expression lExpr = expression();
             consume(TokenType.COMMA); // Запятая
-            Expression rExpr = parseExpression();
+            Expression rExpr = expression();
             consume(TokenType.BRACKET); // Закрывающая скобка
             return new TernaryExpression((ConditionExpression) expr, lExpr, rExpr);
         }
@@ -964,11 +1019,11 @@ public class Parser {
         // пока нет конца фигурной скобки -> парсим экспрешенн
         if (!match("}")) {
             // ключ
-            Expression key = parseExpression();
+            Expression key = expression();
             // двоеточие
             consume(TokenType.COLON);
             // значение
-            Expression value = parseExpression();
+            Expression value = expression();
             // помещаем
             container.put(key, value);
 
@@ -977,11 +1032,11 @@ public class Parser {
                 // запятая
                 consume(TokenType.COMMA);
                 // ключ
-                key = parseExpression();
+                key = expression();
                 // двоеточие
                 consume(TokenType.COLON);
                 // значение
-                value = parseExpression();
+                value = expression();
                 // помещаем контейнер
                 container.put(key, value);
             }
@@ -999,14 +1054,14 @@ public class Parser {
         // пока нет конца квадратной скобки -> парсим экспрешенн
         if (!match("]")) {
             // добавляем в контейнер
-            container.add(parseExpression());
+            container.add(expression());
 
             // пока есть запятая -> парсим
             while (check(TokenType.COMMA)) {
                 // запятая
                 consume(TokenType.COMMA);
                 // экспрешенн
-                container.add(parseExpression());
+                container.add(expression());
             }
         }
 

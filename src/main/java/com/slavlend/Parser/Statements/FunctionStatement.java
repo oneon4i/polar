@@ -14,7 +14,7 @@ import java.util.ArrayList;
 @Getter
 public class FunctionStatement implements Statement {
     // тело функции
-    private final ArrayList<Statement> statements = new ArrayList<>();
+    private final ArrayList<Statement> body = new ArrayList<>();
     // аргументы
     private final ArrayList<String> arguments;
     // имя
@@ -25,14 +25,14 @@ public class FunctionStatement implements Statement {
 
     // добавление в бади
     public void add(Statement statement) {
-        statements.add(statement);
+        body.add(statement);
     }
 
     @Override
     public Statement copy() {
         FunctionStatement _copy = new FunctionStatement(name, arguments);
 
-        for (Statement statement : statements) {
+        for (Statement statement : body) {
             _copy.add(statement.copy());
         }
 
@@ -49,7 +49,7 @@ public class FunctionStatement implements Statement {
         VmFunction f = new VmFunction(name, arguments, address.convert());
         Compiler.code.defineFunction(address.convert(), f);
         Compiler.code.startWrite(f);
-        for (Statement s : statements) {
+        for (Statement s : body) {
             s.compile();
         }
         new BackStatement(null).compile();

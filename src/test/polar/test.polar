@@ -162,6 +162,24 @@ func infinity_test() = {
     put('Test passed')
 }
 
+func lambda_test() = {
+    a = lambda(x) -> {
+        back('hello world')
+    }
+
+    assert(a('name') == 'hello world')
+    put('Test passed')
+}
+
+func test_repeat() = {
+    a = 0
+    repeat(15) {
+        a += 1
+    }
+    assert(a == 15)
+    put('Test passed')
+}
+
 hello_world_test()
 variable_test()
 for_statement_continue_test()
@@ -174,3 +192,5 @@ float_math_test()
 len_test()
 juse_test()
 infinity_test()
+lambda_test()
+test_repeat()

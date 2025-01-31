@@ -49,7 +49,9 @@ class Lexer // конструктор
         "safe",
         "handle",
         "raise",
-        "juse"
+        "juse",
+        "lambda",
+        "repeat"
     )
 
     // типы токенов для кейвордов
@@ -84,6 +86,8 @@ class Lexer // конструктор
             put("handle", TokenType.HANDLE)
             put("raise", TokenType.RAISE)
             put("juse", TokenType.JUSE)
+            put("lambda", TokenType.LAMBDA)
+            put("repeat", TokenType.REPEAT)
         }
     }
 
@@ -115,7 +119,18 @@ class Lexer // конструктор
 
                 Next(1)
                 continue
-            } else if (cur == '~') {
+            } else if (cur == '-' && Peek(1) == '>') {
+                tokens.add(
+                    Token(
+                        TokenType.GO,
+                        "->",
+                        line
+                    )
+                )
+                Next(2)
+                continue
+            }
+            else if (cur == '~') {
                 tokens.add(
                     Token(
                         TokenType.RCALL,
