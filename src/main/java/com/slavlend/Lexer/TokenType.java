@@ -55,5 +55,8 @@ public enum TokenType {
     SAFE, // try
     HANDLE, // handle
     RAISE, // raise
-    JUSE // juse
+    JUSE, // juse
+    LAMBDA, // lambda
+    GO, // ->
+    REPEAT // repeat
 }

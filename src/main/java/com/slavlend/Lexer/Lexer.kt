@@ -17,7 +17,7 @@ class Lexer // конструктор
     // для адрессации ( current - символ,
     // line - линия )
     var current: Int = 0
-    var line: Int = 0
+    var line: Int = 1
 
     // кейворды
     var keywords: Array<String> = arrayOf(
@@ -49,7 +49,9 @@ class Lexer // конструктор
         "safe",
         "handle",
         "raise",
-        "juse"
+        "juse",
+        "lambda",
+        "repeat"
     )
 
     // типы токенов для кейвордов
@@ -84,6 +86,8 @@ class Lexer // конструктор
             put("handle", TokenType.HANDLE)
             put("raise", TokenType.RAISE)
             put("juse", TokenType.JUSE)
+            put("lambda", TokenType.LAMBDA)
+            put("repeat", TokenType.REPEAT)
         }
     }
 
@@ -99,26 +103,39 @@ class Lexer // конструктор
                 Next(1)
                 continue
             } else if (cur == '\n') {
-                line += 1
                 Next(1)
+                continue
+            } else if (cur == '\r' && Peek(1) == '\n') {
+                Next(2)
                 continue
             } else if (cur == '.') {
                 tokens.add(
                     Token(
                         TokenType.DOT,
                         cur.toString(),
-                        line + 1
+                        line
                     )
                 )
 
                 Next(1)
                 continue
-            } else if (cur == '~') {
+            } else if (cur == '-' && Peek(1) == '>') {
+                tokens.add(
+                    Token(
+                        TokenType.GO,
+                        "->",
+                        line
+                    )
+                )
+                Next(2)
+                continue
+            }
+            else if (cur == '~') {
                 tokens.add(
                     Token(
                         TokenType.RCALL,
                         cur.toString(),
-                        line + 1
+                        line
                     )
                 )
                 Next(1)
@@ -128,7 +145,7 @@ class Lexer // конструктор
                     Token(
                         TokenType.TERNARY,
                         cur.toString(),
-                        line + 1
+                        line
                     )
                 )
                 Next(1)
@@ -147,7 +164,7 @@ class Lexer // конструктор
                     Token(
                         TokenType.OPERATOR,
                         "|>",
-                        line + 1
+                        line
                     )
                 )
                 Next(2)
@@ -163,7 +180,7 @@ class Lexer // конструктор
 
                         while (Character.isDigit(Peek(i)) || Peek(i) == '.') {
                             if (!isInt && Peek(i) == '.') {
-                                PolarLogger.exception("Cannot Parse Num With Two Dots.", Address(line + 1))
+                                PolarLogger.exception("Cannot Parse Num With Two Dots.", Address(line))
                             }
                             isInt = Peek(i) != '.'
                             builder.append(Peek(i))
@@ -175,7 +192,7 @@ class Lexer // конструктор
                                     Token(
                                         TokenType.NUM,
                                         builder.toString(),
-                                        line + 1
+                                        line
                                     )
                                 )
                                 Next(i)
@@ -187,7 +204,7 @@ class Lexer // конструктор
                             Token(
                                 TokenType.NUM,
                                 builder.toString(),
-                                line + 1
+                                line
                             )
                         )
                         Next(i)
@@ -199,7 +216,7 @@ class Lexer // конструктор
                             Token(
                                 TokenType.OPERATOR,
                                 cur.toString(),
-                                line + 1
+                                line
                             )
                         )
                         Next(1)
@@ -213,7 +230,7 @@ class Lexer // конструктор
                             Token(
                                 TokenType.ASSIGN_ADD,
                                 (cur.code + input[current + 1].code).toString(),
-                                line + 1
+                                line
                             )
                         )
 
@@ -224,7 +241,7 @@ class Lexer // конструктор
                             Token(
                                 TokenType.ASSIGN_SUB,
                                 (cur.code + input[current + 1].code).toString(),
-                                line + 1
+                                line
                             )
                         )
 
@@ -235,7 +252,7 @@ class Lexer // конструктор
                             Token(
                                 TokenType.ASSIGN_MUL,
                                 (cur.code + input[current + 1].code).toString(),
-                                line + 1
+                                line
                             )
                         )
 
@@ -246,7 +263,7 @@ class Lexer // конструктор
                             Token(
                                 TokenType.ASSIGN_DIVIDE,
                                 (cur.code + input[current + 1].code).toString(),
-                                line + 1
+                                line
                             )
                         )
 
@@ -261,7 +278,7 @@ class Lexer // конструктор
                     Token(
                         TokenType.COMMA,
                         cur.toString(),
-                        line + 1
+                        line
                     )
                 )
                 Next(1)
@@ -271,7 +288,7 @@ class Lexer // конструктор
                     Token(
                         TokenType.COLON,
                         cur.toString(),
-                        line + 1
+                        line
                     )
                 )
                 Next(1)
@@ -283,7 +300,7 @@ class Lexer // конструктор
                     Token(
                         TokenType.BRACE,
                         cur.toString(),
-                        line + 1
+                        line
                     )
                 )
                 Next(1)
@@ -295,7 +312,7 @@ class Lexer // конструктор
                     Token(
                         TokenType.BRACKET,
                         cur.toString(),
-                        line + 1
+                        line
                     )
                 )
                 Next(1)
@@ -307,7 +324,7 @@ class Lexer // конструктор
                     Token(
                         TokenType.Q_BRACKET,
                         cur.toString(),
-                        line + 1
+                        line
                     )
                 )
                 Next(1)
@@ -320,7 +337,7 @@ class Lexer // конструктор
 
                 while (Character.isDigit(Peek(i)) || Peek(i) == '.') {
                     if (!isInt && Peek(i) == '.') {
-                        PolarLogger.exception("Cannot Parse Num With Two Dots.", Address(line + 1))
+                        PolarLogger.exception("Cannot Parse Num With Two Dots.", Address(line))
                     }
                     if (Peek(i) == '.') { isInt = false }
                     builder.append(Peek(i))
@@ -336,7 +353,7 @@ class Lexer // конструктор
                     Token(
                         TokenType.NUM,
                         builder.toString(),
-                        line + 1
+                        line
                     )
                 )
                 Next(i)
@@ -356,7 +373,7 @@ class Lexer // конструктор
                     Token(
                         TokenType.TEXT,
                         builder.toString(),
-                        line + 1
+                        line
                     )
                 )
 
@@ -367,7 +384,7 @@ class Lexer // конструктор
                     Token(
                         TokenType.CALL,
                         cur.toString(),
-                        line + 1
+                        line
                     )
                 )
                 Next(1)
@@ -378,7 +395,7 @@ class Lexer // конструктор
                         Token(
                             TokenType.NOT_EQUAL,
                             cur.toString() + Peek(1),
-                            line + 1
+                            line
                         )
                     )
                     Next(2)
@@ -390,7 +407,7 @@ class Lexer // конструктор
                         Token(
                             TokenType.BIGGER_EQUAL,
                             cur.toString() + Peek(1),
-                            line + 1
+                            line
                         )
                     )
                     Next(2)
@@ -400,7 +417,7 @@ class Lexer // конструктор
                         Token(
                             TokenType.BIGGER,
                             cur.toString(),
-                            line + 1
+                            line
                         )
                     )
                     Next(1)
@@ -412,7 +429,7 @@ class Lexer // конструктор
                         Token(
                             TokenType.LOWER_EQUAL,
                             cur.toString() + Peek(1),
-                            line + 1
+                            line
                         )
                     )
                     Next(2)
@@ -422,7 +439,7 @@ class Lexer // конструктор
                         Token(
                             TokenType.LOWER,
                             cur.toString(),
-                            line + 1
+                            line
                         )
                     )
                     Next(1)
@@ -434,7 +451,7 @@ class Lexer // конструктор
                         Token(
                             TokenType.EQUAL,
                             cur.toString() + Peek(1),
-                            line + 1
+                            line
                         )
                     )
                     Next(2)
@@ -444,7 +461,7 @@ class Lexer // конструктор
                         Token(
                             TokenType.ASSIGN,
                             cur.toString(),
-                            line + 1
+                            line
                         )
                     )
                     Next(1)
@@ -485,7 +502,7 @@ class Lexer // конструктор
                         Token(
                             foundedKeyword,
                             builder.toString(),
-                            line + 1
+                            line
                         )
                     )
                 } else {
@@ -493,7 +510,7 @@ class Lexer // конструктор
                         Token(
                             TokenType.ID,
                             builder.toString(),
-                            line + 1
+                            line
                         )
                     )
                 }
@@ -511,7 +528,12 @@ class Lexer // конструктор
     }
 
     // next overload
-    fun Next(i: Int) {
-        current += i
+    fun Next(amount: Int) {
+        for (i in 0 until amount) {
+            if (input[current] == '\n') {
+                line += 1
+            }
+            current += 1
+        }
     }
 }

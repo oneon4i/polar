@@ -4,6 +4,7 @@ import com.slavlend.App;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Access.AccessExpression;
 import com.slavlend.Parser.Expressions.ConditionExpression;
+import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Storage;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class EachStatement implements Statement {
     // имя переменной
     private final String variableName;
     // имя переменной списка
-    private final AccessExpression listVariable;
+    private final Expression listVariable;
 
     @Override
     public void optimize() {
@@ -96,8 +97,8 @@ public class EachStatement implements Statement {
     }
 
     // конструктор
-    public EachStatement(AccessExpression arr, String name) {
-        this.listVariable = arr;
+    public EachStatement(Expression lst, String name) {
+        this.listVariable = lst;
         this.variableName = name;
     }
 

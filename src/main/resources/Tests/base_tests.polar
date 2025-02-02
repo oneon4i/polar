@@ -235,6 +235,35 @@ func juse_test() = {
     put('Test passed')
 }
 
+func nested_test_2() = {
+    func inside() = {
+        func inside_inside() = {
+            back(123)
+        }
+        back(inside_inside)
+    }
+    fn = inside()
+    assert(fn() == 123)
+    put('Test passed')
+}
+
+func lambda_test() = {
+    a = lambda () -> {
+        back(12345678910)
+    }
+    assert(a() == 12345678910)
+    put('Test passed')
+}
+
+func repeat_test() = {
+    a = 0
+    repeat(50) {
+        a += 1
+    }
+    assert(a == 50)
+    put('Test passed')
+}
+
 Tests.test(
     [
      hello_world_test,
@@ -259,6 +288,9 @@ Tests.test(
      statistics_median_test,
      statistics_mode_test,
      statistics_hmean_test,
-     juse_test
+     juse_test,
+     nested_test_2,
+     lambda_test,
+     repeat_test
     ]
 )

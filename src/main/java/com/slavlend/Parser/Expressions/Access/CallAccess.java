@@ -61,11 +61,13 @@ public class CallAccess implements Access {
             PolarValue res = null;
             // пробуем найти функцию из built-in
             if (BuiltInFunctions.functionHashMap.containsKey(funcName) && next == null) {
+                checkArgs(funcName, BuiltInFunctions.functionHashMap.get(funcName).argsAmount(), params.size());
                 res = BuiltInFunctions.functionHashMap.get(funcName).execute(address, parseParameters());
                 return res;
             }
             // пробуем найти функцию юзера
             PolarValue v = Storage.getInstance().get(address, funcName);
+            checkArgs(funcName, v.asFunc().getArguments().size(), params.size());
             // вызываем
             ArrayList<PolarValue> _params = parseParameters();
             StackHistoryWriter.getInstance().pushCall(address, funcName);

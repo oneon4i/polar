@@ -257,6 +257,10 @@ public class Parser {
         if (check(TokenType.EACH)) {
             return eachLoop();
         }
+        // стэйтмент repeat
+        if (check(TokenType.REPEAT)) {
+            return repeatLoop();
+        }
         // стэйтмент ассерт
         if (check(TokenType.ASSERT)) {
             return polarAssert();
@@ -585,13 +589,38 @@ public class Parser {
         // скобка
         consume(TokenType.BRACKET);
         // логика
-        Expression expr = logicalOr();
+        Expression expr = parseExpression();
         // брэкет
         consume(TokenType.BRACKET);
         // брэйкс
         consume(TokenType.BRACE);
         // стэйтмент вайл
         WhileStatement statement = new WhileStatement(expr);
+        // стэйтменты
+        while (!check(TokenType.BRACE)) {
+            statement.add(statement());
+        }
+        // брэйс
+        consume(TokenType.BRACE);
+        // возвращаем
+        return statement;
+    }
+
+    // парсинг repeat
+    private Statement repeatLoop() {
+        // паттерн
+        // repeat (...) { ... }
+        consume(TokenType.REPEAT);
+        // скобка
+        consume(TokenType.BRACKET);
+        // логика
+        Expression expr = parseExpression();
+        // брэкет
+        consume(TokenType.BRACKET);
+        // брэйкс
+        consume(TokenType.BRACE);
+        // стэйтмент вайл
+        RepeatStatement statement = new RepeatStatement(expr);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
             statement.add(statement());
@@ -704,7 +733,7 @@ public class Parser {
         // экспрешенны
         String elem = consume(TokenType.ID).value;
         consume(TokenType.COMMA);
-        AccessExpression lst = parseAccess();
+        Expression lst = parseExpression();
         // скобка
         consume(TokenType.BRACKET);
         // брэйкс
@@ -896,9 +925,49 @@ public class Parser {
         return expr;
     }
 
+    // лямбда
+    private Expression lambda() {
+        // паттерн
+        // lambda (...) -> {}
+        if (check(TokenType.LAMBDA)) {
+            // лямбда
+            consume(TokenType.LAMBDA);
+            // открывающая скобка
+            consume(TokenType.BRACKET);
+            // аргументы
+            ArrayList<ArgumentExpression> arguments = new ArrayList<>();
+            while (!check(TokenType.BRACKET)) {
+                if (!check(TokenType.COMMA)) {
+                    arguments.add(new ArgumentExpression(consume(TokenType.ID).value));
+                }
+                else {
+                    consume(TokenType.COMMA);
+                }
+            }
+            // закрывающая скобка
+            consume(TokenType.BRACKET);
+            // ->
+            consume(TokenType.GO);
+            // {
+            consume(TokenType.BRACE);
+            // лямбда
+            LambdaExpression expr = new LambdaExpression(arguments);
+            while (!check(TokenType.BRACE)) {
+                expr.add(statement());
+            }
+            // }
+            consume(TokenType.BRACE);
+            // возвращаем лямбду
+            return expr;
+        }
+        else {
+            return pipe();
+        }
+    }
+
     // парсинг экспрешенна
     public Expression parseExpression() {
-        return pipe();
+        return lambda();
     }
 
     // парсинг праймари экспрешенна

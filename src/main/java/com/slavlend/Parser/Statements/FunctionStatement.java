@@ -17,7 +17,7 @@ import java.util.ArrayList;
 @Getter
 public class FunctionStatement implements Statement, Callable {
     // тело функции
-    private final ArrayList<Statement> statements = new ArrayList<>();
+    private final ArrayList<Statement> body = new ArrayList<>();
     // аргументы
     private final ArrayList<ArgumentExpression> arguments;
     // имя
@@ -53,7 +53,7 @@ public class FunctionStatement implements Statement, Callable {
 
     // добавление в бади
     public void add(Statement statement) {
-        statements.add(statement);
+        body.add(statement);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class FunctionStatement implements Statement, Callable {
     public Statement copy() {
         FunctionStatement _copy = new FunctionStatement(name, arguments);
 
-        for (Statement statement : statements) {
+        for (Statement statement : body) {
             _copy.add(statement.copy());
         }
 
@@ -98,7 +98,7 @@ public class FunctionStatement implements Statement, Callable {
         }
 
         // экзекьютим стэйтменты
-        for (Statement statement : statements) {
+        for (Statement statement : body) {
             // бэк -> возвращает значение
             try {
                 statement.execute();
@@ -107,6 +107,6 @@ public class FunctionStatement implements Statement, Callable {
             }
         }
 
-        return null;
+        return new PolarValue(null);
     }
 }
