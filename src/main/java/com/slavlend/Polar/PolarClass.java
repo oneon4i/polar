@@ -2,9 +2,7 @@ package com.slavlend.Polar;
 
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ArgumentExpression;
-import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.ClassStatement;
-import com.slavlend.Parser.Statements.FunctionStatement;
 import com.slavlend.Polar.Stack.Classes;
 import lombok.Getter;
 
@@ -17,9 +15,9 @@ import java.util.HashMap;
 @Getter
 public class PolarClass {
     // функции
-    private final HashMap<String, FunctionStatement> functions = new HashMap<>();
+    private final HashMap<String, PolarFunction> functions = new HashMap<>();
     // модульные функции ( статические )
-    private final HashMap<String, FunctionStatement> moduleFunctions = new HashMap<>();
+    private final HashMap<String, PolarFunction> moduleFunctions = new HashMap<>();
     // модульные переменные ( статические )
     private final HashMap<String, PolarValue> moduleValues = new HashMap<>();
     // конструктор
@@ -56,10 +54,10 @@ public class PolarClass {
     }
 
     // эддеры функций
-    public void add(FunctionStatement statement) {
+    public void add(PolarFunction statement) {
         functions.put(statement.getName(), statement);
     }
-    public void addModule(FunctionStatement statement) {
+    public void addModule(PolarFunction statement) {
         moduleFunctions.put(statement.getName(), statement);
     }
 
@@ -69,11 +67,11 @@ public class PolarClass {
     }
 
     // возвращает скопированные функции
-    public HashMap<String, FunctionStatement> copyFunctions() {
-        HashMap<String, FunctionStatement> copy = new HashMap<>();
+    public HashMap<String, PolarFunction> copyFunctions() {
+        HashMap<String, PolarFunction> copy = new HashMap<>();
 
         for (String key : functions.keySet()) {
-            copy.put(key, (FunctionStatement) functions.get(key).copy());
+            copy.put(key, functions.get(key).copy());
         }
 
         return copy;

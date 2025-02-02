@@ -1,5 +1,6 @@
 package com.slavlend.Libraries.httpserver;
 
+import com.slavlend.Polar.PolarFunction;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Storage;
@@ -26,7 +27,7 @@ http-сервера. Представляет собой враппер вокр
 @SuppressWarnings({"unused", "AnonymousHasLambdaAlternative", "CallToPrintStackTrace", "InfiniteLoopStatement"})
 public class httpserver {
     // хэндлер запросов
-    private final Map<String, FunctionStatement> requestHandlerList = new HashMap<>();
+    private final Map<String, PolarFunction> requestHandlerList = new HashMap<>();
     // json
     private final json json = new json();
 
@@ -81,7 +82,7 @@ public class httpserver {
             String path = parts[1];
 
             Request request = new Request(path, method);
-            FunctionStatement handler = requestHandlerList.get(path);
+            PolarFunction handler = requestHandlerList.get(path);
 
             // Чтение заголовков
             Map<String, String> headers = new HashMap<>();

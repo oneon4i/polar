@@ -4,6 +4,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Statements.FunctionStatement;
+import com.slavlend.Polar.PolarFunction;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Reflected;
@@ -13,7 +14,7 @@ import com.slavlend.Polar.Reflected;
  */
 public class window_provider {
     private window wnd;
-    public PolarValue provide(FunctionStatement on_init) {
+    public PolarValue provide(PolarFunction on_init) {
         wnd = new window();
         wnd.on_init(on_init);
         return new PolarValue(new Reflected(new Address(-1), window.class, wnd));

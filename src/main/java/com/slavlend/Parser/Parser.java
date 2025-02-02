@@ -527,8 +527,8 @@ public class Parser {
                     // функция
                     Statement statement = function();
                     // добавляем
-                    if (statement instanceof FunctionStatement) {
-                        classStatement.addModule((FunctionStatement) statement);
+                    if (statement instanceof FunctionStatement fn) {
+                        classStatement.addModule(fn.getFunction());
                     }
                     else {
                         error("Cannot Use Any Statements Except Functions: " + tokenInfo());
@@ -1205,8 +1205,8 @@ public class Parser {
                         // модульная функция
                         if (check(TokenType.FUNC)) {
                             Statement statement = function();
-                            if (statement instanceof FunctionStatement) {
-                                classStatement.addModule((FunctionStatement) statement);
+                            if (statement instanceof FunctionStatement fn) {
+                                classStatement.addModule(fn.getFunction());
                             } else {
                                 error("Cannot Use Any Statements Except Functions, Mod Function Or Mod Variables In Class: " + tokenInfo());
                             }

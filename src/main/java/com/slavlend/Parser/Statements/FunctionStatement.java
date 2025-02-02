@@ -3,7 +3,7 @@ package com.slavlend.Parser.Statements;
 import com.slavlend.App;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ArgumentExpression;
-import com.slavlend.Polar.PolarObject;
+import com.slavlend.Polar.PolarFunction;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Storage;
 import lombok.Getter;
@@ -15,45 +15,32 @@ import java.util.ArrayList;
 Стэйтмент функции - для дефенишена функции
  */
 @Getter
-public class FunctionStatement implements Statement, Callable {
-    // тело функции
-    private final ArrayList<Statement> body = new ArrayList<>();
-    // аргументы
-    private final ArrayList<ArgumentExpression> arguments;
-    // имя
-    private final String name;
-    // дефайнуто для
+public class FunctionStatement implements Statement {
+    // функция
     @Setter
-    private PolarObject definedFor;
-
-    @Override
-    public void optimize() {
-        // оптимизируем стэйтменты
-        /*
-        ArrayList<Statement> newStatements = new ArrayList<Statement>();
-
-        for (Statement statement : statements) {
-            newStatements.add(Optimizations.);
-        }
-         */
-    }
+    private PolarFunction function;
 
     // адресс
     private final Address address = App.parser.address();
+
+    @Override
+    public void optimize() {
+        // ...
+    }
+
     // конструктор
     public FunctionStatement(String name, ArrayList<ArgumentExpression> arguments) {
-        this.name = name;
-        this.arguments = arguments;
+        function = new PolarFunction(name, arguments);
     }
 
     // помещение в глоабальный скоуп
     public void putToFunctions() {
-        Storage.getInstance().put(name, new PolarValue(this));
+        Storage.getInstance().put(function.getName(), new PolarValue(function));
     }
 
     // добавление в бади
     public void add(Statement statement) {
-        body.add(statement);
+        function.add(statement);
     }
 
     @Override
@@ -68,11 +55,8 @@ public class FunctionStatement implements Statement, Callable {
 
     @Override
     public Statement copy() {
-        FunctionStatement _copy = new FunctionStatement(name, arguments);
-
-        for (Statement statement : body) {
-            _copy.add(statement.copy());
-        }
+        FunctionStatement _copy = new FunctionStatement(function.getName(), function.getArguments());
+        _copy.setFunction(function);
 
         return _copy;
     }
@@ -80,33 +64,5 @@ public class FunctionStatement implements Statement, Callable {
     @Override
     public Address address() {
         return address;
-    }
-
-    // вызов функции
-    @Override
-    public PolarValue call(PolarObject calledFor, ArrayList<PolarValue> params) {
-        // оптимизурем
-        optimize();
-
-        // дефайн переменной this
-        if (calledFor != null) { Storage.getInstance().last().put("this", new PolarValue(calledFor)); }
-        else if (definedFor != null) { Storage.getInstance().last().put("this", new PolarValue(definedFor)); }
-
-        // дефайним переданные параметры
-        for (int i = 0; i < arguments.size(); i++) {
-            Storage.getInstance().put(arguments.get(i).evaluate().asString(), params.get(i));
-        }
-
-        // экзекьютим стэйтменты
-        for (Statement statement : body) {
-            // бэк -> возвращает значение
-            try {
-                statement.execute();
-            } catch (PolarValue v) {
-                return v;
-            }
-        }
-
-        return new PolarValue(null);
     }
 }

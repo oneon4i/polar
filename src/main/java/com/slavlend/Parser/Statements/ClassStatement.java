@@ -5,6 +5,7 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ArgumentExpression;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Polar.PolarClass;
+import com.slavlend.Polar.PolarFunction;
 import com.slavlend.Polar.Stack.Classes;
 import lombok.Getter;
 
@@ -34,9 +35,9 @@ public class ClassStatement implements Statement {
 
     // эддеры функций
     public void add(FunctionStatement statement) {
-        polarClass.add(statement);
+        polarClass.add(statement.getFunction());
     }
-    public void addModule(FunctionStatement statement) {
+    public void addModule(PolarFunction statement) {
         polarClass.addModule(statement);
     }
 

@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.slavlend.Polar.Logger.PolarLogger;
 import com.slavlend.Parser.Statements.FunctionStatement;
+import com.slavlend.Polar.PolarFunction;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 
@@ -29,10 +30,10 @@ public class window extends ApplicationAdapter implements InputProcessor {
     // список моделей
     private final HashMap<String, ModelInstance> models = new HashMap<>();
     // хэндлеры
-    private FunctionStatement on_initialized;
-    private FunctionStatement on_updated;
-    private FunctionStatement on_key_downed;
-    private FunctionStatement on_key_holded;
+    private PolarFunction on_initialized;
+    private PolarFunction on_updated;
+    private PolarFunction on_key_downed;
+    private PolarFunction on_key_holded;
     private FunctionStatement on_key_up;
     // зажатые клавиши
     private ArrayList<Integer> holdings_keys = new ArrayList<Integer>();
@@ -116,19 +117,19 @@ public class window extends ApplicationAdapter implements InputProcessor {
         }
     }
 
-    public void on_init(FunctionStatement func) {
+    public void on_init(PolarFunction func) {
         this.on_initialized = func;
     }
 
-    public void on_update(FunctionStatement func) {
+    public void on_update(PolarFunction func) {
         this.on_updated = func;
     }
 
-    public void on_key_down(FunctionStatement func) {
+    public void on_key_down(PolarFunction func) {
         this.on_key_downed = func;
     }
 
-    public void on_key_hold(FunctionStatement func) {
+    public void on_key_hold(PolarFunction func) {
         this.on_key_holded = func;
     }
 

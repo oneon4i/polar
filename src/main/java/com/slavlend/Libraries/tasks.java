@@ -1,5 +1,6 @@
 package com.slavlend.Libraries;
 
+import com.slavlend.Polar.PolarFunction;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Storage;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class tasks {
 
     // выполнение функции
-    public void exec(PolarObject o, FunctionStatement func, PolarValue args) {
+    public void exec(PolarObject o, PolarFunction func, PolarValue args) {
         // создаем новый поток
         Thread thread = new Thread() {
             @Override

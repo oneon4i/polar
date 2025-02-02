@@ -8,6 +8,7 @@ import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPoll;
 import com.pengrad.telegrambot.response.SendResponse;
+import com.slavlend.Polar.PolarFunction;
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
 import com.slavlend.Polar.Stack.Storage;
@@ -20,23 +21,23 @@ import java.util.List;
 /*
 Библиотека для работы с тг-ботами.
  */
-@SuppressWarnings({"unused", "ThrowableNotThrown", "CallToPrintStackTrace", "Convert2Lambda"})
+@SuppressWarnings({"unused", "CallToPrintStackTrace", "Convert2Lambda"})
 public class telegram {
     private TelegramBot bot;
-    public FunctionStatement ON_CALL;
+    public PolarFunction ON_CALL;
     public PolarObject ON_CALL_OBJ;
-    public FunctionStatement POLL_ON_CALL;
+    public PolarFunction POLL_ON_CALL;
     public PolarObject POLL_ON_CALL_OBJ;
 
     public telegram() {
     }
 
-    public void on_message(PolarObject from, FunctionStatement link) {
+    public void on_message(PolarObject from, PolarFunction link) {
         ON_CALL_OBJ = from;
         ON_CALL = link;
     }
 
-    public void on_quiz_answer(PolarObject from, FunctionStatement link) {
+    public void on_quiz_answer(PolarObject from, PolarFunction link) {
         POLL_ON_CALL_OBJ = from;
         POLL_ON_CALL = link;
     }

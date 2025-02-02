@@ -2,7 +2,6 @@ package com.slavlend.Polar;
 
 import com.slavlend.Polar.Stack.Storage;
 import com.slavlend.Parser.Expressions.Expression;
-import com.slavlend.Parser.Statements.FunctionStatement;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public class PolarObject {
 
         // инициализация функций (копирование их в объект, т.е сюда)
         for (String funcName : clazz.copyFunctions().keySet()) {
-            FunctionStatement func = clazz.copyFunctions().get(funcName);
+            PolarFunction func = clazz.copyFunctions().get(funcName);
             func.setDefinedFor(o);
             o.classValues.put(funcName, new PolarValue(func));
         }
@@ -74,7 +73,7 @@ public class PolarObject {
 
         // инициализация функций (копирование их в объект, т.е сюда)
         for (String funcName : clazz.copyFunctions().keySet()) {
-            FunctionStatement func = clazz.copyFunctions().get(funcName);
+            PolarFunction func = clazz.copyFunctions().get(funcName);
             func.setDefinedFor(this);
             classValues.put(funcName, new PolarValue(func));
         }

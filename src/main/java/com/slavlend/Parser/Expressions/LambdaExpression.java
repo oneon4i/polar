@@ -4,6 +4,7 @@ import com.slavlend.App;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Statements.FunctionStatement;
 import com.slavlend.Parser.Statements.Statement;
+import com.slavlend.Polar.PolarFunction;
 import com.slavlend.Polar.PolarValue;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class LambdaExpression implements Expression {
 
     @Override
     public PolarValue evaluate() {
-        FunctionStatement fn = new FunctionStatement("lambda", arguments);
+        PolarFunction fn = new PolarFunction("lambda", arguments);
         for (Statement s : body) {
             fn.add(s);
         }

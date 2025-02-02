@@ -4,11 +4,8 @@ import com.slavlend.App;
 import com.slavlend.Polar.Stack.Classes;
 import com.slavlend.Libraries.array;
 import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Statements.BreakStatement;
 import com.slavlend.Parser.Statements.ClassStatement;
-import com.slavlend.Parser.Statements.FunctionStatement;
 import com.slavlend.Polar.Logger.PolarLogger;
-import com.slavlend.Parser.Statements.NextStatement;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -31,7 +28,6 @@ public class PolarValue extends RuntimeException {
 
     // возвращает объект как список
     public ArrayList<PolarValue> asList() {
-        ArrayList<String> arrayList = new ArrayList<String>();
         Reflected reflected = asObject().getClassValues().get("arr").asObject()
                 .getClassValues().get("javaArr").asReflected();
         array arr = (array) reflected.getReflectedObject();
@@ -64,6 +60,9 @@ public class PolarValue extends RuntimeException {
         } catch (Exception e) {
             if (data instanceof PolarObject polarObject) {
                 return polarObject.asString();
+            }
+            else if (data instanceof PolarFunction polarFunction) {
+                return polarFunction.getName();
             }
             return data.toString();
         }
@@ -126,10 +125,10 @@ public class PolarValue extends RuntimeException {
     }
 
     // возвращает объект как функцию языка
-    public FunctionStatement asFunc() {
+    public PolarFunction asFunc() {
         try {
             // если объект - объект функция, возвращаем
-            return (FunctionStatement) data;
+            return (PolarFunction) data;
         } catch (Exception e) {
             // в ином случае вызываем
             // ошибку
@@ -178,17 +177,7 @@ public class PolarValue extends RuntimeException {
 
     // это функция языка -> бул
     public boolean isFunc() {
-        return data instanceof FunctionStatement;
-    }
-
-    // это брэйк цикла -> бул
-    public boolean isBreak() {
-        return data instanceof BreakStatement;
-    }
-
-    // это неекст цикла -> бул
-    public boolean isNext() {
-        return data instanceof NextStatement;
+        return data instanceof PolarFunction;
     }
 
     // это класс -> бул
