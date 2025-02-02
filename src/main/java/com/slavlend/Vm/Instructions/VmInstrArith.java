@@ -21,8 +21,8 @@ public class VmInstrArith implements VmInstr {
 
     @Override
     public void run(IceVm vm, VmFrame<Object> frame) {
-        Object r = vm.pop();
-        Object l = vm.pop();
+        Object r = vm.pop(addr);
+        Object l = vm.pop(addr);
         if (r == null) {
             r = "nil";
         }

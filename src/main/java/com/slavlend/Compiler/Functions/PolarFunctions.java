@@ -2,6 +2,7 @@ package com.slavlend.Compiler.Functions;
 
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Vm.VmCoreFunction;
+import com.slavlend.Vm.VmInAddr;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -15,8 +16,8 @@ public class PolarFunctions {
     // Вывод строки на следующую линию
     public static class PutFn implements VmCoreFunction {
         @Override
-        public Object exec() {
-            System.out.println(Compiler.iceVm.pop());
+        public Object exec(VmInAddr addr) {
+            System.out.println(Compiler.iceVm.pop(addr));
             return null;
         }
 
@@ -29,8 +30,8 @@ public class PolarFunctions {
     // Вывод строки
     public static class PutsFn implements VmCoreFunction {
         @Override
-        public Object exec() {
-            System.out.print(Compiler.iceVm.pop());
+        public Object exec(VmInAddr addr) {
+            System.out.print(Compiler.iceVm.pop(addr));
             return null;
         }
 
@@ -43,7 +44,7 @@ public class PolarFunctions {
     // Ввод пользователя
     public static class ScanFn implements VmCoreFunction {
         @Override
-        public Object exec() {
+        public Object exec(VmInAddr addr) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             try {
                 return reader.readLine();
@@ -61,8 +62,8 @@ public class PolarFunctions {
     // Длина строки
     public static class LenFn implements VmCoreFunction {
         @Override
-        public Object exec() {
-            return ((Integer)((String)Compiler.iceVm.pop()).length()).floatValue();
+        public Object exec(VmInAddr addr) {
+            return ((Integer)((String)Compiler.iceVm.pop(addr)).length()).floatValue();
         }
 
         @Override
@@ -74,9 +75,9 @@ public class PolarFunctions {
     // Выжидание
     public static class SleepFn implements VmCoreFunction {
         @Override
-        public Object exec() {
+        public Object exec(VmInAddr addr) {
             try {
-                Thread.sleep(((Float)Compiler.iceVm.pop()).longValue());
+                Thread.sleep(((Float)Compiler.iceVm.pop(addr)).longValue());
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -93,8 +94,8 @@ public class PolarFunctions {
     // Превращение во float
     public static class ToFloatFn implements VmCoreFunction {
         @Override
-        public Object exec() {
-            return Float.parseFloat((String)Compiler.iceVm.pop());
+        public Object exec(VmInAddr addr) {
+            return Float.parseFloat((String)Compiler.iceVm.pop(addr));
         }
 
         @Override
@@ -107,8 +108,8 @@ public class PolarFunctions {
     // Превращение в bool
     public static class ToBoolFn implements VmCoreFunction {
         @Override
-        public Object exec() {
-            return Boolean.parseBoolean((String)Compiler.iceVm.pop());
+        public Object exec(VmInAddr addr) {
+            return Boolean.parseBoolean((String)Compiler.iceVm.pop(addr));
         }
 
         @Override
@@ -120,8 +121,8 @@ public class PolarFunctions {
     // Превращение в строку
     public static class ToStringFn implements VmCoreFunction {
         @Override
-        public Object exec() {
-            return String.valueOf(Compiler.iceVm.pop());
+        public Object exec(VmInAddr addr) {
+            return String.valueOf(Compiler.iceVm.pop(addr));
         }
 
         @Override

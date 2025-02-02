@@ -4,6 +4,7 @@ import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
+import com.slavlend.Vm.Instructions.VmInstrPush;
 import com.slavlend.Vm.Instructions.VmInstrRet;
 import lombok.Getter;
 

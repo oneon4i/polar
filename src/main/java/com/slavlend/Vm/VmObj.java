@@ -19,7 +19,7 @@ public class VmObj {
         this.clazz = clazz;
         this.addr = addr;
         for (int i = clazz.getConstructor().size()-1; i >= 0; i--) {
-            Object arg = vm.pop();
+            Object arg = vm.pop(addr);
             scope.set(clazz.getConstructor().get(i), arg);
         }
         scope.setRoot(vm.getVariables());

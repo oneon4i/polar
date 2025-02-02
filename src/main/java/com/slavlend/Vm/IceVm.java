@@ -21,7 +21,7 @@ public class IceVm {
     private final VmFrame<VmCoreFunction> coreFunctions = new VmFrame<>();
     // рэйс ошибок
     @Setter
-    public static VmErrRaiser raiser;
+    public static VmErrRaiser raiser = new VmErrRaiser();
     // логгер
     @Setter
     public static VmErrLogger logger;
@@ -109,7 +109,10 @@ public class IceVm {
      * Удаляет объект с верхушки стека, возвращая его
      * @return - отдаёт объект с верхушки стека
      */
-    public Object pop() {
+    public Object pop(VmInAddr addr) {
+        if (stack().empty()) {
+            raiser.error(addr, "stack is empty here (did you forgot back statement?)");
+        }
         return stack().pop();
     }
 
@@ -140,7 +143,7 @@ public class IceVm {
         } else if (variables.getValues().containsKey(name)){
             ((VmFunction)variables.lookup(addr, name)).exec(this);
         } else {
-            Object res = coreFunctions.lookup(addr, name).exec();
+            Object res = coreFunctions.lookup(addr, name).exec(addr);
             if (res != null) {
                 push(res);
             }

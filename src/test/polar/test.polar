@@ -186,6 +186,17 @@ func math_module_test() = {
     put('Test passed')
 }
 
+func nested_function_test() = {
+    func inside() = {
+        func inside_inside() = {
+            back(123)
+        }
+        back(inside_inside)
+    }
+    fn = inside()
+    assert(fn() == 123)
+}
+
 hello_world_test()
 variable_test()
 for_statement_continue_test()
@@ -201,3 +212,4 @@ infinity_test()
 lambda_test()
 test_repeat()
 math_module_test()
+nested_function_test()

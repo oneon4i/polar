@@ -33,7 +33,7 @@ public class VmInstrCall implements VmInstr {
         if (!hasPrevious) {
             callGlobalFunc(vm, frame);
         } else {
-            Object last = vm.pop();
+            Object last = vm.pop(addr);
             if (last instanceof VmObj vmObj) {
                 callObjFunc(vm, frame, vmObj);
             } else if (last instanceof VmClass vmClass){
@@ -80,7 +80,7 @@ public class VmInstrCall implements VmInstr {
         int argsAmount = passArgs(vm, frame);
         ArrayList<Object> callArgs = new ArrayList<>();
         for (int i = argsAmount-1; i >= 0; i--) {
-            Object arg = vm.pop();
+            Object arg = vm.pop(addr);
             callArgs.add(0, arg);
         }
         // рефлексийный вызов

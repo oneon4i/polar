@@ -29,15 +29,15 @@ public class VmInstrStore implements VmInstr {
     public void run(IceVm vm, VmFrame<Object> frame) {
         if (!hasPrevious) {
             passArgs(vm, frame);
-            frame.set(name, vm.pop());
+            frame.set(name, vm.pop(addr));
         } else {
-            Object last = vm.pop();
+            Object last = vm.pop(addr);
             if (last instanceof VmObj vmObj) {
                 passArgs(vm, frame);
-                vmObj.getScope().set(name, vm.pop());
+                vmObj.getScope().set(name, vm.pop(addr));
             } else {
                 passArgs(vm, frame);
-                ((VmClass) last).getModValues().set(name, vm.pop());
+                ((VmClass) last).getModValues().set(name, vm.pop(addr));
             }
         }
     }

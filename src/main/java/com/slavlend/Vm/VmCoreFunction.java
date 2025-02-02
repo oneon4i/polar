@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface VmCoreFunction{
     // вызов функции
-    abstract Object exec();
+    abstract Object exec(VmInAddr addr);
     abstract int argsAmount();
 }

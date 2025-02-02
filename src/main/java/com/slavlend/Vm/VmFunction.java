@@ -77,7 +77,7 @@ public class VmFunction implements VmInstrContainer {
                 IceVm.logger.error(addr,
                         "stack is empty. cannot invoke function: " + name);
             }
-            Object arg = vm.pop();
+            Object arg = vm.pop(addr);
             scope.get().set(arguments.get(i), arg);
         }
     }
