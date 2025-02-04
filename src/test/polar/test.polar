@@ -189,6 +189,13 @@ func nested_function_test() = {
     }
     fn = inside()
     assert(fn() == 123)
+    put('Test passed')
+}
+
+func ternary_test() = {
+    a = 1 == 1 ? 'yes' : 'no'
+    assert(a == 'yes')
+    put('Test passed')
 }
 
 hello_world_test()
@@ -207,3 +214,4 @@ lambda_test()
 test_repeat()
 math_module_test()
 nested_function_test()
+ternary_test()

@@ -56,6 +56,9 @@ public class VmInstrStore implements VmInstr {
 
     @Override
     public void print() {
+        for (VmInstr i : args.getVarContainer()) {
+            i.print();
+        }
         System.out.println(this);
     }
 }

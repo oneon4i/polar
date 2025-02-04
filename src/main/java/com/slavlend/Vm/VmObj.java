@@ -24,7 +24,7 @@ public class VmObj {
         }
         scope.setRoot(vm.getVariables());
         if (clazz.getFunctions().getValues().containsKey("init")) {
-            call(addr, "init", vm, true);
+            call(addr, "init", vm, false);
         }
     }
 

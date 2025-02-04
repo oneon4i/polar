@@ -904,6 +904,19 @@ public class Parser {
         return expr;
     }
 
+    // тернарное выражение
+    private Expression ternary() {
+        Expression expr = pipe();
+        if (check(TokenType.TERNARY)) {
+            consume(TokenType.TERNARY);
+            Expression left = expression();
+            consume(TokenType.COLON);
+            Expression right = expression();
+            return new TernaryExpression(expr, left, right);
+        }
+        return expr;
+    }
+
     // лямбда выражение
     private Expression lambda() {
         if (check(TokenType.LAMBDA)) {
@@ -930,7 +943,7 @@ public class Parser {
             consume(TokenType.BRACE);
             return lambdaExpression;
         }
-        return pipe();
+        return ternary();
     }
 
     // парсинг экспрешенна

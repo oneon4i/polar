@@ -42,7 +42,6 @@ public class AssertStatement implements Statement {
         Compiler.code.endWrite();
         // else
         VmInstrIf elseInstr = new VmInstrIf(address.convert());
-        Compiler.code.visitInstr(ifInstr);
         Compiler.code.startWrite(elseInstr);
         elseInstr.setWritingConditions(true);
         Compiler.code.visitInstr(new VmInstrPush(address.convert(), true));

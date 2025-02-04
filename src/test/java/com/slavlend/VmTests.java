@@ -16,7 +16,7 @@ public class VmTests {
         IceVm test = new IceVm();
         test.initStackForThread();
         test.push(123);
-        assertEquals(test.pop(), 123);
+        assertEquals(test.pop(new VmInAddr(-1)), 123);
     }
 
     @Test
@@ -25,7 +25,7 @@ public class VmTests {
         test.initStackForThread();
         test.push(743);
         assertEquals(test.getStack().get().size(), 1);
-        test.pop();
+        test.pop(new VmInAddr(-1));
     }
 
     @Test
@@ -79,6 +79,7 @@ public class VmTests {
                 new VmInAddr(-1),
                 "fn",
                 new VmVarContainer(),
+                false,
                 false
         ));
         test.run(code, true);
