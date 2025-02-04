@@ -37,7 +37,7 @@ public class VmInstrSafe implements VmInstr, VmInstrContainer {
         } catch (VmThrowable throwable) {
             vm.push(throwable.getThrowableValue());
             handle(vm, frame);
-        } catch (VmException exception) {
+        } catch (RuntimeException exception) {
             vm.push(exception.getMessage());
             handle(vm, frame);
         }

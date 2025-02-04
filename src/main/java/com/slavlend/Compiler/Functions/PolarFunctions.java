@@ -45,6 +45,10 @@ public class PolarFunctions {
     public static class ScanFn implements VmCoreFunction {
         @Override
         public Object exec(VmInAddr addr) {
+            String val = (String)Compiler.iceVm.pop(addr);
+            if (!val.isEmpty()) {
+                System.out.println(val);
+            }
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             try {
                 return reader.readLine();

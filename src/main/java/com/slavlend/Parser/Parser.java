@@ -33,6 +33,7 @@ public class Parser {
         put("lib.console", "Libraries/console.polar");
         put("lib.tasks", "Libraries/tasks.polar");
         put("lib.math", "Libraries/math.polar");
+        put("lib.random", "Libraries/random.polar");
     }};
 
     // путь эвайронмента (окружения)
@@ -1095,7 +1096,12 @@ public class Parser {
     // вывод ошибки
     public void error(String message) {
         // токен
-        Token token = tokens.get(current);
+        Token token;
+        if (current >= tokens.size()) {
+            token = tokens.get(current-1);
+        } else {
+            token = tokens.get(current);
+        }
         // трэйс ошибки
         PolarLogger.exception(message, new Address(token.line));
     }
@@ -1103,6 +1109,9 @@ public class Parser {
     // токен инфо
     public String tokenInfo() {
         // токен
+        if (current >= tokens.size()) {
+            return "(out_of_bounds)";
+        }
         Token token = tokens.get(current);
         // инфа токена
         return "(" + token.type + ", " + token.value + ", "  + token.line + ")" /*+ " №" + current + " L:"*/;
