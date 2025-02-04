@@ -67,7 +67,7 @@ public class AssignAccess implements Access {
     public Access getNext() { return next; }
 
     @Override
-    public void compile(boolean hasPrevious) {
+    public void compile(boolean hasPrevious, boolean isStatement) {
         VmVarContainer assignArgs = new VmVarContainer();
         Compiler.code.startWrite(assignArgs);
         to.compile();
@@ -79,6 +79,7 @@ public class AssignAccess implements Access {
             case MUL -> {
                 AccessExpression e = (AccessExpression) accessExpression.copy();
                 e.set(new VarAccess(address, next, varName));
+                e.setStatement(false);
                 e.compile();
                 Compiler.code.visitInstr(new VmInstrArith(address.convert(), "*"));
                 Compiler.code.endWrite();
@@ -87,6 +88,7 @@ public class AssignAccess implements Access {
             case DIVIDE -> {
                 AccessExpression e = (AccessExpression) accessExpression.copy();
                 e.set(new VarAccess(address, next, varName));
+                e.setStatement(false);
                 e.compile();
                 Compiler.code.visitInstr(new VmInstrArith(address.convert(), "/"));
                 Compiler.code.endWrite();
@@ -95,6 +97,7 @@ public class AssignAccess implements Access {
             case PLUS -> {
                 AccessExpression e = (AccessExpression) accessExpression.copy();
                 e.set(new VarAccess(address, next, varName));
+                e.setStatement(false);
                 e.compile();
                 Compiler.code.visitInstr(new VmInstrArith(address.convert(), "+"));
                 Compiler.code.endWrite();
@@ -103,6 +106,7 @@ public class AssignAccess implements Access {
             case MINUS -> {
                 AccessExpression e = (AccessExpression) accessExpression.copy();
                 e.set(new VarAccess(address, next, varName));
+                e.setStatement(false);
                 e.compile();
                 Compiler.code.visitInstr(new VmInstrArith(address.convert(), "-"));
                 Compiler.code.endWrite();

@@ -20,7 +20,7 @@ public class Threads {
                     Compiler.iceVm.push(o);
                 }
                 // вызов функции
-                fn.exec(Compiler.iceVm);
+                fn.exec(Compiler.iceVm, true);
             }
         };
         thread.start();

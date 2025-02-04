@@ -60,16 +60,17 @@ public class CallAccess implements Access {
     public Access getNext() { return next; }
 
     @Override
-    public void compile(boolean hasPrevious) {
+    public void compile(boolean hasPrevious, boolean isStatement) {
         VmVarContainer container = new VmVarContainer();
         Compiler.code.startWrite(container);
         for (Expression e : params) {
             e.compile();
         }
         Compiler.code.endWrite();
-        Compiler.code.visitInstr(new VmInstrCall(address.convert(), funcName, container, hasPrevious));
+        boolean shouldPushResult = hasNext() || !isStatement;
+        Compiler.code.visitInstr(new VmInstrCall(address.convert(), funcName, container, hasPrevious, shouldPushResult));
         if (hasNext()) {
-            getNext().compile(true);
+            getNext().compile(true, isStatement);
         }
     }
 

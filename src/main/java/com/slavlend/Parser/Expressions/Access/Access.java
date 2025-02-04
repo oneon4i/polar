@@ -8,6 +8,6 @@ public interface Access {
     abstract void setLast(Access access);
     abstract boolean hasNext();
     abstract Access getNext();
-    abstract void compile(boolean hasPrevious);
+    abstract void compile(boolean hasPrevious, boolean isStatement);
     abstract Access copy();
 }

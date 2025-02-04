@@ -50,10 +50,13 @@ public class TempAccess implements Access {
     public Access getNext() { return next; }
 
     @Override
-    public void compile(boolean hasPrevious) {
-        objectExpr.compile();
+    public void compile(boolean hasPrevious, boolean isStatement) {
+        boolean shouldPushResult = hasNext() || !isStatement;
+        if (shouldPushResult) {
+            objectExpr.compile();
+        }
         if (hasNext()) {
-            getNext().compile(true);
+            getNext().compile(true, isStatement);
         }
     }
 

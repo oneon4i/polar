@@ -46,7 +46,6 @@ func if_test() = {
 func each_statement() = {
     lst = [5, 3, 1]
     each (elem, lst) {
-        # put(elem) #
         next
     }
     put('Test passed')
@@ -56,17 +55,17 @@ func nested_test() = {
     total_sum = 0
 
     lst = [1, 2, 3]
-    each (outer, lst) {  # внешний цикл each #
+    each (outer, lst) {
         if (outer == 2) {
-            next  # пропустить outer = 2 #
+            next
         }
-        for (i = 0, i < 5) { # вложенный цикл for #
+        for (i = 0, i < 5) {
             if (i == 4) {
-                break  # завершить for, когда i = 4 #
+                break
             }
             inner_sum = 0
             number = 0
-            while (number < i) { # вложенный цикл while #
+            while (number < i) {
                 number = number + 1
                 inner_sum = inner_sum + number
             }
@@ -132,33 +131,28 @@ func juse_test() = {
 }
 
 func infinity_test() = {
-    # Проверка значений Infinity и NegativeInfinity #
     assert(1 / 0 == Math.Infinity)
     assert(-1 / 0 == Math.NegativeInfinity)
     assert(Math.Infinity > 1000)
     assert(Math.NegativeInfinity < -1000)
 
-    # Операции с Infinity #
     assert(Math.Infinity + 1000 == Math.Infinity)
     assert(Math.Infinity - 1000 == Math.Infinity)
     assert(Math.Infinity * 2 == Math.Infinity)
     assert(Math.Infinity / 2 == Math.Infinity)
 
-    # Операции с NegativeInfinity #
     assert(Math.NegativeInfinity + 1000 == Math.NegativeInfinity)
     assert(Math.NegativeInfinity - 1000 == Math.NegativeInfinity)
     assert(Math.NegativeInfinity * 2 == Math.NegativeInfinity)
     assert(Math.NegativeInfinity / 2 == Math.NegativeInfinity)
 
-    # Взаимодействие Infinity и NegativeInfinity #
     assert(Math.Infinity + Math.NegativeInfinity != Math.NaN)
     assert(Math.NegativeInfinity + Math.Infinity != Math.NaN)
     assert(Math.Infinity - Math.Infinity != Math.Infinity)
     assert(Math.NegativeInfinity - Math.NegativeInfinity != Math.NegativeInfinity)
 
-    # Проверка NaN #
-    assert(0 / 0 != 0 / 0)  # NaN не равно самому себе #
-    assert((0 / 0 > 0 or 0 / 0 < 0) == false)  # NaN не больше и не меньше любого числа #
+    assert(0 / 0 != 0 / 0)
+    assert((0 / 0 > 0 or 0 / 0 < 0) == false)
     put('Test passed')
 }
 

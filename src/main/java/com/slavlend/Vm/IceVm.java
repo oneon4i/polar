@@ -25,6 +25,15 @@ public class IceVm {
     // логгер
     @Setter
     public static VmErrLogger logger;
+    // адресс возврата
+    private final ThreadLocal<Object> returnAddress = new ThreadLocal<>();
+
+    /**
+     * Помещение значения в адресс возврата
+     */
+    public void ret(Object o) {
+        returnAddress.set(o);
+    }
 
     /**
      *
@@ -110,9 +119,9 @@ public class IceVm {
      * @return - отдаёт объект с верхушки стека
      */
     public Object pop(VmInAddr addr) {
-        if (stack().empty()) {
-            raiser.error(addr, "stack is empty here (did you forgot back statement?)");
-        }
+        // if (stack().empty()) {
+            // raiser.error(addr, "stack is empty here (did you forgot back statement?)");
+        // }
         return stack().pop();
     }
 
@@ -126,6 +135,11 @@ public class IceVm {
     }
 
     /**
+     * Получение следующей инструкции
+     *
+     */
+
+    /**
      * Получение стека текущего потока
      * @return - стэк
      */
@@ -137,11 +151,11 @@ public class IceVm {
      * Вызывает глобальную функцию
      * @param name - имя для вызова
      */
-    public void callGlobal(VmInAddr addr, String name) {
+    public void callGlobal(VmInAddr addr, String name, boolean shouldPushResult) {
         if (functions.getValues().containsKey(name)) {
-            functions.lookup(addr, name).exec(this);
+            functions.lookup(addr, name).exec(this, shouldPushResult);
         } else if (variables.getValues().containsKey(name)){
-            ((VmFunction)variables.lookup(addr, name)).exec(this);
+            ((VmFunction)variables.lookup(addr, name)).exec(this, shouldPushResult);
         } else {
             Object res = coreFunctions.lookup(addr, name).exec(addr);
             if (res != null) {

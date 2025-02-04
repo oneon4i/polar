@@ -35,7 +35,7 @@ public class MapContainerExpression implements Expression {
             e.compile();
             container.get(e).compile();
             Compiler.code.endWrite();
-            Compiler.code.visitInstr(new VmInstrCall(address.convert(), "set", _container, true));
+            Compiler.code.visitInstr(new VmInstrCall(address.convert(), "set", _container, true, false));
         }
     }
 }

@@ -48,7 +48,7 @@ public class VmFunction implements VmInstrContainer {
      * Выполнение функции
      * @param vm - ВМ
      */
-    public void exec(IceVm vm) {
+    public void exec(IceVm vm, boolean shouldPushResult) {
         scope.set(new VmFrame<>());
         if (definedFor == null) {
             getScope().get().setRoot(vm.getVariables());
@@ -63,6 +63,9 @@ public class VmFunction implements VmInstrContainer {
                 instr.run(vm, scope.get());
             }
         } catch (VmInstrRet e) {
+            if (shouldPushResult) {
+                e.pushResult(vm, scope.get());
+            }
             return;
         }
     }

@@ -156,8 +156,8 @@ public class Parser {
     }
 
     // получение айди переменной
-    public AccessExpression parseAccess() {
-        AccessExpression expr = new AccessExpression(address(), null);
+    public AccessExpression parseAccess(boolean isStatement) {
+        AccessExpression expr = new AccessExpression(address(), null, isStatement);
 
         // добавляем акссесс
         expr.add(accessPart());
@@ -290,7 +290,7 @@ public class Parser {
         }
         // стэйтмент new
         if (check(TokenType.NEW)) {
-            return parseAccess();
+            return parseAccess(true);
         }
         // стэйтмент функции
         if (check(TokenType.FUNC)) {
@@ -308,7 +308,7 @@ public class Parser {
             // ... -= ...
             // ... *= ...
             // ... /= ...
-            AccessExpression id = parseAccess();
+            AccessExpression id = parseAccess(true);
             // ==
             if (check(TokenType.ASSIGN)) {
                 consume(TokenType.ASSIGN);
@@ -678,7 +678,7 @@ public class Parser {
         // запятая
         consume(TokenType.COMMA);
         // левый экспрешен
-        AccessExpression _l = parseAccess();
+        AccessExpression _l = parseAccess(false);
         // оператор
         Operator _o = condOperator();
         // правый экспрешен
@@ -711,7 +711,7 @@ public class Parser {
         // экспрешенны
         String elem = consume(TokenType.ID).value;
         consume(TokenType.COMMA);
-        AccessExpression lst = parseAccess();
+        AccessExpression lst = parseAccess(false);
         // скобка
         consume(TokenType.BRACKET);
         // брэйкс
@@ -941,7 +941,7 @@ public class Parser {
     public Expression parsePrimary() {
         // Обработка идентификаторов
         if (check(TokenType.ID) || check(TokenType.NEW)) {
-            return parseAccess();
+            return parseAccess(false);
         }
         // Обработка текстовых литералов
         if (check(TokenType.TEXT)) {

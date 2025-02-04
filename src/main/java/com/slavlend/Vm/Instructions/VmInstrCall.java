@@ -21,11 +21,14 @@ public class VmInstrCall implements VmInstr {
     private final boolean hasPrevious;
     // аргументы
     private final VmVarContainer args;
+    // выключен ли пуш
+    private final boolean shouldPushResult;
 
     // конструктор
-    public VmInstrCall(VmInAddr addr, String name, VmVarContainer args, boolean hasPrevious) {
+    public VmInstrCall(VmInAddr addr, String name, VmVarContainer args, boolean hasPrevious, boolean shouldPushResult) {
         this.addr = addr;
         this.name = name; this.args = args; this.hasPrevious = hasPrevious;
+        this.shouldPushResult = shouldPushResult;
     }
 
     @Override
@@ -56,7 +59,7 @@ public class VmInstrCall implements VmInstr {
         }
         checkArgs(fn.getArguments().size(), argsAmount);
         // вызов
-        vmObj.call(addr, name, vm);
+        vmObj.call(addr, name, vm, shouldPushResult);
     }
 
     // Вызывает функцю класса
@@ -71,7 +74,7 @@ public class VmInstrCall implements VmInstr {
         }
         checkArgs(fn.getArguments().size(), argsAmount);
         // вызов модульной функции
-        vmClass.getModFunctions().lookup(addr, name).exec(vm);
+        vmClass.getModFunctions().lookup(addr, name).exec(vm, shouldPushResult);
     }
 
     // Вызывает рефлексийную функцию
@@ -118,7 +121,7 @@ public class VmInstrCall implements VmInstr {
             VmFunction fn = ((VmFunction)frame.lookup(addr, name));
             checkArgs(fn.getArguments().size(), argsAmount);
             // вызов
-            fn.exec(vm);
+            fn.exec(vm, shouldPushResult);
         } else {
             // аргументы
             int argsAmount = passArgs(vm, frame);
@@ -130,10 +133,10 @@ public class VmInstrCall implements VmInstr {
                 else {
                     checkArgs(((VmFunction)vm.getVariables().lookup(addr, name)).getArguments().size(), argsAmount);
                 }
-                vm.callGlobal(addr, name);
+                vm.callGlobal(addr, name, shouldPushResult);
             } else {
                 checkArgs(vm.getCoreFunctions().lookup(addr, name).argsAmount(), argsAmount);
-                vm.callGlobal(addr, name);
+                vm.callGlobal(addr, name, shouldPushResult);
             }
         }
     }

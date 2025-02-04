@@ -4,8 +4,10 @@ import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
+import com.slavlend.Parser.Expressions.NilExpression;
 import com.slavlend.Vm.Instructions.VmInstrPush;
 import com.slavlend.Vm.Instructions.VmInstrRet;
+import com.slavlend.Vm.VmVarContainer;
 import lombok.Getter;
 
 /*
@@ -30,10 +32,16 @@ public class BackStatement implements Statement, Expression {
 
     @Override
     public void compile() {
+        VmVarContainer retContainer = new VmVarContainer();
+        Compiler.code.startWrite(retContainer);
         if (expr != null) {
             expr.compile();
         }
-        Compiler.code.visitInstr(new VmInstrRet(address.convert()));
+        else {
+            new NilExpression().compile();
+        }
+        Compiler.code.endWrite();
+        Compiler.code.visitInstr(new VmInstrRet(retContainer, address.convert()));
     }
 
     // конструктор

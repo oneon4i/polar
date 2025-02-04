@@ -68,7 +68,7 @@ public class EachStatement implements Statement {
     private void checkSizeCompile(String uuid) {
         Compiler.code.visitInstr(new VmInstrLoad(address.convert(), uuid, false));
         listVariable.compile();
-        Compiler.code.visitInstr(new VmInstrCall(address.convert(), "size", new VmVarContainer(), true));
+        Compiler.code.visitInstr(new VmInstrCall(address.convert(), "size", new VmVarContainer(), true, true));
         Compiler.code.visitInstr(new VmInstrCondOperator(address.convert(), new Operator("<")));
     }
 
@@ -89,7 +89,7 @@ public class EachStatement implements Statement {
         Compiler.code.startWrite(callGetElemArgs);
         Compiler.code.visitInstr(new VmInstrLoad(address.convert(), uuid, false));
         Compiler.code.endWrite();
-        Compiler.code.visitInstr(new VmInstrCall(address.convert(), "get", callGetElemArgs, true));
+        Compiler.code.visitInstr(new VmInstrCall(address.convert(), "get", callGetElemArgs, true, true));
         Compiler.code.endWrite();
         Compiler.code.visitInstr(new VmInstrStore(address.convert(), variableName, false, storeArgs));
     }

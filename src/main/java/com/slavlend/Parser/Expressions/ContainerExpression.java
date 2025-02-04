@@ -30,7 +30,7 @@ public class ContainerExpression implements Expression {
             Compiler.code.startWrite(container);
             e.compile();
             Compiler.code.endWrite();
-            Compiler.code.visitInstr(new VmInstrCall(address.convert(), "add", container, true));
+            Compiler.code.visitInstr(new VmInstrCall(address.convert(), "add", container, true, false));
         }
     }
 

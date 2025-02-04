@@ -49,10 +49,13 @@ public class VarAccess implements Access {
     public Access getNext() { return next; }
 
     @Override
-    public void compile(boolean hasPrevious) {
-        Compiler.code.visitInstr(new VmInstrLoad(address.convert(), varName, hasPrevious));
+    public void compile(boolean hasPrevious, boolean isStatement) {
+        boolean shouldPushResult = hasNext() || !isStatement;
+        if (shouldPushResult) {
+            Compiler.code.visitInstr(new VmInstrLoad(address.convert(), varName, hasPrevious));
+        }
         if (hasNext()) {
-            getNext().compile(true);
+            getNext().compile(true, isStatement);
         }
     }
 

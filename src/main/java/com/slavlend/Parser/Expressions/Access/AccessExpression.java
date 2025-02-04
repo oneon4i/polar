@@ -4,6 +4,7 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.Statement;
 import lombok.Getter;
+import lombok.Setter;
 
 /*
 Экспрешен для акссеса к переменной
@@ -14,11 +15,15 @@ public class AccessExpression implements Expression, Statement {
     private Access access;
     // аддресс
     private final Address address;
+    // стэйтмент ли
+    @Setter
+    private boolean isStatement;
 
     // конструктор
-    public AccessExpression(Address address, Access access) {
+    public AccessExpression(Address address, Access access, boolean isStatement) {
         this.address = address;
         this.access = access;
+        this.isStatement = isStatement;
     }
 
     // добавление
@@ -56,7 +61,7 @@ public class AccessExpression implements Expression, Statement {
 
     @Override
     public Statement copy() {
-        return new AccessExpression(address, access.copy());
+        return new AccessExpression(address, access.copy(), isStatement);
     }
 
     @Override
@@ -66,6 +71,6 @@ public class AccessExpression implements Expression, Statement {
 
     @Override
     public void compile() {
-        access.compile(false);
+        access.compile(false, isStatement);
     }
 }
