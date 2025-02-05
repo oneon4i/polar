@@ -11,6 +11,7 @@ import com.slavlend.Parser.Parser;
 import com.slavlend.Parser.Statements.FunctionStatement;
 import com.slavlend.Parser.Statements.Statement;
 import com.slavlend.PolarLogger;
+import com.slavlend.System.PolarSystem;
 import com.slavlend.Vm.IceVm;
 
 /*
@@ -31,10 +32,13 @@ public class Executor {
         Parser parser = new Parser(
                 lexer.getTokens()
         );
-        if (settings.getFilePath().lastIndexOf('\\') == -1) {
-            System.out.println("Please, Write Full Path To File With \\ 🥬");
+        String envPath = "";
+        if (PolarSystem.isLinux()) {
+            envPath = settings.getFilePath().substring(0, settings.getFilePath().lastIndexOf('/'));
         }
-        String envPath = settings.getFilePath().substring(0, settings.getFilePath().lastIndexOf('\\'));
+        else {
+            envPath = settings.getFilePath().substring(0, settings.getFilePath().lastIndexOf('\\'));
+        }
         String filePath = settings.getFilePath().substring(
                 settings.getFilePath().lastIndexOf('\\')+1
         ).replace(".polar", "");
