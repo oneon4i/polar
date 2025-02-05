@@ -60,7 +60,7 @@ public class IceVm {
             // выводим время исполнения
             System.out.println();
             System.out.println(
-                    Colors.ANSI_BLUE + "🧊 Exec time: " + benchmark.end() + ", stack size: "
+                    Colors.ANSI_BLUE + "🧊 Exec time: " + benchmark.end() + "ms, stack size: "
                             + stack.get().size() + "(" + stack.get().toString() + ")" + Colors.ANSI_RESET
             );
         } catch (VmException exception) {

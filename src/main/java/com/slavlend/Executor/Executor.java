@@ -31,6 +31,9 @@ public class Executor {
         Parser parser = new Parser(
                 lexer.getTokens()
         );
+        if (settings.getFilePath().lastIndexOf('\\') == -1) {
+            System.out.println("Please, Write Full Path To File With \\ 🥬");
+        }
         String envPath = settings.getFilePath().substring(0, settings.getFilePath().lastIndexOf('\\'));
         String filePath = settings.getFilePath().substring(
                 settings.getFilePath().lastIndexOf('\\')+1
