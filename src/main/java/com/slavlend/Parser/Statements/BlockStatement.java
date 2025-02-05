@@ -37,4 +37,16 @@ public class BlockStatement implements Statement {
             s.compile();
         }
     }
+
+    // Импортирование
+    public void importAll() {
+        // перебор стейтментов
+        for (Statement s : statements) {
+            // Если функция или класс - ток компилируем
+            if (s instanceof FunctionStatement
+                    || s instanceof ClassStatement) {
+                s.compile();
+            }
+        }
+    }
 }

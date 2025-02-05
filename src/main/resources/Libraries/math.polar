@@ -15,4 +15,10 @@ class Math() = {
     mod func cos(a) = {
         back(Math.reflected.cos(a))
     }
+    mod func tan(a) = {
+        back(Math.reflected.tan(a))
+    }
+    mod fun atan(a) = {
+        back(Math.reflected.atan(a))
+    }
 }

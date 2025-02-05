@@ -73,6 +73,6 @@ public class UseLibStatement implements Statement{
         Parser tempParser = new Parser(tempLexer.getTokens());
         tempParser.setFileName(libName.getData().replace(".polar", ""));
         BlockStatement s = tempParser.parse();
-        s.compile();
+        s.importAll();
     }
 }
