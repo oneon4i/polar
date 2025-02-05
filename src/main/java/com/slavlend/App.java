@@ -25,6 +25,9 @@ public class App
         System.out.println("│ 🐻‍❄️ Polar v" + PolarVersion.build);
         System.out.println("╰───────────────────╯");
         System.out.println();
+        String currentDir = System.getProperty("user.dir");
+        System.out.println("❄️ Current dir: " + currentDir);
+        System.out.println();
         // проверяем на наличие аргумента
         if (args.length == 0) {
             System.out.println("🦩 Arguments is empty");

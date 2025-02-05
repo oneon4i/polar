@@ -14,4 +14,14 @@ public class Math {
     public Object cos(Object value) {
         return Float.parseFloat(String.valueOf(java.lang.Math.cos((float) value)));
     }
+
+    // тангенс
+    public Object tan(Object value) {
+        return Float.parseFloat(String.valueOf(java.lang.Math.tan((float) value)));
+    }
+
+    // атангенс
+    public Object atan(Object value) {
+        return Float.parseFloat(String.valueOf(java.lang.Math.atan((float) value)));
+    }
 }
