@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.slavlend</groupId>
-  <artifactId>antlang</artifactId>
+  <artifactId>polar</artifactId>
   <version>0.1-PROTOTYPE</version>
   <packaging>jar</packaging>
 
-  <name>egglang</name>
+  <name>polar</name>
   <url>http://maven.apache.org</url>
 
   <properties>
