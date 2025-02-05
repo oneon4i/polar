@@ -42,7 +42,7 @@ public class App
                 code = new StringBuilder();
                 sc = new Scanner(file);
             } catch (Exception e) {
-                System.out.println("👽 Invalid file: " + args[0]);
+                System.out.println("👽 Invalid file: " + args[0] + "(e: " + e + ")");
                 return;
             }
 
