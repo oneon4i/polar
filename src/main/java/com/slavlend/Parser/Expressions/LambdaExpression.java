@@ -30,7 +30,7 @@ public class LambdaExpression implements Expression {
 
     @Override
     public void compile() {
-        VmFunction fn = new VmFunction("lambda", arguments, address.convert());
+        VmFunction fn = new VmFunction("lambda", "lmb:lambda", arguments, address.convert());
         Compiler.code.startWrite(fn);
         for (Statement s : body) {
             s.compile();

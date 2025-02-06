@@ -56,7 +56,7 @@ public class VmTests {
         VmCode code = new VmCode();
         test.initStackForThread();
         // функция
-        VmFunction container = new VmFunction("fn", new ArrayList<>(), new VmInAddr(-1));
+        VmFunction container = new VmFunction("fn", "test:fn",new ArrayList<>(), new VmInAddr(-1));
         test.getFunctions().set("fn", container);
         code.startWrite(container);
         // переменная
@@ -93,11 +93,11 @@ public class VmTests {
         VmCode code = new VmCode();
         test.initStackForThread();
         // класс
-        VmClass clazz = new VmClass("fn", new ArrayList<>(), new VmInAddr(-1));
+        VmClass clazz = new VmClass("fn", "test:fn", new ArrayList<>(), new VmInAddr(-1));
         test.getClasses().set("fn", clazz);
         code.startWrite(clazz);
         // функция
-        VmFunction fn = new VmFunction("init", new ArrayList<>(), new VmInAddr(-1));
+        VmFunction fn = new VmFunction("init","test:init",  new ArrayList<>(), new VmInAddr(-1));
         clazz.getFunctions().set("init", fn);
         code.startWrite(fn);
         // код функции

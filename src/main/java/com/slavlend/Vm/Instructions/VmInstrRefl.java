@@ -21,7 +21,7 @@ public class VmInstrRefl implements VmInstr {
     }
 
     @Override
-    public void run(IceVm vm, VmFrame<Object> frame) {
+    public void run(IceVm vm, VmFrame<String, Object> frame) {
         // ищем класс
         try {
             Object o = VmJvmClasses.lookup(addr, name).newInstance();

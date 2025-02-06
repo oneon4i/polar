@@ -193,11 +193,14 @@ public class Parser {
             }
         }
         // создаём функции
-        FunctionStatement functionStatement = new FunctionStatement(name, arguments);
+        String fullName = fileName + ":" + name;
+        FunctionStatement functionStatement = new FunctionStatement(fullName, name, arguments);
         // скобки
         consume(TokenType.BRACKET);
         // ассигн
-        consume(TokenType.ASSIGN);
+        if (check(TokenType.ASSIGN)) {
+            consume(TokenType.ASSIGN);
+        }
         // брэйс
         consume(TokenType.BRACE);
         // стэйтменты
@@ -505,7 +508,9 @@ public class Parser {
         // скобка
         consume(TokenType.BRACKET);
         // ассигн
-        consume(TokenType.ASSIGN);
+        if (check(TokenType.ASSIGN)) {
+            consume(TokenType.ASSIGN);
+        }
         // брэйс
         consume(TokenType.BRACE);
         // тело функции

@@ -29,7 +29,7 @@ public class VmInstrSafe implements VmInstr, VmInstrContainer {
     }
 
     @Override
-    public void run(IceVm vm, VmFrame<Object> frame) {
+    public void run(IceVm vm, VmFrame<String, Object> frame) {
         try {
             for (VmInstr instr : instructions) {
                 instr.run(vm, frame);
@@ -43,7 +43,7 @@ public class VmInstrSafe implements VmInstr, VmInstrContainer {
         }
     }
 
-    private void handle(IceVm vm, VmFrame<Object> frame) {
+    private void handle(IceVm vm, VmFrame<String, Object> frame) {
         for (VmInstr instr : handleInstructions) {
             instr.run(vm, frame);
         }

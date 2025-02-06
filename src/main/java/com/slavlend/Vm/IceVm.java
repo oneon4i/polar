@@ -15,10 +15,10 @@ public class IceVm {
     // стек объектов
     private final ThreadLocal<Stack<Object>> stack = new ThreadLocal<>();
     // хранилище
-    private final VmFrame<Object> variables = new VmFrame<>();
-    private final VmFrame<VmFunction> functions = new VmFrame<>();
-    private final VmFrame<VmClass> classes = new VmFrame<>();
-    private final VmFrame<VmCoreFunction> coreFunctions = new VmFrame<>();
+    private final VmFrame<String, Object> variables = new VmFrame<>();
+    private final VmFrame<String, VmFunction> functions = new VmFrame<>();
+    private final VmFrame<String, VmClass> classes = new VmFrame<>();
+    private final VmFrame<String, VmCoreFunction> coreFunctions = new VmFrame<>();
     // рэйс ошибок
     @Setter
     public static VmErrRaiser raiser = new VmErrRaiser();
@@ -130,14 +130,9 @@ public class IceVm {
      * @param frame - фрейм, для поиска переменной
      * @param name - имя переменной для поиска
      */
-    public void load(VmInAddr addr, VmFrame<Object> frame, String name) {
+    public void load(VmInAddr addr, VmFrame<String, Object> frame, String name) {
         stack().push(frame.lookup(addr, name));
     }
-
-    /**
-     * Получение следующей инструкции
-     *
-     */
 
     /**
      * Получение стека текущего потока

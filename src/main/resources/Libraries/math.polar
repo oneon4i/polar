@@ -18,7 +18,7 @@ class Math() = {
     mod func tan(a) = {
         back(Math.reflected.tan(a))
     }
-    mod fun atan(a) = {
+    mod func atan(a) = {
         back(Math.reflected.atan(a))
     }
 }

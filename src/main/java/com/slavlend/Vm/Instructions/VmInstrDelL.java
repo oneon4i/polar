@@ -19,7 +19,7 @@ public class VmInstrDelL implements VmInstr {
     }
 
     @Override
-    public void run(IceVm vm, VmFrame<Object> frame) {
+    public void run(IceVm vm, VmFrame<String, Object> frame) {
         frame.getValues().remove(name);
     }
 

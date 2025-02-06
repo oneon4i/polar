@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public class VmObj {
     // скоуп
-    private final VmFrame<Object> scope = new VmFrame<>();
+    private final VmFrame<String, Object> scope = new VmFrame<>();
     // класс
     private final VmClass clazz;
     // адресс
@@ -44,5 +44,16 @@ public class VmObj {
         func.setDefinedFor(this);
         func.getScope().get().setRoot(scope);
         func.exec(vm, shouldPushResult);
+    }
+
+    // в строку
+
+    @Override
+    public String toString() {
+        return "VmObj{" +
+                "scope=" + scope +
+                ", clazz=" + clazz +
+                ", addr=" + addr +
+                '}';
     }
 }

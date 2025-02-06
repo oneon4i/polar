@@ -23,7 +23,7 @@ public class VmInstrStoreM implements VmInstr {
     }
 
     @Override
-    public void run(IceVm vm, VmFrame<Object> frame) {
+    public void run(IceVm vm, VmFrame<String, Object> frame) {
         vmClass.getModValues().set(name, vm.pop(addr));
     }
 

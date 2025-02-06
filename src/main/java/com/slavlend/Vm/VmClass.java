@@ -12,14 +12,16 @@ import java.util.ArrayList;
 public class VmClass implements VmInstrContainer {
     // имя класса
     private final String name;
+    // полное имя
+    private final String fullName;
     // функции
-    private final VmFrame<VmFunction> functions = new VmFrame<>();
+    private final VmFrame<String, VmFunction> functions = new VmFrame<>();
     // модульные значения
-    private final VmFrame<Object> modValues = new VmFrame<>();
+    private final VmFrame<String, Object> modValues = new VmFrame<>();
     // конструктор для класса
     private final ArrayList<String> constructor;
     // модульные функции
-    private final VmFrame<VmFunction> modFunctions = new VmFrame<>();
+    private final VmFrame<String, VmFunction> modFunctions = new VmFrame<>();
     // адресс
     private final VmInAddr addr;
     // пишется ли в модульные функции
@@ -27,8 +29,9 @@ public class VmClass implements VmInstrContainer {
     private boolean isModuleFunctionsWriting = false;
 
     // конструктор
-    public VmClass(String name, ArrayList<String> constructor, VmInAddr addr) {
+    public VmClass(String name, String fullName, ArrayList<String> constructor, VmInAddr addr) {
         this.name = name;
+        this.fullName = fullName;
         this.constructor = constructor;
         this.addr = addr;
     }
@@ -57,5 +60,16 @@ public class VmClass implements VmInstrContainer {
         }
         System.out.println("╰──────────────────────────╯");
         System.out.println("╰──────────────────────────╯");
+    }
+
+    // в строку
+
+    @Override
+    public String toString() {
+        return "VmClass{" +
+                "name='" + name + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", addr=" + addr +
+                '}';
     }
 }

@@ -17,6 +17,8 @@ public class FunctionStatement implements Statement {
     private final ArrayList<Statement> body = new ArrayList<>();
     // аргументы
     private final ArrayList<String> arguments;
+    // полное имя
+    private final String fullName;
     // имя
     private final String name;
 
@@ -30,7 +32,7 @@ public class FunctionStatement implements Statement {
 
     @Override
     public Statement copy() {
-        FunctionStatement _copy = new FunctionStatement(name, arguments);
+        FunctionStatement _copy = new FunctionStatement(fullName, name, arguments);
 
         for (Statement statement : body) {
             _copy.add(statement.copy());
@@ -46,7 +48,7 @@ public class FunctionStatement implements Statement {
 
     @Override
     public void compile() {
-        VmFunction f = new VmFunction(name, arguments, address.convert());
+        VmFunction f = new VmFunction(name, fullName, arguments, address.convert());
         Compiler.code.defineFunction(address.convert(), f);
         Compiler.code.startWrite(f);
         for (Statement s : body) {
@@ -57,7 +59,8 @@ public class FunctionStatement implements Statement {
     }
 
     // конструктор
-    public FunctionStatement(String name, ArrayList<String> arguments) {
+    public FunctionStatement(String fullName, String name, ArrayList<String> arguments) {
+        this.fullName = fullName;
         this.name = name;
         this.arguments = arguments;
     }

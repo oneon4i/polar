@@ -61,7 +61,7 @@ public class ClassStatement implements Statement {
     @Override
     public void compile() {
         // пишем класс
-        VmClass vmClass = new VmClass(getName(), getConstructor(), address.convert());
+        VmClass vmClass = new VmClass(getName(), getFullName(), getConstructor(), address.convert());
         Compiler.code.defineClass(address.convert(), vmClass);
         Compiler.code.startWrite(vmClass);
         for (FunctionStatement fn : getFunctions().values()) {

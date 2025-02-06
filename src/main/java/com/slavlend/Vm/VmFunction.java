@@ -15,12 +15,14 @@ import java.util.List;
 public class VmFunction implements VmInstrContainer {
     // имя функции
     private final String name;
+    // имя функции
+    private final String fullName;
     // инструкции
     private List<VmInstr> instructions = new ArrayList<>();
     // аргументы
     private final ArrayList<String> arguments;
     // скоуп
-    private final ThreadLocal<VmFrame<Object>> scope = new ThreadLocal<>();
+    private final ThreadLocal<VmFrame<String, Object>> scope = new ThreadLocal<>();
     // объект чья функция
     @Setter
     private VmObj definedFor;
@@ -28,8 +30,9 @@ public class VmFunction implements VmInstrContainer {
     private final VmInAddr addr;
 
     // конструкция
-    public VmFunction(String name, ArrayList<String> arguments, VmInAddr addr) {
+    public VmFunction(String name, String fullName, ArrayList<String> arguments, VmInAddr addr) {
         this.name = name;
+        this.fullName = fullName;
         this.arguments = arguments;
         this.addr = addr;
         this.scope.set(new VmFrame<>());
@@ -90,7 +93,7 @@ public class VmFunction implements VmInstrContainer {
      @return возвращает копию
      */
     public VmFunction copy() {
-        VmFunction fn = new VmFunction(name, arguments, addr);
+        VmFunction fn = new VmFunction(fullName, name, arguments, addr);
         fn.instructions = instructions;
         return fn;
     }
@@ -113,5 +116,18 @@ public class VmFunction implements VmInstrContainer {
             instr.print();
         }
         System.out.println("╰──────────────────────────╯");
+    }
+
+
+    // в строку
+
+    @Override
+    public String toString() {
+        return "VmFunction{" +
+                "name='" + name + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", addr=" + addr +
+                ", definedFor=" + definedFor +
+                '}';
     }
 }
