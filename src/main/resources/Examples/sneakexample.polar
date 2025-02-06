@@ -41,4 +41,4 @@ class ProblemGenerator() {
     }
 }
 
-put(ProblemGenerator.generate())
+put(ProblemGenerator.generate().to_string())
