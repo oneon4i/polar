@@ -1,5 +1,6 @@
 package com.slavlend.Vm;
 
+import com.slavlend.Vm.Optimization.FasterMap;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 @Getter
 public class VmFrame<K, V> {
     // значения для хранения
-    private HashMap<K, V> values = new HashMap<>();
+    private FasterMap<K, V> values = new FasterMap<>();
     /* рутовый фрейм, предназначен для поиска
        в случае отсутствия в текущем фрейме переменной.
        выглядит в виде иерархии:
@@ -32,7 +33,7 @@ public class VmFrame<K, V> {
             }
             current = current.root;
         }
-        return current.getValues().getOrDefault(name, null);
+        return current.getValues().get(name);
     }
 
     /**
@@ -103,7 +104,7 @@ public class VmFrame<K, V> {
      */
     public VmFrame<K, V> copy() {
         VmFrame<K, V> copied = new VmFrame<K, V>();
-        copied.values = new HashMap<K, V>(getValues());
+        copied.values = new FasterMap<K, V>(getValues());
         return copied;
     }
 }
