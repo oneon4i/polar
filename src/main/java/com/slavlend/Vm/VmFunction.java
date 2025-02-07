@@ -56,7 +56,7 @@ public class VmFunction implements VmInstrContainer {
     public void exec(IceVm vm, boolean shouldPushResult) {
         scope.set(new VmFrame<>());
         if (getClosure().get() != null) {
-            getScope().get().setRoot(closure.get());
+            getScope().get().getValues().putAll(closure.get().getValues());
         }
         if (definedFor == null) {
             getScope().get().setRoot(vm.getVariables());
@@ -139,7 +139,11 @@ public class VmFunction implements VmInstrContainer {
         // удаляем из замыкания
         closure.getValues().remove(this.getName());
         // устанавливаем замыкание
-        this.closure.set(closure);
+        if (this.closure.get() == null) {
+            this.closure.set(closure);
+        } else {
+            this.closure.get().setRoot(closure);
+        }
     }
 
     // в строку

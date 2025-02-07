@@ -202,8 +202,22 @@ func closures_test() = {
     a = 3
     func test() = {
         assert(a == 3)
+            put('Closure test passed!')
     }
     back(test)
+}
+
+func closures_test_2() = {
+    a = 3
+    func inner() = {
+        b = 4
+        func inner_inner() = {
+            assert(a*b == 12)
+            put('Closure test passed!')
+        }
+        back(inner_inner)
+    }
+    back(inner)
 }
 
 hello_world_test()
@@ -223,5 +237,12 @@ test_repeat()
 math_module_test()
 nested_function_test()
 ternary_test()
-closure_test = closures_test()
-closure_test()
+# closure 1 #
+closure_1 = closures_test()
+# put(closure_1)#
+closure_1()
+# closure 2 #
+closure_2 = closures_test_2()
+closure_3 = closure_2()
+# put(closure_3) #
+closure_3()
