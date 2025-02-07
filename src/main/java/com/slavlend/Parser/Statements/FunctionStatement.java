@@ -3,6 +3,7 @@ package com.slavlend.Parser.Statements;
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
+import com.slavlend.Vm.Instructions.VmInstrMakeClosure;
 import com.slavlend.Vm.VmFunction;
 import lombok.Getter;
 
@@ -48,6 +49,7 @@ public class FunctionStatement implements Statement {
 
     @Override
     public void compile() {
+        // функция
         VmFunction f = new VmFunction(name, fullName, arguments, address.convert());
         Compiler.code.defineFunction(address.convert(), f);
         Compiler.code.startWrite(f);

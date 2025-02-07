@@ -1,6 +1,7 @@
 package com.slavlend.Vm;
 
 import com.slavlend.Compiler.Compiler;
+import com.slavlend.Vm.Instructions.VmInstrMakeClosure;
 import com.slavlend.Vm.Instructions.VmInstrPush;
 import com.slavlend.Vm.Instructions.VmInstrStoreL;
 import lombok.Getter;
@@ -56,6 +57,8 @@ public class VmCode {
                     vmFunc.visitInstr(new VmInstrPush(addr, fn));
                     // помещение функции "как переменная"
                     vmFunc.visitInstr(new VmInstrStoreL(addr, fn.getName()));
+                    // замыкание функции
+                    Compiler.code.visitInstr(new VmInstrMakeClosure(addr, fn.getName()));
                 }
                 else {
                     IceVm.logger.error(addr, "cannot define function in block, except: class, function.");

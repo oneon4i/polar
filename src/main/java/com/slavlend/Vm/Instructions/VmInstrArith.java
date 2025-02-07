@@ -40,7 +40,15 @@ public class VmInstrArith implements VmInstr {
             }
             case "-" -> vm.push((float)l - (float)r);
             case "*" -> vm.push((float)l * (float)r);
-            case "/" -> vm.push((float)l / (float)r);
+            case "/" -> {
+                float right = (float)r;
+                float left = (float)l;
+                if (!Float.isInfinite(left) && !Float.isNaN(left) && left != 0 && left != 1 && left != -1) {
+                    IceVm.logger.error(addr, "division by zero!");
+                    return;
+                }
+                vm.push(left / right);
+            }
             case "%" -> vm.push((float)l % (float)r);
             default -> IceVm.logger.error(addr, "operator not found: " + operator);
         }

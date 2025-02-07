@@ -28,6 +28,8 @@ public class VmFunction implements VmInstrContainer {
     private VmObj definedFor;
     // адресс
     private final VmInAddr addr;
+    // замыкание
+    private ThreadLocal<VmFrame<String, Object>> closure = new ThreadLocal<>();
 
     // конструкция
     public VmFunction(String name, String fullName, ArrayList<String> arguments, VmInAddr addr) {
@@ -53,6 +55,9 @@ public class VmFunction implements VmInstrContainer {
      */
     public void exec(IceVm vm, boolean shouldPushResult) {
         scope.set(new VmFrame<>());
+        if (getClosure().get() != null) {
+            getScope().get().setRoot(closure.get());
+        }
         if (definedFor == null) {
             getScope().get().setRoot(vm.getVariables());
         }
@@ -118,9 +123,26 @@ public class VmFunction implements VmInstrContainer {
         System.out.println("╰──────────────────────────╯");
     }
 
+    // замыкание в строку
+    private final String closureString() {
+        if (closure.get() == null)
+        {
+            return "null";
+        }
+        else{
+            return String.valueOf(closure.get());
+        }
+    }
+
+    // установка замыкания
+    public void setClosure(VmFrame<String, Object> closure) {
+        // удаляем из замыкания
+        closure.getValues().remove(this.getName());
+        // устанавливаем замыкание
+        this.closure.set(closure);
+    }
 
     // в строку
-
     @Override
     public String toString() {
         return "VmFunction{" +
@@ -128,6 +150,7 @@ public class VmFunction implements VmInstrContainer {
                 ", fullName='" + fullName + '\'' +
                 ", addr=" + addr +
                 ", definedFor=" + definedFor +
+                ", closure=" + closureString() +
                 '}';
     }
 }

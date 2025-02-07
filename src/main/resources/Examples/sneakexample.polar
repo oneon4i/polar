@@ -34,11 +34,14 @@ class ProblemGenerator() {
             }
         }
         a = Random.random_number(0, 100, true)
-        b = Random.random_number(0, 100, true)
+        b = Random.random_number(1, 100, true)
         operators = ['+', '-', '*', '/']
         o = Random.choice(operators)
         back(new ProblemData(a, b, o, eval(a, b, o)))
     }
 }
 
-put(ProblemGenerator.generate().to_string())
+for (i = 0, i < 1000000) {
+    ProblemGenerator.generate().to_string()
+    i += 1
+}

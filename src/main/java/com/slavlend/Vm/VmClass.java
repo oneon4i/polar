@@ -1,5 +1,6 @@
 package com.slavlend.Vm;
 
+import com.slavlend.Vm.Instructions.VmInstrMakeClosure;
 import lombok.Getter;
 import lombok.Setter;
 

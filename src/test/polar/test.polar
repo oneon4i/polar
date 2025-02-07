@@ -198,6 +198,14 @@ func ternary_test() = {
     put('Test passed')
 }
 
+func closures_test() = {
+    a = 3
+    func test() = {
+        assert(a == 3)
+    }
+    back(test)
+}
+
 hello_world_test()
 variable_test()
 for_statement_continue_test()
@@ -215,3 +223,5 @@ test_repeat()
 math_module_test()
 nested_function_test()
 ternary_test()
+closure_test = closures_test()
+closure_test()

@@ -1,7 +1,6 @@
 package com.slavlend.Vm;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.HashMap;
 
@@ -12,13 +11,12 @@ import java.util.HashMap;
 @Getter
 public class VmFrame<K, V> {
     // значения для хранения
-    private final HashMap<K, V> values = new HashMap<>();
+    private HashMap<K, V> values = new HashMap<>();
     /* рутовый фрейм, предназначен для поиска
        в случае отсутствия в текущем фрейме переменной.
        выглядит в виде иерархии:
        функци -> класс -> глобал
      */
-    @Setter
     private VmFrame<K, V> root;
 
     /**
@@ -74,6 +72,22 @@ public class VmFrame<K, V> {
         return current.getValues().containsKey(name);
     }
 
+    /**
+     * Установка рут фрейма, если у
+     * этого фрейма уже есть рут,
+     * то ставиться рут для рут... и тд.
+     * @param rootFrame - фрейм
+     */
+    public void setRoot(VmFrame<K, V> rootFrame) {
+        VmFrame<K, V> current = this;
+        if (this.root == rootFrame) { return; }
+        while (current.getRoot() != null) {
+            if (current.getRoot() == rootFrame) { return; }
+            current = current.getRoot();
+        }
+        current.root = rootFrame;
+    }
+
     // в строку
 
     @Override
@@ -82,5 +96,14 @@ public class VmFrame<K, V> {
                 "values=" + values +
                 ", root=" + root +
                 '}';
+    }
+
+    /*
+    Копирование
+     */
+    public VmFrame<K, V> copy() {
+        VmFrame<K, V> copied = new VmFrame<K, V>();
+        copied.values = new HashMap<K, V>(getValues());
+        return copied;
     }
 }
