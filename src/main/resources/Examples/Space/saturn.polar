@@ -67,7 +67,7 @@ for (i = 0, i < 100) {
 }
 
 # Вывод анимации в консоли #
-while ((1 == 1)) {
+while (true) {
     each(frame, frames) {
         for (i = 0, i < frame.size()+1) {
             put('')

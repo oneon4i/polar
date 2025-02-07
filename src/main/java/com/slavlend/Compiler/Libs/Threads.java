@@ -16,9 +16,7 @@ public class Threads {
                 // инициализируем стек под поток
                 Compiler.iceVm.initStackForThread();
                 // помещаем аргументы в стек
-                for (Object o : args.getArray()) {
-                    Compiler.iceVm.push(o);
-                }
+                Compiler.iceVm.push(args);
                 // вызов функции
                 fn.exec(Compiler.iceVm, true);
             }
