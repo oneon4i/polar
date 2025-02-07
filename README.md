@@ -1,3 +1,13 @@
+<p align="center">
+  <img width="200" height="200" src="https://github.com/user-attachments/assets/125d62df-afae-4db7-8109-12ee55bda571">
+</p>
+
+<p align="center">
+  Polar programming language
+</p>
+
+
+
 Dynamicly typed simple scripting
 programming language 💡
 
