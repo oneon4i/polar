@@ -34,6 +34,7 @@ public class Parser {
         put("lib.tasks", "Libraries/tasks.polar");
         put("lib.math", "Libraries/math.polar");
         put("lib.random", "Libraries/random.polar");
+        put("lib.window2d", "Libraries/window2d.polar");
     }};
 
     // путь эвайронмента (окружения)

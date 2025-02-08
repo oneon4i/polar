@@ -6,6 +6,7 @@ import lombok.Getter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /*
 Вызов функции в VM
@@ -104,7 +105,7 @@ public class VmInstrCall implements VmInstr {
             try {
                 Object returned = func.invoke(last, callArgs.toArray());
                 // 👇 НЕ ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
-                if (returned != null) {
+                if (shouldPushResult) {
                     vm.push(returned);
                 }
             } catch (IllegalAccessException | InvocationTargetException e) {
