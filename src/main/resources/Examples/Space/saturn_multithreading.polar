@@ -42,14 +42,14 @@ frames = []
 
 # Поворот строчки #
 func rotate_row(row, i) = {
-    n = len(row)
+    length = len(row)
     result = []
-    for (y = 0, y < n) {
+    for (y = 0, y < length) {
         result.add(' ')
         y += 1
     }
-    for (j = 0, j < n) {
-        new_index = (j + i) % n
+    for (j = 0, j < length) {
+        new_index = (j + i) % length
         result.set(new_index, Str.at(row, j))
         j += 1
     }
@@ -67,10 +67,10 @@ func animate(args) = {
 }
 
 # Процесс анимирования #
-for (ii = 0, ii < 100) {
-    put('frame: ' + ii)
-    Tasks.exec(animate, [ii])
-    ii += 1
+for (n = 0, n < 100) {
+    put('frame: ' + n)
+    Tasks.exec(animate, [n])
+    n += 1
 }
 
 # Вывод анимации в консоли #
