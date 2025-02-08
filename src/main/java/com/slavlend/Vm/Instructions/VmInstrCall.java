@@ -108,7 +108,10 @@ public class VmInstrCall implements VmInstr {
                 if (shouldPushResult) {
                     vm.push(returned);
                 }
-            } catch (IllegalAccessException | InvocationTargetException e) {
+            } catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
+                if (e.getCause() == null) {
+                    IceVm.logger.error(addr, e.getMessage());
+                }
                 IceVm.logger.error(addr, e.getCause().getMessage());
             }
         }

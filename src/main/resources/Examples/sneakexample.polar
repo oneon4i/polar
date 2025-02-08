@@ -41,7 +41,4 @@ class ProblemGenerator() {
     }
 }
 
-for (i = 0, i < 1000000) {
-    ProblemGenerator.generate().to_string()
-    i += 1
-}
+put(ProblemGenerator.generate().to_string())

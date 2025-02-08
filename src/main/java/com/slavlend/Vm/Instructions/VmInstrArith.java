@@ -43,7 +43,7 @@ public class VmInstrArith implements VmInstr {
             case "/" -> {
                 float right = (float)r;
                 float left = (float)l;
-                if (!Float.isInfinite(left) && !Float.isNaN(left) && left != 0 && left != 1 && left != -1) {
+                if (right == 0 && !Float.isInfinite(left) && !Float.isNaN(left) && left != 0 && left != 1 && left != -1) {
                     IceVm.logger.error(addr, "division by zero!");
                     return;
                 }
