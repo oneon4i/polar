@@ -75,7 +75,7 @@ for (ii = 0, ii < 100) {
 
 # Вывод анимации в консоли #
 while (true) {
-    while (frames.size() < 99) {
+    while (frames.size() < 100) {
     }
     # Сортируем #
     put(frames.stringify())

@@ -18,7 +18,7 @@ public class Threads {
                 // помещаем аргументы в стек
                 Compiler.iceVm.push(args);
                 // вызов функции
-                fn.exec(Compiler.iceVm, true);
+                fn.exec(Compiler.iceVm, false);
             }
         };
         thread.start();
