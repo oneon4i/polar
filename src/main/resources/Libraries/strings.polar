@@ -1,4 +1,4 @@
-class Str() = {
+class Strings() = {
     mod reflected = reflect 'com.slavlend.Compiler.Libs.Str'
     mod func replace(str, what, to) = {
         return(Str.reflected.replace(str, what, to))

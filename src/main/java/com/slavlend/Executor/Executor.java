@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 Исполнение файла с кодом.
 Экзекьютер.
  */
-@SuppressWarnings("ExtractMethodRecommender")
+@SuppressWarnings({"DuplicateExpressions"})
 public class Executor {
     // запуск polar-файла
     public static void exec(ExecutorSettings settings) {
@@ -42,7 +42,7 @@ public class Executor {
                 envPath = settings.getFilePath().substring(0, settings.getFilePath().lastIndexOf('/'));
             } else {
                 // Относительный путь
-                envPath = Paths.get("").toString();
+                envPath = Paths.get(".").toString();
                 filePath = envPath + "/" + settings.getFilePath();
             }
         }
@@ -55,7 +55,7 @@ public class Executor {
                 ).replace(".polar", "");
             } else {
                 // Относительный путь
-                envPath = Paths.get("").toString();
+                envPath = Paths.get(".").toString();
                 filePath = envPath + "\\" + settings.getFilePath();
             }
         }

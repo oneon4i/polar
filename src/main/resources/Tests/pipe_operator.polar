@@ -1,4 +1,4 @@
-use 'lib.str'
+use 'lib.strings'
 use 'lib.array'
 
 # Output result #
@@ -31,7 +31,7 @@ func append_world(text, adds) = {
 }
 
 func to_uppercase(text) = {
-    return(Str.upper(text))
+    return(Strings.upper(text))
 }
 
 get_text() |> append_world(' World') |> to_uppercase() |> output_result()

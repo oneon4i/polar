@@ -1,6 +1,6 @@
 # Библиотеки #
 use 'lib.console'
-use 'lib.str'
+use 'lib.strings'
 
 # Основной шаблон кадра #
 base_frame = [
@@ -49,7 +49,7 @@ func rotate_row(row, i) = {
     }
     for (j = 0, j < n) {
         new_index = (j + i) % n
-        result.set(new_index, Str.at(row, j))
+        result.set(new_index, Strings.at(row, j))
         j += 1
     }
     return(result.stringify())

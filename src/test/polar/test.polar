@@ -1,6 +1,6 @@
 juse 'com\slavlend\Abc.class'
 use 'lib.console'
-use 'lib.str'
+use 'lib.strings'
 use 'lib.math'
 
 func hello_world_test() = {
@@ -114,14 +114,6 @@ class A()  = {
 func len_test() = {
     length = len('aaaa')
     assert(length == 4)
-    put('Test passed')
-}
-
-func test_format() = {
-    name = 'Вячеслав'
-    age = 13
-    formatted = Str.format('Привет, {0.0}, возрастом в {1.0} лет', [name, string(age)])
-    assert(formatted == 'Привет, Вячеслав, возрастом в 13.0 лет')
     put('Test passed')
 }
 

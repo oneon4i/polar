@@ -1,6 +1,6 @@
 # Библиотеки #
 use 'lib.console'
-use 'lib.str'
+use 'lib.strings'
 use 'lib.tasks'
 
 # Основной шаблон кадра #
@@ -50,7 +50,7 @@ func rotate_row(row, i) = {
     }
     for (j = 0, j < length) {
         new_index = (j + i) % length
-        result.set(new_index, Str.at(row, j))
+        result.set(new_index, Strings.at(row, j))
         j += 1
     }
     return(result.stringify())

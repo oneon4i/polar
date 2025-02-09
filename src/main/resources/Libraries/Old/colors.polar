@@ -1,4 +1,4 @@
-use 'lib.str'
+use 'lib.strings'
 use 'lib.map'
 use 'lib.polar'
 use 'lib.array'
@@ -20,7 +20,7 @@ class ColorsLib() = {
   mod func replace_colors(text) = {
     new_text = text
     each (key, ColorsLib.color_map.keys()) {
-      new_text = Str.replace(new_text, key, ColorsLib.color_map.get(key))
+      new_text = Strings.replace(new_text, key, ColorsLib.color_map.get(key))
     }
     back(new_text)
   }
