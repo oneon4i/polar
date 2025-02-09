@@ -14,6 +14,8 @@ import com.slavlend.PolarLogger;
 import com.slavlend.System.PolarSystem;
 import com.slavlend.Vm.IceVm;
 
+import java.nio.file.Paths;
+
 /*
 Исполнение файла с кодом.
 Экзекьютер.
@@ -33,15 +35,30 @@ public class Executor {
                 lexer.getTokens()
         );
         String envPath = "";
+        String filePath = "";
         if (PolarSystem.isLinux()) {
-            envPath = settings.getFilePath().substring(0, settings.getFilePath().lastIndexOf('/'));
+            if (settings.getFilePath().lastIndexOf('/') != -1) {
+                // полный путь
+                envPath = settings.getFilePath().substring(0, settings.getFilePath().lastIndexOf('/'));
+            } else {
+                // Относительный путь
+                envPath = Paths.get("").toString();
+                filePath = envPath + "/" + settings.getFilePath();
+            }
         }
         else {
-            envPath = settings.getFilePath().substring(0, settings.getFilePath().lastIndexOf('\\'));
+            if (settings.getFilePath().lastIndexOf('\\') != -1) {
+                // Полный путь
+                envPath = settings.getFilePath().substring(0, settings.getFilePath().lastIndexOf('\\'));
+                filePath = settings.getFilePath().substring(
+                        settings.getFilePath().lastIndexOf('\\')+1
+                ).replace(".polar", "");
+            } else {
+                // Относительный путь
+                envPath = Paths.get("").toString();
+                filePath = envPath + "\\" + settings.getFilePath();
+            }
         }
-        String filePath = settings.getFilePath().substring(
-                settings.getFilePath().lastIndexOf('\\')+1
-        ).replace(".polar", "");
         parser.setEnvironmentPath(envPath);
         parser.setFileName(filePath);
         App.parser = parser;
