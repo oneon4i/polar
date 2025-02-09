@@ -66,7 +66,7 @@ public class IceVm {
         } catch (VmException exception) {
             logger.error(exception.getAddr(), exception.getMessage());
         } catch (RuntimeException exception) {
-            logger.error(new VmInAddr(-1), "java exception (" + exception.getMessage() + ")");
+            logger.error(new VmInAddr(-1), "java exception (" + exception.getMessage() + ")", exception);
         }
     }
 

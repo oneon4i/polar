@@ -867,8 +867,12 @@ public class Parser {
         consume(TokenType.REFLECT);
         // имя класса
         String className = consume(TokenType.TEXT).value;
+        // имя класса
+        consume(TokenType.Q_BRACKET);  // Открывающая скобка
+        ArrayList<Expression> expressions = parseList();  // Получаем контейнер
+        consume(TokenType.Q_BRACKET);  // Закрывающая скобка
         // рефлексийный экспрешенн
-        return new ReflectExpression(className);
+        return new ReflectExpression(className, expressions);
     }
 
     // Парсинг сложения и вычитания

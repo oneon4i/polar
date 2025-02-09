@@ -27,7 +27,7 @@ public class MapContainerExpression implements Expression {
 
     @Override
     public void compile() {
-        Compiler.code.visitInstr(new VmInstrRefl(address.convert(),"com.slavlend.Compiler.Libs.Map"));
+        Compiler.code.visitInstr(new VmInstrRefl(address.convert(),"com.slavlend.Compiler.Libs.Map", new VmVarContainer()));
         for (Expression e : container.keySet()) {
             Compiler.code.visitInstr(new VmInstrDup(address.convert()));
             VmVarContainer _container = new VmVarContainer();

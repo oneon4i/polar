@@ -118,7 +118,7 @@ func len_test() = {
 }
 
 func juse_test() = {
-    reflected = reflect 'com.slavlend.Abc'
+    reflected = reflect 'com.slavlend.Abc' []
     assert(reflected.testRuntimeJuse() == 'Juse works perfect!')
 }
 

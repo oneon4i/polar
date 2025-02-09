@@ -1,5 +1,5 @@
 class Random() = {
-    mod reflected = reflect 'com.slavlend.Compiler.Libs.Random'
+    mod reflected = reflect 'com.slavlend.Compiler.Libs.Random' []
 
     mod func number(origin, bound, integer) = {
         return(Random.reflected.randomNumber(origin, bound, integer))

@@ -23,7 +23,7 @@ public class ContainerExpression implements Expression {
 
     @Override
     public void compile() {
-        Compiler.code.visitInstr(new VmInstrRefl(address.convert(), "com.slavlend.Compiler.Libs.Array"));
+        Compiler.code.visitInstr(new VmInstrRefl(address.convert(), "com.slavlend.Compiler.Libs.Array", new VmVarContainer()));
         for (Expression e : container) {
             Compiler.code.visitInstr(new VmInstrDup(address.convert()));
             VmVarContainer container = new VmVarContainer();

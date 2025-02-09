@@ -38,4 +38,24 @@ public class PolarLogger implements VmErrLogger {
          */
         System.exit(1);
     }
+
+    @Override
+    public void error(VmInAddr addr, String message, RuntimeException exception) {
+        System.out.println(Colors.ANSI_RED + "╭───────────error──────────╮");
+        System.out.println("│ 📔 Line: " + addr.getLine());
+        System.out.println("│ 📕 Error: " + message);
+        System.out.println("│ 📗 Thread: " + Thread.currentThread().getName());
+        System.out.println("│ ☃️ Stack trace of JVM: ");
+        for (StackTraceElement element : exception.getStackTrace()) {
+            System.out.println("| " + element);
+        }
+        System.out.println("╰──────────────────────────╯" + Colors.ANSI_RESET);
+        /*
+        for (StackTraceElement elem : Thread.currentThread().getStackTrace()) {
+            System.out.println(elem);
+        }
+
+         */
+        System.exit(1);
+    }
 }

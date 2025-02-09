@@ -1,5 +1,5 @@
 class Strings() = {
-    mod reflected = reflect 'com.slavlend.Compiler.Libs.Strings'
+    mod reflected = reflect 'com.slavlend.Compiler.Libs.Strings' []
     mod func replace(str, what, to) = {
         return(Strings.reflected.replace(str, what, to))
     }
