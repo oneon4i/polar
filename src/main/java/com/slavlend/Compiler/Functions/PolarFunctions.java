@@ -2,6 +2,7 @@ package com.slavlend.Compiler.Functions;
 
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Vm.VmCoreFunction;
+import com.slavlend.Vm.VmException;
 import com.slavlend.Vm.VmInAddr;
 
 import java.io.BufferedInputStream;
@@ -99,7 +100,11 @@ public class PolarFunctions {
     public static class ToFloatFn implements VmCoreFunction {
         @Override
         public Object exec(VmInAddr addr) {
-            return Float.parseFloat((String)Compiler.iceVm.pop(addr));
+            try {
+                return Float.parseFloat((String) Compiler.iceVm.pop(addr));
+            } catch (RuntimeException e) {
+                throw new VmException(addr, e.getMessage());
+            }
         }
 
         @Override
@@ -113,7 +118,11 @@ public class PolarFunctions {
     public static class ToBoolFn implements VmCoreFunction {
         @Override
         public Object exec(VmInAddr addr) {
-            return Boolean.parseBoolean((String)Compiler.iceVm.pop(addr));
+            try {
+                return Boolean.parseBoolean((String)Compiler.iceVm.pop(addr));
+            } catch (RuntimeException e) {
+                throw new VmException(addr, e.getMessage());
+            }
         }
 
         @Override
@@ -126,7 +135,11 @@ public class PolarFunctions {
     public static class ToStringFn implements VmCoreFunction {
         @Override
         public Object exec(VmInAddr addr) {
-            return String.valueOf(Compiler.iceVm.pop(addr));
+            try {
+                return String.valueOf(Compiler.iceVm.pop(addr));
+            } catch (RuntimeException e) {
+                throw new VmException(addr, e.getMessage());
+            }
         }
 
         @Override
