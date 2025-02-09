@@ -4,23 +4,25 @@ import com.slavlend.Vm.Instructions.VmInstrCondOperator;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /*
 Библиотека списков для VM
  */
 @Getter
 public class Array {
-    private final ArrayList<Object> array = new ArrayList<>();
+    private List<Object> array = new ArrayList<>();
 
     public void add(Object o) {
         array.add(o);
     }
 
-    public void del(Object index) {
-        array.remove((int)index);
+    public void del(Float index) {
+        array.remove(index.intValue());
     }
 
-    public Object get(Object index) {
+    public Object get(Float index) {
         return array.get(((Float)index).intValue());
     }
 
@@ -34,8 +36,8 @@ public class Array {
         return false;
     }
 
-    public void set(Object i, Object v) {
-        array.set(((Float)i).intValue(), v);
+    public void set(Float i, Object v) {
+        array.set(i.intValue(), v);
     }
 
     public Object size() {
@@ -48,5 +50,23 @@ public class Array {
             s.append(o);
         }
         return s.toString();
+    }
+    public void insert(Float i, Object v) {
+        array.add(i.intValue(), v);
+    }
+
+    public float index_of(Object obj) {
+        for (Object o : array) {
+            if (VmInstrCondOperator.equal(o, obj)) {
+                return array.indexOf(o);
+            }
+        }
+
+        return -1;
+    }
+    public static Array of(List<Object> values) {
+        Array arr = new Array();
+        arr.array = values;
+        return arr;
     }
 }

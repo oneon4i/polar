@@ -21,4 +21,10 @@ class Math() = {
     mod func atan(a) = {
         return(Math.reflected.atan(a))
     }
+    mod func pow(a,b) = {
+        return(Math.reflected.pow(a,b))
+    }
+    mod func sqrt(a) = {
+        return(Math.reflected.sqrt(a))
+    }
 }

@@ -6,22 +6,32 @@ package com.slavlend.Compiler.Libs;
  */
 public class Math {
     // синус
-    public Object sin(Object value) {
-        return Float.parseFloat(String.valueOf(java.lang.Math.sin((float) value)));
+    public float sin(Float value) {
+        return (float) java.lang.Math.sin(value);
     }
 
     // косинус
-    public Object cos(Object value) {
-        return Float.parseFloat(String.valueOf(java.lang.Math.cos((float) value)));
+    public float cos(Float value) {
+        return (float) java.lang.Math.cos(value);
     }
 
     // тангенс
-    public Object tan(Object value) {
-        return Float.parseFloat(String.valueOf(java.lang.Math.tan((float) value)));
+    public float tan(Float value) {
+        return (float) java.lang.Math.tan(value);
     }
 
     // атангенс
-    public Object atan(Object value) {
-        return Float.parseFloat(String.valueOf(java.lang.Math.atan((float) value)));
+    public float atan(Float value) {
+        return (float) java.lang.Math.atan(value);
+    }
+
+    // степень
+    public float pow(Float value, Float value2) {
+        return (float) java.lang.Math.pow(value, value2);
+    }
+
+    // квадратный корень
+    public float sqrt(Float value) {
+        return (float) java.lang.Math.sqrt(value);
     }
 }

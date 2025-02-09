@@ -4,24 +4,24 @@ package com.slavlend.Compiler.Libs;
 Библиотека строк для VM
  */
 public class Str {
-    public Object replace(Object from, Object what, Object to) {
-        return ((String)from).replace((String)what,(String)to);
+    public Object replace(String from, String what, String to) {
+        return from.replace(what,to);
     }
-    public Object split(Object str, Object delim) {
-        String[] splitted = ((String)str).split((String)delim);
+    public Object split(String str, String delim) {
+        String[] splitted = str.split(delim);
         Array arr = new Array();
         for (String s : splitted) {
             arr.add(s);
         }
         return arr;
     }
-    public Object at(Object str, Object index) {
-        return ((Character)((String)str).charAt(((Float) index).intValue())).toString();
+    public Object at(String str, Float index) {
+        return String.valueOf(str.charAt(index.intValue()));
     }
-    public Object upper(Object str) {
-        return ((String)str).toUpperCase();
+    public Object upper(String str) {
+        return str.toUpperCase();
     }
-    public Object lower(Object str) {
-        return ((String)str).toLowerCase();
+    public Object lower(String str) {
+        return str.toLowerCase();
     }
 }
