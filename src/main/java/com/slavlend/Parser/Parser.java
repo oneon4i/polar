@@ -56,7 +56,12 @@ public class Parser {
             return new Address(0);
         }
         else {
-            return new Address(tokens.get(current-1).line);
+            if (current >= tokens.size()) {
+                return new Address(tokens.get(current-1).line);
+            }
+            else {
+                return new Address(tokens.get(current).line);
+            }
         }
     }
 
@@ -106,6 +111,8 @@ public class Parser {
             Operator _o = condOperator();
             // правый экспрешен
             Expression _r = additive();
+            // адресс
+            Address address = address();
             // кондишен
             return new ConditionExpression(_l, _o, _r);
         }
@@ -158,7 +165,11 @@ public class Parser {
 
     // получение айди переменной
     public AccessExpression parseAccess(boolean isStatement) {
+        // адресс
+        Address address = address();
+        // выражение
         AccessExpression expr = new AccessExpression(address(), null, isStatement);
+        expr.setAddress(address);
 
         // добавляем акссесс
         expr.add(accessPart());
@@ -177,6 +188,9 @@ public class Parser {
     public Statement function() {
         // паттерн
         // func (...) = { ... }
+        // адресс
+        Address address = address();
+        // func
         consume(TokenType.FUNC);
         // имя функции
         String name = consume(TokenType.ID).value;
@@ -195,6 +209,7 @@ public class Parser {
         // создаём функции
         String fullName = fileName + ":" + name;
         FunctionStatement functionStatement = new FunctionStatement(fullName, name, arguments);
+        functionStatement.setAddress(address);
         // скобки
         consume(TokenType.BRACKET);
         // ассигн
@@ -218,6 +233,8 @@ public class Parser {
     private Statement repeat() {
         // паттерн
         // repeat(times) { ... }
+        // адресс
+        Address address = address();
         // репит
         consume(TokenType.REPEAT);
         // сколько раз повторить
@@ -227,6 +244,7 @@ public class Parser {
         // тело
         consume(TokenType.BRACE);
         RepeatStatement repeatStatement = new RepeatStatement(times);
+        repeatStatement.setAddress(address);
         while (!check(TokenType.BRACE)) {
             repeatStatement.add(statement());
         }
@@ -240,6 +258,9 @@ public class Parser {
     public Statement statement() {
         // стэйтмент return
         if (check(TokenType.RETURN)) {
+            // адресс
+            Address address = address();
+            // парсинг
             consume(TokenType.RETURN);
             Expression e;
             if (check(TokenType.BRACKET)) {
@@ -250,7 +271,10 @@ public class Parser {
             else {
                 e = expression();
             }
-            return new ReturnStatement(e);
+            // финальный стейтмент
+            ReturnStatement returnStatement = new ReturnStatement(e);
+            returnStatement.setAddress(address);
+            return returnStatement;
         }
         // стэйтмент if
         if (check(TokenType.IF)) {
@@ -291,12 +315,16 @@ public class Parser {
         }
         // стэйтмент juse
         if (check(TokenType.JUSE)) {
+            // адресс
+            Address address = address();
             // ДжЮз
             consume(TokenType.JUSE);
             // айдишник
             TextExpression id = (TextExpression) expression();
-            // библиотека
-            return new JUseStatement(id);
+            // стейтмент
+            JUseStatement jUseStatement = new JUseStatement(id);
+            jUseStatement.setAddress(address);
+            return jUseStatement;
         }
         // стэйтмент new
         if (check(TokenType.NEW)) {
@@ -390,26 +418,38 @@ public class Parser {
         }
         // стэйтмент юза
         if (check(TokenType.USE)) {
+            // адресс
+            Address address = address();
             // юз
             consume(TokenType.USE);
             // айдишник
             TextExpression id = (TextExpression) expression();
-            // библиотека
-            return new UseLibStatement(id);
+            // стейтмент
+            UseLibStatement useLibStatement = new UseLibStatement(id);
+            useLibStatement.setAddress(address);
+            return useLibStatement;
         }
         // стэйтмент брейка
         if (check(TokenType.BREAK)) {
+            // адресс
+            Address address = address();
             // юз
             consume(TokenType.BREAK);
-            // библиотека
-            return new BreakStatement();
+            // стейтмент
+            BreakStatement breakStatement = new BreakStatement();
+            breakStatement.setAddress(address);
+            return breakStatement;
         }
         // стэйтмент некста
         if (check(TokenType.NEXT)) {
+            // адресс
+            Address address = address();
             // юз
             consume(TokenType.NEXT);
             // библиотека
-            return new NextStatement();
+            NextStatement nextStatement = new NextStatement();
+            nextStatement.setAddress(address);
+            return nextStatement;
         }
         else {
             // неизвестный токен
@@ -419,7 +459,9 @@ public class Parser {
     }
 
     // парсинг кейса
-    private Statement matchCase() {
+    private Statement caseStatement() {
+        // адресс
+        Address address = address();
         // кейс
         consume(TokenType.CASE);
         // скобка
@@ -432,6 +474,7 @@ public class Parser {
         consume(TokenType.BRACE);
         // кейс стэйтмент
         CaseStatement statement = new CaseStatement(expr);
+        statement.setAddress(address);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
             statement.add(statement());
@@ -443,13 +486,16 @@ public class Parser {
     }
 
     // парсинг дефолта
-    private Statement matchDefault() {
+    private Statement defaultStatement() {
+        // адресс
+        Address address = address();
         // дефолт
         consume(TokenType.DEFAULT);
         // тело функции
         consume(TokenType.BRACE);
         // дефолт стэйтмент
         DefaultStatement statement = new DefaultStatement();
+        statement.setAddress(address);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
             statement.add(statement());
@@ -462,6 +508,8 @@ public class Parser {
 
     // парсинг мэтча
     private Statement match() {
+        // адресс
+        Address address = address();
         // мэтч
         consume(TokenType.MATCH);
         // скобка
@@ -472,15 +520,16 @@ public class Parser {
         consume(TokenType.BRACKET);
         // мэтч
         MatchStatement statement = new MatchStatement(expr);
+        statement.setAddress(address);
         // брейс
         consume(TokenType.BRACE);
         // кейсы
         while (check(TokenType.CASE)) {
-            statement.add(matchCase());
+            statement.add(caseStatement());
         }
         // дефолт
         if (check(TokenType.DEFAULT)) {
-            statement.add(matchDefault());
+            statement.add(defaultStatement());
         }
         // брэйс
         consume(TokenType.BRACE);
@@ -490,6 +539,8 @@ public class Parser {
 
     // парсинг класса
     private Statement polarClass() {
+        // адресс
+        Address address = address();
         // паттерн
         // class (...) = { ... }
         consume(TokenType.CLASS);
@@ -509,8 +560,9 @@ public class Parser {
         }
         // полное имя
         String fullName = fileName + ":" + name;
-        // стэйтменты
+        // стэйтмент класса
         ClassStatement classStatement = new ClassStatement(fullName, name, constructor);
+        classStatement.setAddress(address);
         // скобка
         consume(TokenType.BRACKET);
         // ассигн
@@ -574,6 +626,9 @@ public class Parser {
 
     // логика <<или>>
     private Expression logicalOr() {
+        // адресс
+        Address address = address();
+        // выражение
         Expression expression = logicalAnd();
 
         while (check(TokenType.OR)) {
@@ -586,6 +641,9 @@ public class Parser {
 
     // логика <<и>>
     private Expression logicalAnd() {
+        // адресс
+        Address address = address();
+        // выражение
         Expression expression = conditional();
 
         while (check(TokenType.AND)) {
@@ -600,6 +658,9 @@ public class Parser {
     private Statement whileLoop() {
         // паттерн
         // while (...) { ... }
+        // адресс
+        Address address = address();
+        // while
         consume(TokenType.WHILE);
         // скобка
         consume(TokenType.BRACKET);
@@ -611,6 +672,7 @@ public class Parser {
         consume(TokenType.BRACE);
         // стэйтмент вайл
         WhileStatement statement = new WhileStatement(expr);
+        statement.setAddress(address);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
             statement.add(statement());
@@ -625,11 +687,15 @@ public class Parser {
     private Statement safeHandle() {
         // паттерн
         // safe { ... } handle (...) { ... }
+        // адресс
+        Address address = address();
+        // safe
         consume(TokenType.SAFE);
         // брэйс
         consume(TokenType.BRACE);
         // стэйтмент трай
         SafeStatement statement = new SafeStatement("");
+        statement.setAddress(address);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
             statement.add(statement());
@@ -661,6 +727,9 @@ public class Parser {
     private Statement raise() {
         // паттерн
         // raise(...)
+        // адресс
+        Address address = address();
+        // raise
         consume(TokenType.RAISE);
         // брэкет
         consume(TokenType.BRACKET);
@@ -669,13 +738,18 @@ public class Parser {
         // брэкет
         consume(TokenType.BRACKET);
         // возвращаем
-        return new RaiseStatement(expr);
+        RaiseStatement statement = new RaiseStatement(expr);
+        statement.setAddress(address);
+        return statement;
     }
 
     // парсинг for
     private Statement forLoop() {
         // паттерн
         // for (... = ..., ... operator ...) { ... }
+        // адресс
+        Address address = address();
+        // for
         consume(TokenType.FOR);
         // скобка
         consume(TokenType.BRACKET);
@@ -701,8 +775,9 @@ public class Parser {
         consume(TokenType.BRACKET);
         // брэйкс
         consume(TokenType.BRACE);
-        // стэйтмент вайл
+        // стэйтмент for
         ForStatement statement = new ForStatement(expr, assignVariableName, assignVariableExpr);
+        statement.setAddress(address);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
             statement.add(statement());
@@ -717,6 +792,9 @@ public class Parser {
     private Statement eachLoop() {
         // паттерн
         // each (elem, lst) { ... }
+        // адресс
+        Address address = address();
+        // each
         consume(TokenType.EACH);
         // скобка
         consume(TokenType.BRACKET);
@@ -728,8 +806,9 @@ public class Parser {
         consume(TokenType.BRACKET);
         // брэйкс
         consume(TokenType.BRACE);
-        // стэйтмент вайл
+        // стэйтмент each
         EachStatement statement = new EachStatement(lst, elem);
+        statement.setAddress(address);
         // стэйтменты
         while (!check(TokenType.BRACE)) {
             statement.add(statement());
@@ -744,6 +823,9 @@ public class Parser {
     private Statement polarAssert() {
         // паттерн
         // assert (... = ...)
+        // адресс
+        Address address = address();
+        // assert
         consume(TokenType.ASSERT);
         // скобка
         consume(TokenType.BRACKET);
@@ -752,13 +834,18 @@ public class Parser {
         // скобка
         consume(TokenType.BRACKET);
         // возвращаем
-        return new AssertStatement(expr);
+        AssertStatement statement = new AssertStatement(expr);
+        statement.setAddress(address);
+        return statement;
     }
 
     // парсинг ифа
     private Statement ifElifElse() {
         // паттерн
         // if (...) { ... }
+        // адресс
+        Address address = address();
+        // if
         consume(TokenType.IF);
         // скобка
         consume(TokenType.BRACKET);
@@ -772,6 +859,7 @@ public class Parser {
         consume(TokenType.BRACE);
         // иф стэйтмент
         IfStatement statement = new IfStatement(e);
+        statement.setAddress(address);
         IfStatement last = statement;
         // стэйтменты
         while (!check(TokenType.BRACE)) {
@@ -782,8 +870,9 @@ public class Parser {
         // в иных случаях
         while (check(TokenType.ELSE) ||
                 check(TokenType.ELIF)) {
-            // если нет, то кондишен
             if (check(TokenType.ELIF)) {
+                // адресс
+                Address _address = address();
                 // элиф
                 consume(TokenType.ELIF);
                 // скобка
@@ -796,6 +885,7 @@ public class Parser {
                 consume(TokenType.BRACE);
                 // иф стэйтмент
                 IfStatement _statement = new IfStatement(_e);
+                _statement.setAddress(_address);
                 // тело функции
                 while (!check(TokenType.BRACE)) {
                     _statement.add(statement());
@@ -807,6 +897,8 @@ public class Parser {
                 last = _statement;
             }
             else {
+                // адресс
+                Address _address = address();
                 // когда ни одно условие не сработало
                 consume(TokenType.ELSE);
                 // брэйс
@@ -815,6 +907,7 @@ public class Parser {
                 Expression _e = new ConditionExpression(new NumberExpression("0"), new Operator("=="), new NumberExpression("0"));
                 // стэйтмент
                 IfStatement _statement = new IfStatement(_e);
+                _statement.setAddress(address);
                 // стэйтменты
                 while (!check(TokenType.BRACE)) {
                     _statement.add(statement());
@@ -833,6 +926,8 @@ public class Parser {
     // парсинг создания объекта
     public Expression objectExpr() {
         // паттерн
+        // адресс
+        Address address = address();
         // ... = new %class%()
         consume(TokenType.NEW);
         // айди
@@ -863,6 +958,8 @@ public class Parser {
 
     // Парсинг рефлексийного выражения
     private Expression reflectExpr() {
+        // адресс
+        Address address = address();
         // рефлексия
         consume(TokenType.REFLECT);
         // имя класса
@@ -882,6 +979,9 @@ public class Parser {
         while (check(TokenType.OPERATOR) && (match("+") || match("-"))) {
             Operator operator = new Operator(consume(TokenType.OPERATOR).value);
             Expression right = multiplicative();
+            // адресс
+            Address address = address();
+            // выражение
             expr = new ArithmeticExpression(expr, operator, right);
         }
 
@@ -895,6 +995,9 @@ public class Parser {
         while (check(TokenType.OPERATOR) && (match("*") || match("/") || match("%"))) {
             Operator operator = new Operator(consume(TokenType.OPERATOR).value);
             Expression right = parsePrimary();
+            // адресс
+            Address address = address();
+            // выражение
             expr = new ArithmeticExpression(expr, operator, right);
         }
 
@@ -903,12 +1006,16 @@ public class Parser {
 
     // Парсинг pipe-выражения
     private Expression pipe() {
+        // выражение
         Expression expr = logicalOr();
 
         while (match("|>")) {
             consume(TokenType.OPERATOR);
             Expression _expr = logicalOr();
             if (_expr instanceof AccessExpression accessExpression) {
+                // адресс
+                Address address = address();
+                // выражение
                 expr = new PipeExpression(expr, accessExpression);
             }
             else {
@@ -927,6 +1034,9 @@ public class Parser {
             Expression left = expression();
             consume(TokenType.COLON);
             Expression right = expression();
+            // адресс
+            Address address = address();
+            // выражение
             return new TernaryExpression(expr, left, right);
         }
         return expr;
@@ -949,8 +1059,12 @@ public class Parser {
             consume(TokenType.BRACKET);
             consume(TokenType.GO);
             consume(TokenType.BRACE);
+            // адресс
+            Address address = address();
+            // выражение
             LambdaExpression lambdaExpression
                     = new LambdaExpression(arguments);
+            // тело
             while (!check(TokenType.BRACE)) {
                 Statement statement = statement();
                 lambdaExpression.add(statement);
@@ -974,14 +1088,23 @@ public class Parser {
         }
         // Обработка текстовых литералов
         if (check(TokenType.TEXT)) {
+            // адресс
+            Address address = address();
+            // выражение
             return new TextExpression(consume(TokenType.TEXT).value);
         }
         // Обработка числовых литералов
         if (check(TokenType.NUM)) {
+            // адресс
+            Address address = address();
+            // выражение
             return new NumberExpression(consume(TokenType.NUM).value);
         }
         // Обработка ниллевых(null) литералов
         if (check(TokenType.NIL)) {
+            // адресс
+            Address address = address();
+            // выражение
             consume(TokenType.NIL);
             return new NilExpression();
         }
@@ -991,6 +1114,9 @@ public class Parser {
         }
         // Обработка булевых литералов
         if (check(TokenType.BOOL)) {
+            // адресс
+            Address address = address();
+            // выражение
             return new BoolExpression(consume(TokenType.BOOL).value);
         }
         // Обработка скобочных выражений
@@ -1002,6 +1128,9 @@ public class Parser {
         }
         // Обработка контейнерных выражений
         if (check(TokenType.Q_BRACKET)) {
+            // адресс
+            Address address = address();
+            // выражение
             consume(TokenType.Q_BRACKET);  // Открывающая скобка
             ArrayList<Expression> expressions = parseList();  // Получаем контейнер
             consume(TokenType.Q_BRACKET);  // Закрывающая скобка
@@ -1009,35 +1138,16 @@ public class Parser {
         }
         // Обработка контейнерных ассациативных выражений
         if (check(TokenType.BRACE)) {
+            // адресс
+            Address address = address();
             consume(TokenType.BRACE);  // Открывающая скобка
             HashMap<Expression, Expression> expressions = parseMapContainer(); // Получаем контейнер
             consume(TokenType.BRACE);  // Закрывающая скобка
             return new MapContainerExpression(expressions);
         }
-        // Обработка тернарных выражений
-        if (check(TokenType.TERNARY)) {
-            consume(TokenType.TERNARY); // Вопросительный знак
-            consume(TokenType.BRACKET); // Открывающая скобка
-            Expression expr = conditional();
-            consume(TokenType.BRACKET); // Закрывающая скобка
-            consume(TokenType.BRACKET); // Открывающая скобка
-            Expression lExpr = expression();
-            consume(TokenType.COMMA); // Запятая
-            Expression rExpr = expression();
-            consume(TokenType.BRACKET); // Закрывающая скобка
-            return new TernaryExpression((ConditionExpression) expr, lExpr, rExpr);
-        }
         // Если ни один из случаев не подходит, вызывается ошибка
         error("Invalid Token While Primary Parse: " + tokenInfo());
         return null;
-    }
-
-    // парсинг мапы (словаря)
-    public MapContainerExpression parseMap() {
-        consume(TokenType.BRACE);  // Открывающая скобка
-        HashMap<Expression, Expression> expressions = parseMapContainer(); // Получаем контейнер мапы
-        consume(TokenType.BRACE);  // Закрывающая скобка
-        return new MapContainerExpression(expressions);
     }
 
     // парсинг контейнера мапы (словаря)

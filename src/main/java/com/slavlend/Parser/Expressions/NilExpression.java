@@ -5,6 +5,7 @@ import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Vm.Instructions.VmInstrPush;
 import lombok.Getter;
+import lombok.Setter;
 
 /*
 Нил экспрешенн - возвращает нулл

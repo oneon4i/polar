@@ -9,6 +9,7 @@ import com.slavlend.Parser.Expressions.ConditionExpression;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Vm.Instructions.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,8 @@ public class ForStatement implements Statement {
     // кодишены
     private final Expression logic;
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
     // имя переменной
     private final String variable;
     // значение

@@ -9,6 +9,7 @@ import com.slavlend.Vm.Instructions.VmInstrDup;
 import com.slavlend.Vm.Instructions.VmInstrMakeClosure;
 import com.slavlend.Vm.Instructions.VmInstrPush;
 import com.slavlend.Vm.VmFunction;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,12 @@ import java.util.List;
 функции
  */
 public class LambdaExpression implements Expression {
-    // адресс
-    private final Address address = App.parser.address();
     // тело
     private final List<Statement> body = new ArrayList<>();
     // аргументы
     private final ArrayList<String> arguments;
-
+    // адресс
+    private final Address address = App.parser.address();
     @Override
     public Address address() {
         return address;

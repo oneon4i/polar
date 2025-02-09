@@ -20,7 +20,8 @@ public class IfStatement implements Statement {
     // логическое выражение для ифа
     private final Expression expression;
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     // добавление стейтмента в блок
     public void add(Statement statement) {

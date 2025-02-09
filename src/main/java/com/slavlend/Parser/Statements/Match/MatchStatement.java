@@ -7,6 +7,7 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.Statement;
 import com.slavlend.Vm.Instructions.VmInstrIf;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -16,7 +17,8 @@ public class MatchStatement implements Statement {
     // кейсы
     private final ArrayList<Statement> statements = new ArrayList<>();
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     public void add(Statement statement) {
         statements.add(statement);

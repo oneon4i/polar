@@ -6,6 +6,7 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.Statement;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 

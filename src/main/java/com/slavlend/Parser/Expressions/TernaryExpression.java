@@ -6,6 +6,7 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Vm.Instructions.VmInstrIf;
 import com.slavlend.Vm.Instructions.VmInstrPush;
 import lombok.Getter;
+import lombok.Setter;
 
 /*
 Намбер экспрешенн - возвращает число
@@ -18,7 +19,6 @@ public class TernaryExpression implements Expression {
     private final Expression right;
     // левое выражение
     private final Expression left;
-
     // адресс
     private final Address address = App.parser.address();
 

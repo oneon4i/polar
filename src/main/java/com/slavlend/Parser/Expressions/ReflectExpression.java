@@ -6,6 +6,7 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Vm.Instructions.VmInstrRefl;
 import com.slavlend.Vm.VmVarContainer;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 

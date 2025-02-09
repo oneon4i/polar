@@ -9,6 +9,7 @@ import com.slavlend.Parser.Operator;
 import com.slavlend.Parser.Statements.*;
 import com.slavlend.Vm.Instructions.VmInstrIf;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -17,7 +18,8 @@ public class DefaultStatement implements Statement {
     // тело функции
     private final ArrayList<Statement> statements = new ArrayList<>();
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     public void add(Statement statement) {
         statements.add(statement);
@@ -59,11 +61,10 @@ public class DefaultStatement implements Statement {
     }
 
     public Expression compileCondition() {
-        Expression e = new ConditionExpression(
+        return new ConditionExpression(
                         new NumberExpression("0"),
                         new Operator("=="),
                         new NumberExpression("0")
                 );
-        return e;
     }
 }

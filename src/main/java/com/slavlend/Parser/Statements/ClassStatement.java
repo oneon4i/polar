@@ -7,6 +7,7 @@ import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Vm.Instructions.VmInstrStoreM;
 import com.slavlend.Vm.VmClass;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,8 @@ import java.util.HashMap;
 @Getter
 public class ClassStatement implements Statement {
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
     // функции
     private final HashMap<String, FunctionStatement> functions = new HashMap<>();
     // модульные функции ( статические )

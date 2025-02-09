@@ -28,7 +28,8 @@ public class SafeStatement implements Statement {
     @Setter
     private String variableName;
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     public void add(Statement statement) {
         statements.add(statement);

@@ -8,6 +8,7 @@ import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.*;
 import com.slavlend.Vm.Instructions.VmInstrIf;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,8 @@ public class CaseStatement implements Statement {
     // тело функции
     private final ArrayList<Statement> statements = new ArrayList<>();
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     public void add(Statement statement) {
         statements.add(statement);

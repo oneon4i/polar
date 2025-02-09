@@ -9,6 +9,7 @@ import com.slavlend.Parser.Operator;
 import com.slavlend.Vm.Instructions.*;
 import com.slavlend.Vm.VmVarContainer;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -23,7 +24,8 @@ public class EachStatement implements Statement {
     // кодишены
     private final ArrayList<ConditionExpression> conditions = new ArrayList<>();
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
     // имя переменной
     private final String variableName;
     // имя переменной списка

@@ -3,6 +3,7 @@ package com.slavlend.Parser.Statements;
 import com.slavlend.App;
 import com.slavlend.Parser.Address;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,8 @@ public class BlockStatement implements Statement {
     // стэйтменты
     private final ArrayList<Statement> statements = new ArrayList<>();
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     // добавка стейтмента в блок
     public void add(Statement statement) {

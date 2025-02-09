@@ -7,6 +7,7 @@ import com.slavlend.Parser.Operator;
 import com.slavlend.Parser.Address;
 import com.slavlend.Vm.Instructions.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,8 @@ public class WhileStatement implements Statement {
     // логическое выражение
     private final Expression expression;
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     public void add(Statement statement) {
         statements.add(statement);

@@ -6,6 +6,7 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Operator;
 import com.slavlend.Vm.Instructions.VmInstrCondOperator;
 import lombok.Getter;
+import lombok.Setter;
 
 /*
 Эксперешен кондишен - возвращает бул

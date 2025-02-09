@@ -7,6 +7,7 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.TextExpression;
 import com.slavlend.Parser.Parser;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.*;
 import java.util.Scanner;
@@ -19,7 +20,8 @@ public class UseLibStatement implements Statement{
     // имя библиотеки
     private final TextExpression libName;
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     // конструктор
     public UseLibStatement(TextExpression libName) {

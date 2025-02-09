@@ -10,6 +10,7 @@ import com.slavlend.Parser.Expressions.NumberExpression;
 import com.slavlend.Parser.Operator;
 import com.slavlend.Vm.Instructions.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -24,7 +25,8 @@ public class RepeatStatement implements Statement {
     // логическое выражение
     private final Expression times;
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     public void add(Statement statement) {
         statements.add(statement);

@@ -8,6 +8,7 @@ import com.slavlend.Parser.Expressions.NilExpression;
 import com.slavlend.Vm.Instructions.VmInstrRet;
 import com.slavlend.Vm.VmVarContainer;
 import lombok.Getter;
+import lombok.Setter;
 
 /*
 Стэйтмент return - возвращает значение из функции
@@ -17,7 +18,8 @@ public class ReturnStatement implements Statement, Expression {
     // выражение для возврата
     private final Expression expr;
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     @Override
     public Statement copy() {
@@ -37,7 +39,8 @@ public class ReturnStatement implements Statement, Expression {
             expr.compile();
         }
         else {
-            new NilExpression().compile();
+            NilExpression nil = new NilExpression();
+            nil.compile();
         }
         Compiler.code.endWrite();
         Compiler.code.visitInstr(new VmInstrRet(retContainer, address.convert()));

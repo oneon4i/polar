@@ -5,6 +5,7 @@ import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Vm.Instructions.VmInstrPush;
 import lombok.Getter;
+import lombok.Setter;
 
 /*
 Текстовый экспрешенн - возвращает строку
@@ -13,7 +14,6 @@ import lombok.Getter;
 public class TextExpression implements Expression {
     // данные
     private final String data;
-
     // адресс
     private final Address address = App.parser.address();
 

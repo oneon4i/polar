@@ -9,6 +9,7 @@ import com.slavlend.Vm.Instructions.VmInstrPush;
 import com.slavlend.Vm.Instructions.VmInstrThrow;
 import com.slavlend.Vm.VmException;
 import lombok.Getter;
+import lombok.Setter;
 
 /*
 Стэйтмент для ассерта ( проверяет условие )
@@ -18,7 +19,8 @@ public class AssertStatement implements Statement {
     // экспрешен
     private final ConditionExpression expr;
     // аддресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     @Override
     public Statement copy() {

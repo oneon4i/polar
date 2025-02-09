@@ -5,12 +5,14 @@ import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Vm.VmFunction;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
 /*
 Стэйтмент функции - для дефенишена функции
  */
+@SuppressWarnings("SequencedCollectionMethodCanBeUsed")
 @Getter
 public class FunctionStatement implements Statement {
     // тело функции
@@ -21,9 +23,9 @@ public class FunctionStatement implements Statement {
     private final String fullName;
     // имя
     private final String name;
-
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     // добавление в бади
     public void add(Statement statement) {
@@ -55,7 +57,9 @@ public class FunctionStatement implements Statement {
         for (Statement s : body) {
             s.compile();
         }
-        new ReturnStatement(null).compile();
+        ReturnStatement returnStatement = new ReturnStatement(null);
+        returnStatement.setAddress(body.get(body.size()-1).address());
+        returnStatement.compile();
         Compiler.code.endWrite();
     }
 

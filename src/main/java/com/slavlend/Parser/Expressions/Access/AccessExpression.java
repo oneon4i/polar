@@ -1,5 +1,6 @@
 package com.slavlend.Parser.Expressions.Access;
 
+import com.slavlend.App;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Statements.Statement;
@@ -13,8 +14,9 @@ import lombok.Setter;
 public class AccessExpression implements Expression, Statement {
     // аксес
     private Access access;
-    // аддресс
-    private final Address address;
+    // адресс
+    @Setter
+    private Address address = App.parser.address();
     // стэйтмент ли
     @Setter
     private boolean isStatement;

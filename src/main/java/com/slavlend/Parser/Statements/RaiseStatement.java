@@ -6,6 +6,7 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Vm.Instructions.VmInstrThrow;
 import lombok.Getter;
+import lombok.Setter;
 
 /*
 Рэйс стейтмент - выкидывает throwable
@@ -15,7 +16,8 @@ public class RaiseStatement implements Statement {
     // выкидываемое
     private final Expression throwableExpr;
     // адресс
-    private final  Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     // копирование
     @Override

@@ -5,12 +5,15 @@ import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Vm.Instructions.VmInstrNewObj;
 import com.slavlend.Vm.VmVarContainer;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
 /*
 Обджект экспрешенн - возвращает экземпляр класса
  */
+@Getter
 public class ObjectExpression implements Expression {
     // класс
     private final String className;

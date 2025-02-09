@@ -5,14 +5,16 @@ import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Vm.Instructions.VmInstrLoopEnd;
 import lombok.Getter;
+import lombok.Setter;
 
 /*
 Некст стэйтмент - итерирует forStatement
  */
+@Setter
 @Getter
 public class NextStatement extends RuntimeException implements Statement {
     // адресс
-    private final Address address = App.parser.address();
+    private Address address = App.parser.address();
 
     @Override
     public Statement copy() {

@@ -7,6 +7,7 @@ import com.slavlend.PolarClassLoader;
 import com.slavlend.PolarLogger;
 import com.slavlend.Vm.VmJvmClasses;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -21,7 +22,8 @@ public class JUseStatement implements Statement{
     // имя библиотеки
     private final TextExpression libName;
     // адресс
-    private final Address address = App.parser.address();
+    @Setter
+    private Address address = App.parser.address();
 
     // конструктор
     public JUseStatement(TextExpression libName) {
