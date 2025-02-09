@@ -8,30 +8,30 @@ func output_result(val) = {
 
 # Тест 1: Проверка работы с числовыми значениями #
 func get_num() = {
-    back(10)
+    return(10)
 }
 
 func multiply_by_two(num) = {
-    back(num * 2)
+    return(num * 2)
 }
 
 func add_five(num, need) = {
-    back(num * need)
+    return(num * need)
 }
 
 get_num() |> multiply_by_two() |> add_five(5) |> output_result()
 
 # Тест 2: Проверка работы с текстовыми значениями #
 func get_text() = {
-    back('Hello')
+    return('Hello')
 }
 
 func append_world(text, adds) = {
-    back(text + adds)
+    return(text + adds)
 }
 
 func to_uppercase(text) = {
-    back(Str.upper(text))
+    return(Str.upper(text))
 }
 
 get_text() |> append_world(' World') |> to_uppercase() |> output_result()
@@ -39,11 +39,11 @@ get_text() |> append_world(' World') |> to_uppercase() |> output_result()
 # Тест 3: в выражениях #
 
 func get_first_num(exp) = {
-    back(5*exp)
+    return(5*exp)
 }
 
 func get_second_num(exp) = {
-    back(3*exp)
+    return(3*exp)
 }
 
 get_first_num(2) |> get_second_num() |> put()

@@ -21,12 +21,12 @@ func user_input() {
         val = number(scan('Выбор: '))
     } handle(e) {
         put('Неправильный ввод!')
-        back(user_input())
+        return(user_input())
     }
     if (val > 3 or val < 1) {
         put('Неправильный ввод!')
     }
-    back(val)
+    return(val)
 }
 
 # цикл #

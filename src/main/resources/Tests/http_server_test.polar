@@ -5,9 +5,9 @@ server.route('/hello', hello)
 
 func hello(request) = {
     if (request.get('method') == 'GET') {
-        back(new HttpResponse(200, 'world!'))
+        return(new HttpResponse(200, 'world!'))
     } else {
-        back(new HttpResponse(404, 'not found!'))
+        return(new HttpResponse(404, 'not found!'))
     }
 }
 

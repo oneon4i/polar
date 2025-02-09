@@ -158,7 +158,7 @@ func infinity_test() = {
 
 func lambda_test() = {
     a = lambda(x) -> {
-        back('hello world')
+        return('hello world')
     }
 
     assert(a('name') == 'hello world')
@@ -183,9 +183,9 @@ func math_module_test() = {
 func nested_function_test() = {
     func inside() = {
         func inside_inside() = {
-            back(123)
+            return(123)
         }
-        back(inside_inside)
+        return(inside_inside)
     }
     fn = inside()
     assert(fn() == 123)
@@ -204,7 +204,7 @@ func closures_test() = {
         assert(a == 3)
             put('Closure test passed!')
     }
-    back(test)
+    return(test)
 }
 
 func closures_test_2() = {
@@ -215,9 +215,19 @@ func closures_test_2() = {
             assert(a*b == 12)
             put('Closure test passed!')
         }
-        back(inner_inner)
+        return(inner_inner)
     }
-    back(inner)
+    return(inner)
+}
+
+func lambda_closure_test() = {
+    e = 3
+    a = lambda(x) -> {
+        return('hello world: ' + string(e))
+    }
+
+    assert(a('name') == 'hello world: 3.0')
+    put('Test passed')
 }
 
 hello_world_test()
@@ -246,3 +256,4 @@ closure_2 = closures_test_2()
 closure_3 = closure_2()
 # put(closure_3) #
 closure_3()
+lambda_closure_test()

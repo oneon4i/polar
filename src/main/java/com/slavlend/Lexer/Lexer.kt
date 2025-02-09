@@ -22,7 +22,7 @@ class Lexer // конструктор
     // кейворды
     var keywords: Array<String> = arrayOf(
         "func",
-        "back",
+        "return",
         "if",
         "true",
         "false",
@@ -58,7 +58,7 @@ class Lexer // конструктор
     var keyword_tokens: HashMap<String?, TokenType?> = object : HashMap<String?, TokenType?>() {
         init {
             put("func", TokenType.FUNC)
-            put("back", TokenType.BACK)
+            put("return", TokenType.RETURN)
             put("if", TokenType.IF)
             put("true", TokenType.BOOL)
             put("false", TokenType.BOOL)

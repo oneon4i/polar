@@ -3,8 +3,10 @@ package com.slavlend.Parser.Expressions;
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Statements.BackStatement;
+import com.slavlend.Parser.Statements.ReturnStatement;
 import com.slavlend.Parser.Statements.Statement;
+import com.slavlend.Vm.Instructions.VmInstrDup;
+import com.slavlend.Vm.Instructions.VmInstrMakeClosure;
 import com.slavlend.Vm.Instructions.VmInstrPush;
 import com.slavlend.Vm.VmFunction;
 
@@ -35,9 +37,11 @@ public class LambdaExpression implements Expression {
         for (Statement s : body) {
             s.compile();
         }
-        new BackStatement(null).compile();
+        new ReturnStatement(null).compile();
         Compiler.code.endWrite();
         Compiler.code.visitInstr(new VmInstrPush(address.convert(), fn));
+        Compiler.code.visitInstr(new VmInstrDup(address.convert()));
+        Compiler.code.visitInstr(new VmInstrMakeClosure(address.convert()));
     }
 
     public LambdaExpression(ArrayList<String> args) {

@@ -239,13 +239,19 @@ public class Parser {
 
     // парсим стэйтмент
     public Statement statement() {
-        // стэйтмент back
-        if (check(TokenType.BACK)) {
-            consume(TokenType.BACK);
-            consume(TokenType.BRACKET);
-            Expression e = expression();
-            consume(TokenType.BRACKET);
-            return new BackStatement(e);
+        // стэйтмент return
+        if (check(TokenType.RETURN)) {
+            consume(TokenType.RETURN);
+            Expression e;
+            if (check(TokenType.BRACKET)) {
+                consume(TokenType.BRACKET);
+                e = expression();
+                consume(TokenType.BRACKET);
+            }
+            else {
+                e = expression();
+            }
+            return new ReturnStatement(e);
         }
         // стэйтмент if
         if (check(TokenType.IF)) {

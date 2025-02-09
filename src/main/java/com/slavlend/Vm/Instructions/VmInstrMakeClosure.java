@@ -19,9 +19,21 @@ public class VmInstrMakeClosure implements VmInstr {
         this.name = name;
     }
 
+    // конструктор
+    public VmInstrMakeClosure(VmInAddr addr) {
+        this.addr = addr;
+        this.name = null;
+    }
+
     @Override
     public void run(IceVm vm, VmFrame<String, Object> scope) {
-        VmFunction fn = (VmFunction) scope.lookup(addr, name);
+        VmFunction fn;
+        if (name == null) {
+            fn = (VmFunction) vm.pop(addr);
+        }
+        else {
+            fn = (VmFunction) scope.lookup(addr, name);
+            }
         fn.setClosure(scope.copy());
     }
 

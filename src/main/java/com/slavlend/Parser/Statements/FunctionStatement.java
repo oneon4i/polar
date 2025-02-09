@@ -3,7 +3,6 @@ package com.slavlend.Parser.Statements;
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
-import com.slavlend.Vm.Instructions.VmInstrMakeClosure;
 import com.slavlend.Vm.VmFunction;
 import lombok.Getter;
 
@@ -56,7 +55,7 @@ public class FunctionStatement implements Statement {
         for (Statement s : body) {
             s.compile();
         }
-        new BackStatement(null).compile();
+        new ReturnStatement(null).compile();
         Compiler.code.endWrite();
     }
 

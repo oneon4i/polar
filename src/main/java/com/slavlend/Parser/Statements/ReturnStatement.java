@@ -5,16 +5,15 @@ import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Parser.Expressions.NilExpression;
-import com.slavlend.Vm.Instructions.VmInstrPush;
 import com.slavlend.Vm.Instructions.VmInstrRet;
 import com.slavlend.Vm.VmVarContainer;
 import lombok.Getter;
 
 /*
-Стэйтмент бэк - возвращает значение переданное
+Стэйтмент return - возвращает значение из функции
  */
 @Getter
-public class BackStatement implements Statement, Expression {
+public class ReturnStatement implements Statement, Expression {
     // выражение для возврата
     private final Expression expr;
     // адресс
@@ -22,7 +21,7 @@ public class BackStatement implements Statement, Expression {
 
     @Override
     public Statement copy() {
-        return new BackStatement(expr);
+        return new ReturnStatement(expr);
     }
 
     @Override
@@ -45,7 +44,7 @@ public class BackStatement implements Statement, Expression {
     }
 
     // конструктор
-    public BackStatement(Expression expr) {
+    public ReturnStatement(Expression expr) {
         this.expr = expr;
     }
 }

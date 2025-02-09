@@ -52,7 +52,7 @@ func rotate_row(row, i) = {
         result.set(new_index, Str.at(row, j))
         j += 1
     }
-    back(result.stringify())
+    return(result.stringify())
 }
 
 # Процесс анимирования #

@@ -1,13 +1,13 @@
 class Str() = {
     mod reflected = reflect 'com.slavlend.Compiler.Libs.Str'
     mod func replace(str, what, to) = {
-        back(Str.reflected.replace(str, what, to))
+        return(Str.reflected.replace(str, what, to))
     }
     mod func split(str, delim) = {
-        back(Str.reflected.split(str, delim))
+        return(Str.reflected.split(str, delim))
     }
     mod func at(str, index) = {
-        back(Str.reflected.at(str, index))
+        return(Str.reflected.at(str, index))
     }
     mod func format(str, arr) = {
         formatted = str
@@ -15,12 +15,12 @@ class Str() = {
             formatted = Str.replace(formatted, '{' + string(i) + '}', arr.get(i))
             i += 1
         }
-        back(formatted)
+        return(formatted)
     }
     mod func upper(str) = {
-        back(Str.reflected.upper(str))
+        return(Str.reflected.upper(str))
     }
     mod func lower(str) = {
-        back(Str.reflected.lower(str))
+        return(Str.reflected.lower(str))
     }
 }

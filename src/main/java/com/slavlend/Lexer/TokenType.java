@@ -16,7 +16,7 @@ public enum TokenType {
     ASSIGN, // =
     ID, // variable id
     COMMA, // ,
-    BACK, // back
+    RETURN, // return
     IF, // if
     BOOL, // bool
     WHILE, // while

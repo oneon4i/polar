@@ -10,15 +10,15 @@ class Math() = {
     mod Log10E = 0.4343
     mod reflected = reflect 'com.slavlend.Compiler.Libs.Math'
     mod func sin(a) = {
-        back(Math.reflected.sin(a))
+        return(Math.reflected.sin(a))
     }
     mod func cos(a) = {
-        back(Math.reflected.cos(a))
+        return(Math.reflected.cos(a))
     }
     mod func tan(a) = {
-        back(Math.reflected.tan(a))
+        return(Math.reflected.tan(a))
     }
     mod func atan(a) = {
-        back(Math.reflected.atan(a))
+        return(Math.reflected.atan(a))
     }
 }
