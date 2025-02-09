@@ -46,15 +46,19 @@ public class PolarFunctions {
     public static class ScanFn implements VmCoreFunction {
         @Override
         public Object exec(VmInAddr addr) {
-            String val = (String)Compiler.iceVm.pop(addr);
-            if (!val.isEmpty()) {
-                System.out.println(val);
-            }
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             try {
-                return reader.readLine();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                String val = (String) Compiler.iceVm.pop(addr);
+                if (!val.isEmpty()) {
+                    System.out.println(val);
+                }
+                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                try {
+                    return reader.readLine();
+                } catch (IOException e) {
+                    throw new VmException(addr, e.getMessage());
+                }
+            } catch (RuntimeException e) {
+                throw new VmException(addr, e.getMessage());
             }
         }
 
@@ -68,7 +72,11 @@ public class PolarFunctions {
     public static class LenFn implements VmCoreFunction {
         @Override
         public Object exec(VmInAddr addr) {
-            return ((Integer)((String)Compiler.iceVm.pop(addr)).length()).floatValue();
+            try {
+                return ((Integer)((String)Compiler.iceVm.pop(addr)).length()).floatValue();
+            } catch (RuntimeException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         @Override
@@ -84,7 +92,7 @@ public class PolarFunctions {
             try {
                 Thread.sleep(((Float)Compiler.iceVm.pop(addr)).longValue());
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                throw new VmException(addr, e.getMessage());
             }
 
             return null;
