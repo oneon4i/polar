@@ -219,7 +219,7 @@ func lambda_closure_test() = {
     }
 
     assert(a('name') == 'hello world: 3.0')
-    put('Lambda closure test passed')
+    put('Lambda closure test passed!')
 }
 
 func strings_test() = {
