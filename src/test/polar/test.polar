@@ -222,6 +222,18 @@ func lambda_closure_test() = {
     put('Test passed')
 }
 
+func strings_test() = {
+    a = Strings.replace('Test hello', 'hello', 'passed')
+    assert(a == 'Test passed')
+    put(a)
+}
+
+func formatting_test() = {
+    b = Strings.format('Hello {0.0}', ['world!'])
+    assert(b == 'Hello world!')
+    put('Test passed')
+}
+
 hello_world_test()
 variable_test()
 for_statement_continue_test()
@@ -249,3 +261,5 @@ closure_3 = closure_2()
 # put(closure_3) #
 closure_3()
 lambda_closure_test()
+strings_test()
+formatting_test()

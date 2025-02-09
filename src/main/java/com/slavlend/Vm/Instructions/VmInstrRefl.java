@@ -27,7 +27,7 @@ public class VmInstrRefl implements VmInstr {
             Object o = VmJvmClasses.lookup(addr, name).newInstance();
             vm.push(o);
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new VmException(addr, e.getMessage());
         }
     }
 

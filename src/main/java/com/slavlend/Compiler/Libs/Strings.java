@@ -3,7 +3,7 @@ package com.slavlend.Compiler.Libs;
 /*
 Библиотека строк для VM
  */
-public class Str {
+public class Strings {
     public Object replace(String from, String what, String to) {
         return from.replace(what,to);
     }

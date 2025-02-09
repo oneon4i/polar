@@ -70,9 +70,14 @@ public class UseLibStatement implements Statement{
         Lexer tempLexer = new Lexer(code.toString());
         tempLexer.Tokenize();
         // импортируем классы
+        Parser mainParser = App.parser;
+        // временный парсер
         Parser tempParser = new Parser(tempLexer.getTokens());
+        App.parser = tempParser;
         tempParser.setFileName(libName.getData().replace(".polar", ""));
         BlockStatement s = tempParser.parse();
         s.importAll();
+        // устанавливаем парсер на главный
+        App.parser = mainParser;
     }
 }

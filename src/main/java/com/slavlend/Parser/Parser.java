@@ -52,12 +52,11 @@ public class Parser {
 
     // адресс
     public Address address() {
-        if (tokens.size() == current) return new Address(-1);
         if (current - 1 < 0) {
             return new Address(0);
         }
         else {
-            return new Address(tokens.get(current - 1).line);
+            return new Address(tokens.get(current-1).line);
         }
     }
 
