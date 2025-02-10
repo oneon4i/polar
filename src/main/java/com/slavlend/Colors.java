@@ -14,6 +14,8 @@ public class Colors {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
+    public static final String ANSI_LIME = "\u001B[92m";
+
     public static void Clear() {
         for (int i = 0; i < 100; i++) {
             System.out.print("\n");
