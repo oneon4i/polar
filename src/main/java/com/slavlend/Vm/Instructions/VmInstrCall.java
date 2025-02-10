@@ -34,6 +34,9 @@ public class VmInstrCall implements VmInstr {
 
     @Override
     public void run(IceVm vm, VmFrame<String, Object> frame) {
+        // установка последнего аддресса вызова
+        vm.setLastCallAddress(addr);
+        // вызов
         if (!hasPrevious) {
             callGlobalFunc(vm, frame);
         } else {

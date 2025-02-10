@@ -25,14 +25,18 @@ public class IceVm {
     // логгер
     @Setter
     public static VmErrLogger logger;
-    // адресс возврата
-    private final ThreadLocal<Object> returnAddress = new ThreadLocal<>();
+    // адресс последнего вызова функции
+    private final ThreadLocal<VmInAddr> lastCallAddr = new ThreadLocal<>();
 
     /**
-     * Помещение значения в адресс возврата
+     * Указание адресса последнего вызова функции
      */
-    public void ret(Object o) {
-        returnAddress.set(o);
+    public void setLastCallAddress(VmInAddr addr) {
+        lastCallAddr.set(addr);
+    }
+
+    public VmInAddr getLastCallAddr() {
+        return lastCallAddr.get();
     }
 
     /**
