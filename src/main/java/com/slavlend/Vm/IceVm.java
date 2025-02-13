@@ -19,6 +19,8 @@ public class IceVm {
     private final VmFrame<String, VmFunction> functions = new VmFrame<>();
     private final VmFrame<String, VmClass> classes = new VmFrame<>();
     private final VmFrame<String, VmCoreFunction> coreFunctions = new VmFrame<>();
+    // процессинг декораторов
+    private final VmDecoratorsProcessor decoratorsProcessor = new VmDecoratorsProcessor();
     // рэйс ошибок
     @Setter
     public static VmErrRaiser raiser = new VmErrRaiser();
@@ -56,6 +58,12 @@ public class IceVm {
             benchmark.start();
             // инициализация стека
             initStackForThread();
+            // исполняем пре-инструкции
+            for (VmInstr instr : code.getPreInstructions().getInstructions()) {
+                instr.run(this, variables);
+            }
+            // исполняем декораторы
+            decoratorsProcessor.processDecorators();
             // исполняем код
             for (VmInstr instr : code.getInstructions()) {
                 instr.run(this, variables);
@@ -125,9 +133,9 @@ public class IceVm {
      * @return - отдаёт объект с верхушки стека
      */
     public Object pop(VmInAddr addr) {
-        // if (stack().empty()) {
-            // raiser.error(addr, "stack is empty here (did you forgot back statement?)");
-        // }
+        if (stack().empty()) {
+            logger.error(addr, "stack is empty here.", new RuntimeException("EmptyStack"));
+        }
         return stack().pop();
     }
 

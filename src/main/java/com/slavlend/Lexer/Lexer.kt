@@ -130,10 +130,10 @@ class Lexer // конструктор
                 Next(2)
                 continue
             }
-            else if (cur == '~') {
+            else if (cur == '@') {
                 tokens.add(
                     Token(
-                        TokenType.RCALL,
+                        TokenType.DECORATOR,
                         cur.toString(),
                         line
                     )

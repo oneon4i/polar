@@ -90,7 +90,6 @@ public class VmFrame<K, V> {
     }
 
     // в строку
-
     @Override
     public String toString() {
         return "VmFrame{" +

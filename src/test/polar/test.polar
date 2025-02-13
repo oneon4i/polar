@@ -1,19 +1,23 @@
 juse 'com\slavlend\Abc.class'
 use 'lib.console'
 use 'lib.strings'
+use 'lib.tests'
 use 'lib.math'
+use 'lib.base64'
+use 'lib.crypto'
 
+@Tests.test
 func hello_world_test() = {
     put('Hello World!')
-    put('Test passed')
 }
 
+@Tests.test
 func variable_test() = {
     a = 1
     assert (a == 1)
-    put('Test passed')
 }
 
+@Tests.test
 func for_statement_continue_test() = {
     value = 0
 
@@ -28,29 +32,29 @@ func for_statement_continue_test() = {
     }
 
     assert(value == 4)
-    put('Test passed')
 }
 
+@Tests.test
 func if_test() = {
     a = 5
     b = 4 + 1
 
     if ((a == b)) {
-        put('Test passed')
-    }
+        }
     else {
         assert(1 == 2)
     }
 }
 
+@Tests.test
 func each_statement() = {
     lst = [5, 3, 1]
     each (elem, lst) {
         next
     }
-    put('Test passed')
 }
 
+@Tests.test
 func nested_test() = {
     total_sum = 0
 
@@ -76,9 +80,9 @@ func nested_test() = {
     }
 
     assert(total_sum == 20)
-    put('Test passed')
 }
 
+@Tests.test
 func while_test() = {
     index = 0
 
@@ -87,41 +91,41 @@ func while_test() = {
     }
 
     assert(index == 5)
-    put('Test passed')
 }
 
+@Tests.test
 func optimization_test() = {
     a = 2 + 2 * 2
 
     assert(a == 6)
-    put('Test passed')
 }
 
+@Tests.test
 func float_math_test() = {
     a = 5.1122324
     a = a + 1.78
 
     assert(a == 6.892232)
-    put('Test passed')
 }
 
 class A()  = {
     func init() = {
-        put('Test passed')
     }
 }
 
+@Tests.test
 func len_test() = {
     length = len('aaaa')
     assert(length == 4)
-    put('Test passed')
 }
 
+@Tests.test
 func juse_test() = {
     reflected = reflect 'com.slavlend.Abc' []
     assert(reflected.testRuntimeJuse() == 'Juse works perfect!')
 }
 
+@Tests.test
 func infinity_test() = {
     assert(1 / 0 == Math.Infinity)
     assert(-1 / 0 == Math.NegativeInfinity)
@@ -145,33 +149,33 @@ func infinity_test() = {
 
     assert(0 / 0 != 0 / 0)
     assert((0 / 0 > 0 or 0 / 0 < 0) == false)
-    put('Test passed')
 }
 
+@Tests.test
 func lambda_test() = {
     a = lambda(x) -> {
         return('hello world')
     }
 
     assert(a('name') == 'hello world')
-    put('Test passed')
 }
 
+@Tests.test
 func test_repeat() = {
     a = 0
     repeat(15) {
         a += 1
     }
     assert(a == 15)
-    put('Test passed')
 }
 
+@Tests.test
 func math_module_test() = {
     assert(Math.sin(10) == -0.5440211)
     assert(Math.cos(10) == -0.8390715)
-    put('Test passed')
 }
 
+@Tests.test
 func nested_function_test() = {
     func inside() = {
         func inside_inside() = {
@@ -181,13 +185,12 @@ func nested_function_test() = {
     }
     fn = inside()
     assert(fn() == 123)
-    put('Test passed')
 }
 
+@Tests.test
 func ternary_test() = {
     a = 1 == 1 ? 'yes' : 'no'
     assert(a == 'yes')
-    put('Test passed')
 }
 
 func closures_test() = {
@@ -212,6 +215,7 @@ func closures_test_2() = {
     return(inner)
 }
 
+@Tests.test
 func lambda_closure_test() = {
     e = 3
     a = lambda(x) -> {
@@ -222,35 +226,29 @@ func lambda_closure_test() = {
     put('Lambda closure test passed!')
 }
 
+@Tests.test
 func strings_test() = {
     a = Strings.replace('Test hello', 'hello', 'passed')
     assert(a == 'Test passed')
     put(a)
 }
 
+@Tests.test
 func formatting_test() = {
     b = Strings.format('Hello {0.0}', ['world!'])
     assert(b == 'Hello world!')
-    put('Test passed')
 }
 
-hello_world_test()
-variable_test()
-for_statement_continue_test()
-if_test()
-each_statement()
-nested_test()
-while_test()
-optimization_test()
-float_math_test()
-len_test()
-juse_test()
-infinity_test()
-lambda_test()
-test_repeat()
-math_module_test()
-nested_function_test()
-ternary_test()
+@Tests.test
+func base64_test() = {
+    text = 'hi'
+    text_bytes = Base64.to_bytes(text)
+    encoded = Base64.encode(text_bytes)
+    decoded = Base64.decode(encoded)
+    str = Base64.to_string(decoded)
+    assert(str == text)
+}
+
 # closure 1 #
 closure_1 = closures_test()
 # put(closure_1)#
@@ -260,6 +258,3 @@ closure_2 = closures_test_2()
 closure_3 = closure_2()
 # put(closure_3) #
 closure_3()
-lambda_closure_test()
-strings_test()
-formatting_test()

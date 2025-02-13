@@ -3,7 +3,9 @@ package com.slavlend.Parser.Statements;
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
+import com.slavlend.Parser.Expressions.Access.AccessExpression;
 import com.slavlend.Vm.VmFunction;
+import com.slavlend.Vm.VmVarContainer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +25,10 @@ public class FunctionStatement implements Statement {
     private final String fullName;
     // имя
     private final String name;
+    // декоратор
+    @Setter
+    private AccessExpression decorator;
+
     // адресс
     @Setter
     private Address address = App.parser.address();
@@ -58,9 +64,18 @@ public class FunctionStatement implements Statement {
             s.compile();
         }
         ReturnStatement returnStatement = new ReturnStatement(null);
-        returnStatement.setAddress(body.get(body.size()-1).address());
+        Address retAddress = !body.isEmpty() ? body.get(body.size()-1).address() : address;
+        returnStatement.setAddress(retAddress);
         returnStatement.compile();
         Compiler.code.endWrite();
+        // декоратор
+        if (decorator != null) {
+            VmVarContainer container = new VmVarContainer();
+            Compiler.code.startWrite(container);
+            decorator.compile();
+            Compiler.code.endWrite();
+            Compiler.iceVm.getDecoratorsProcessor().schedule(container, f);
+        }
     }
 
     // конструктор

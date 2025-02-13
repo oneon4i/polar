@@ -78,9 +78,14 @@ public class ClassStatement implements Statement {
         Compiler.code.endWrite();
         // пишем модульные переменные
         for (String name : moduleVariables.keySet()) {
+            // пре-инструкции
+            Compiler.code.startWrite(Compiler.code.getPreInstructions());
+            // запись переменной
             Expression e = moduleVariables.get(name);
             e.compile();
             Compiler.code.visitInstr(new VmInstrStoreM(address.convert(),vmClass, name));
+            // выходим из записи пре-инструкций
+            Compiler.code.endWrite();
         }
     }
 }

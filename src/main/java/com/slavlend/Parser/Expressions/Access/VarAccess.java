@@ -67,4 +67,15 @@ public class VarAccess implements Access {
             return new VarAccess(address, null, varName);
         }
     }
+
+    // в строку
+
+    @Override
+    public String toString() {
+        return "VarAccess{" +
+                "address=" + address +
+                ", next=" + next +
+                ", varName='" + varName + '\'' +
+                '}';
+    }
 }

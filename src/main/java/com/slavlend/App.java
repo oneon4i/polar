@@ -26,7 +26,7 @@ public class App
         System.out.println("╰───────────────────╯");
         System.out.println();
         String currentDir = System.getProperty("user.dir");
-        System.out.println("❄️ Current dir: " + currentDir);
+        System.out.println(Colors.ANSI_BLUE + "> Current dir: " + currentDir + Colors.ANSI_RESET);
         System.out.println();
         // проверяем на наличие аргумента
         if (args.length == 0) {
@@ -42,7 +42,7 @@ public class App
                 code = new StringBuilder();
                 sc = new Scanner(file);
             } catch (Exception e) {
-                System.out.println("👽 Invalid file: " + args[0] + "(e: " + e + ")");
+                System.out.println(Colors.ANSI_GREEN + "> Invalid file: " + args[0] + "(e: " + e + ")" + Colors.ANSI_RESET);
                 return;
             }
 

@@ -37,6 +37,7 @@ public class Parser {
         put("lib.window2d", "Libraries/window2d.polar");
         put("lib.base64", "Libraries/base64.polar");
         put("lib.crypto", "Libraries/crypto.polar");
+        put("lib.tests", "Libraries/tests.polar");
     }};
 
     // путь эвайронмента (окружения)
@@ -189,9 +190,17 @@ public class Parser {
     // парсим функции
     public Statement function() {
         // паттерн
-        // func (...) = { ... }
+        // func name(...) = { ... }
+        // или
+        // @Test func name(...) = { ... }
         // адресс
         Address address = address();
+        // декоратор
+        AccessExpression decorator = null;
+        if (check(TokenType.DECORATOR)) {
+            consume(TokenType.DECORATOR);
+            decorator = parseAccess(false);
+        }
         // func
         consume(TokenType.FUNC);
         // имя функции
@@ -212,6 +221,7 @@ public class Parser {
         String fullName = fileName + ":" + name;
         FunctionStatement functionStatement = new FunctionStatement(fullName, name, arguments);
         functionStatement.setAddress(address);
+        functionStatement.setDecorator(decorator);
         // скобки
         consume(TokenType.BRACKET);
         // ассигн
@@ -333,7 +343,7 @@ public class Parser {
             return parseAccess(true);
         }
         // стэйтмент функции
-        if (check(TokenType.FUNC)) {
+        if (check(TokenType.FUNC) || check(TokenType.DECORATOR)) {
             return function();
         }
         // стэйтмент класса
@@ -576,7 +586,7 @@ public class Parser {
         // тело функции
         while (!check(TokenType.BRACE)) {
             // функция
-            if (check(TokenType.FUNC)) {
+            if (check(TokenType.FUNC) || check(TokenType.DECORATOR)) {
                 // функция
                 Statement statement = function();
                 // добавляем в класс
@@ -592,7 +602,7 @@ public class Parser {
             else if (check(TokenType.MOD)) {
                 consume(TokenType.MOD);
                 // модульная функция
-                if (check(TokenType.FUNC)) {
+                if (check(TokenType.FUNC) || check(TokenType.DECORATOR)) {
                     // функция
                     Statement statement = function();
                     // добавляем

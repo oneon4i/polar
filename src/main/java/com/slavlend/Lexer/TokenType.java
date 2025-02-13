@@ -29,7 +29,7 @@ public enum TokenType {
     LOWER_EQUAL, // <=
     NIL, // nil
     REFLECT, // reflect
-    RCALL, // rcall
+    DECORATOR, // decorator
     ELIF, // elif
     ELSE, // else
     AND, // logical and

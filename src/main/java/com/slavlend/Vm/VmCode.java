@@ -17,6 +17,8 @@ import java.util.Stack;
  */
 @Getter
 public class VmCode {
+    // пре-инструкции для исполнения виртуальной машине
+    private final VmPreInstructions preInstructions = new VmPreInstructions();
     // инструкции для исполнения виртуальной машине
     private final List<VmInstr> instructions = new ArrayList<>();
     /* куда записывать инструкции, если не в основной
@@ -81,6 +83,7 @@ public class VmCode {
             IceVm.logger.error(addr,"cannot define classes in block, except class");
         }
     }
+
     /**
      Запись инструкции
      @param instr - инструкция для запииси

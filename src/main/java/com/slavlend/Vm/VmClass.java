@@ -71,6 +71,8 @@ public class VmClass implements VmInstrContainer {
                 "name='" + name + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", addr=" + addr +
+                ", funcs=" + getModFunctions().getValues().getValues().toString() +
+                ", values=" + getModValues().getValues().getValues().toString() +
                 '}';
     }
 }
