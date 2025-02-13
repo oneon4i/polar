@@ -249,6 +249,13 @@ func base64_test() = {
     assert(str == text)
 }
 
+class A() = {
+    @Tests.test
+    func test_from_class() = {
+        assert(2 == 2)
+    }
+}
+
 # closure 1 #
 closure_1 = closures_test()
 # put(closure_1)#

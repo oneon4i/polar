@@ -1,5 +1,6 @@
 package com.slavlend.Vm;
 
+import com.slavlend.Vm.Instructions.VmInstrDecorate;
 import com.slavlend.Vm.Instructions.VmInstrMakeClosure;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,6 +45,11 @@ public class VmClass implements VmInstrContainer {
      */
     @Override
     public void visitInstr(VmInstr instr) {
+        // пропускаем инструкции декорирования,
+        // их реализует сам класс в отложенной инициализации
+        if (instr instanceof VmInstrDecorate) {
+            return;
+        }
         IceVm.logger.error(addr, "cannot visit instr: " + instr + " with class!");
     }
 

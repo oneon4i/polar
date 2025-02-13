@@ -4,8 +4,11 @@ import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
+import com.slavlend.Vm.Instructions.VmInstrDecorate;
 import com.slavlend.Vm.Instructions.VmInstrStoreM;
 import com.slavlend.Vm.VmClass;
+import com.slavlend.Vm.VmFunction;
+import com.slavlend.Vm.VmVarContainer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -76,11 +79,35 @@ public class ClassStatement implements Statement {
         }
         vmClass.setModuleFunctionsWriting(false);
         Compiler.code.endWrite();
+        // пишем декораторы
+        for (FunctionStatement fn : getFunctions().values()) {
+            if (fn.getDecorator() != null) {
+                VmVarContainer decoratorContainer = new VmVarContainer();
+                Compiler.code.startWrite(decoratorContainer);
+                fn.getDecorator().compile();
+                Compiler.code.endWrite();
+                Compiler.code.visitInstr(
+                        new VmInstrDecorate(address.convert(), decoratorContainer, vmClass.getFunctions().lookup(address.convert(), fn.getName()))
+                );
+            }
+        }
+        // пишем декораторы для модульных функций
+        for (FunctionStatement fn : getModuleFunctions().values()) {
+            if (fn.getDecorator() != null) {
+                VmVarContainer decoratorContainer = new VmVarContainer();
+                Compiler.code.startWrite(decoratorContainer);
+                fn.getDecorator().compile();
+                Compiler.code.endWrite();
+                Compiler.code.visitInstr(
+                        new VmInstrDecorate(address.convert(), decoratorContainer, vmClass.getFunctions().lookup(address.convert(), fn.getName()))
+                );
+            }
+        }
         // пишем модульные переменные
         for (String name : moduleVariables.keySet()) {
             Expression e = moduleVariables.get(name);
             e.compile();
-            Compiler.code.visitInstr(new VmInstrStoreM(address.convert(),vmClass, name));
+            Compiler.code.visitInstr(new VmInstrStoreM(address.convert(), vmClass, name));
         }
     }
 }
