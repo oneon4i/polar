@@ -4,6 +4,7 @@ import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Access.AccessExpression;
+import com.slavlend.Vm.Instructions.VmInstrDecorate;
 import com.slavlend.Vm.VmFunction;
 import com.slavlend.Vm.VmVarContainer;
 import lombok.Getter;
@@ -70,11 +71,11 @@ public class FunctionStatement implements Statement {
         Compiler.code.endWrite();
         // декоратор
         if (decorator != null) {
-            VmVarContainer container = new VmVarContainer();
-            Compiler.code.startWrite(container);
+            VmVarContainer decoratorContainer = new VmVarContainer();
+            Compiler.code.startWrite(decoratorContainer);
             decorator.compile();
             Compiler.code.endWrite();
-            Compiler.iceVm.getDecoratorsProcessor().schedule(container, f);
+            Compiler.code.visitInstr(new VmInstrDecorate(address.convert(), decoratorContainer, f));
         }
     }
 

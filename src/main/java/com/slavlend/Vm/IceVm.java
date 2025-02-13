@@ -19,8 +19,6 @@ public class IceVm {
     private final VmFrame<String, VmFunction> functions = new VmFrame<>();
     private final VmFrame<String, VmClass> classes = new VmFrame<>();
     private final VmFrame<String, VmCoreFunction> coreFunctions = new VmFrame<>();
-    // процессинг декораторов
-    private final VmDecoratorsProcessor decoratorsProcessor = new VmDecoratorsProcessor();
     // рэйс ошибок
     @Setter
     public static VmErrRaiser raiser = new VmErrRaiser();
@@ -58,12 +56,6 @@ public class IceVm {
             benchmark.start();
             // инициализация стека
             initStackForThread();
-            // исполняем пре-инструкции
-            for (VmInstr instr : code.getPreInstructions().getInstructions()) {
-                instr.run(this, variables);
-            }
-            // исполняем декораторы
-            decoratorsProcessor.processDecorators();
             // исполняем код
             for (VmInstr instr : code.getInstructions()) {
                 instr.run(this, variables);
