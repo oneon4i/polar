@@ -256,12 +256,15 @@ class A() = {
     }
 }
 
-# closure 1 #
-closure_1 = closures_test()
-# put(closure_1)#
-closure_1()
-# closure 2 #
-closure_2 = closures_test_2()
-closure_3 = closure_2()
-# put(closure_3) #
-closure_3()
+@Tests.test
+func all_closures_tests() = {
+    # closure 1 #
+    closure_1 = closures_test()
+    # put(closure_1)#
+    closure_1()
+    # closure 2 #
+    closure_2 = closures_test_2()
+    closure_3 = closure_2()
+    # put(closure_3) #
+    closure_3()
+}

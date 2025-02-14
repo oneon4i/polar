@@ -50,6 +50,8 @@ public class VmInstrLoad implements VmInstr {
                     vm.push(clazz.getModValues().lookup(addr, name));
                 } else if (clazz.getModFunctions().has(name)){
                     vm.push(clazz.getModFunctions().lookup(addr, name));
+                } else {
+                    IceVm.logger.error(addr, "var not found: " + name);
                 }
             }
         }

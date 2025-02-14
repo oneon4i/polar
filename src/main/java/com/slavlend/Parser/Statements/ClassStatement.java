@@ -79,7 +79,18 @@ public class ClassStatement implements Statement {
         }
         vmClass.setModuleFunctionsWriting(false);
         Compiler.code.endWrite();
-        // пишем декораторы
+        // компилируем декораторы функций
+        compileFunctionDecorators(vmClass);
+        // пишем модульные переменные
+        for (String name : moduleVariables.keySet()) {
+            Expression e = moduleVariables.get(name);
+            e.compile();
+            Compiler.code.visitInstr(new VmInstrStoreM(address.convert(), vmClass, name));
+        }
+    }
+
+    // компиляция декораторов функций
+    private void compileFunctionDecorators(VmClass vmClass) {
         for (FunctionStatement fn : getFunctions().values()) {
             if (fn.getDecorator() != null) {
                 VmVarContainer decoratorContainer = new VmVarContainer();
@@ -102,12 +113,6 @@ public class ClassStatement implements Statement {
                         new VmInstrDecorate(address.convert(), decoratorContainer, vmClass.getFunctions().lookup(address.convert(), fn.getName()))
                 );
             }
-        }
-        // пишем модульные переменные
-        for (String name : moduleVariables.keySet()) {
-            Expression e = moduleVariables.get(name);
-            e.compile();
-            Compiler.code.visitInstr(new VmInstrStoreM(address.convert(), vmClass, name));
         }
     }
 }

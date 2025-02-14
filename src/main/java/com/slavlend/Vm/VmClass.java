@@ -46,7 +46,8 @@ public class VmClass implements VmInstrContainer {
     @Override
     public void visitInstr(VmInstr instr) {
         // пропускаем инструкции декорирования,
-        // их реализует сам класс в отложенной инициализации
+        // их компиляция целиком лежит на руках
+        // человека, который использует ВМ.
         if (instr instanceof VmInstrDecorate) {
             return;
         }
