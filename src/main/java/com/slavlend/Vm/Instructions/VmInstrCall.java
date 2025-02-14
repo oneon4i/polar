@@ -74,7 +74,7 @@ public class VmInstrCall implements VmInstr {
         if (vmClass.getModFunctions().has(name)) {
             fn = vmClass.getModFunctions().lookup(addr, name);
         } else {
-            fn = (VmFunction)vmClass.getModValues().lookup(addr, name);
+            fn = (VmFunction)vmClass.getModValues().lookup(addr, name).get();
         }
         checkArgs(fn.getArguments().size(), argsAmount);
         // вызов модульной функции

@@ -47,7 +47,7 @@ public class VmInstrLoad implements VmInstr {
             } else {
                 VmClass clazz = (VmClass) last;
                 if (clazz.getModValues().has(name)) {
-                    vm.push(clazz.getModValues().lookup(addr, name));
+                    vm.push(clazz.getModValues().lookup(addr, name).get());
                 } else if (clazz.getModFunctions().has(name)){
                     vm.push(clazz.getModFunctions().lookup(addr, name));
                 } else {

@@ -5,9 +5,8 @@ import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Vm.Instructions.VmInstrDecorate;
-import com.slavlend.Vm.Instructions.VmInstrStoreM;
 import com.slavlend.Vm.VmClass;
-import com.slavlend.Vm.VmFunction;
+import com.slavlend.Vm.VmLazy;
 import com.slavlend.Vm.VmVarContainer;
 import lombok.Getter;
 import lombok.Setter;
@@ -82,11 +81,7 @@ public class ClassStatement implements Statement {
         // компилируем декораторы функций
         compileFunctionDecorators(vmClass);
         // пишем модульные переменные
-        for (String name : moduleVariables.keySet()) {
-            Expression e = moduleVariables.get(name);
-            e.compile();
-            Compiler.code.visitInstr(new VmInstrStoreM(address.convert(), vmClass, name));
-        }
+        compileModValues(vmClass);
     }
 
     // компиляция декораторов функций
@@ -113,6 +108,19 @@ public class ClassStatement implements Statement {
                         new VmInstrDecorate(address.convert(), decoratorContainer, vmClass.getFunctions().lookup(address.convert(), fn.getName()))
                 );
             }
+        }
+    }
+
+    // модульные значения
+    private void compileModValues(VmClass vmClass) {
+        // перебираем значение
+        for (String name : moduleVariables.keySet()) {
+            VmVarContainer lazyContainer = new VmVarContainer();
+            Compiler.code.startWrite(lazyContainer);
+            Expression e = moduleVariables.get(name);
+            e.compile();
+            Compiler.code.endWrite();
+            vmClass.getModValues().set(name, new VmLazy(lazyContainer));
         }
     }
 }

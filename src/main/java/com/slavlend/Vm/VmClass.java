@@ -19,7 +19,7 @@ public class VmClass implements VmInstrContainer {
     // функции
     private final VmFrame<String, VmFunction> functions = new VmFrame<>();
     // модульные значения
-    private final VmFrame<String, Object> modValues = new VmFrame<>();
+    private final VmFrame<String, VmLazy> modValues = new VmFrame<>();
     // конструктор для класса
     private final ArrayList<String> constructor;
     // модульные функции

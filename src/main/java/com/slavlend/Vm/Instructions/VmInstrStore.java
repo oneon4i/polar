@@ -37,7 +37,7 @@ public class VmInstrStore implements VmInstr {
                 vmObj.getScope().set(name, vm.pop(addr));
             } else {
                 passArgs(vm, frame);
-                ((VmClass) last).getModValues().set(name, vm.pop(addr));
+                ((VmClass) last).getModValues().set(name, VmLazy.of(addr, vm.pop(addr)));
             }
         }
     }
