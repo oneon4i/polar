@@ -250,7 +250,8 @@ func base64_test() = {
 }
 
 class A() = {
-    mod @Tests.test func test_from_class() = {
+    @Tests.test
+    mod func test_from_class() = {
         assert(2 == 2)
     }
 }

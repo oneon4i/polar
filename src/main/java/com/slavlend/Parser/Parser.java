@@ -588,34 +588,22 @@ public class Parser {
         // тело функции
         while (!check(TokenType.BRACE)) {
             // функция
-            if (check(TokenType.FUNC) || check(TokenType.DECORATOR)) {
+            if (check(TokenType.FUNC)) {
                 // функция
-                Statement statement = function();
+                FunctionStatement statement = (FunctionStatement) function();
                 // добавляем в класс
-                if (statement instanceof FunctionStatement) {
-                    classStatement.add((FunctionStatement) statement);
-                }
-                else {
-                    error("Cannot Use Any Statements Except Functions: " + tokenInfo());
-                    return null;
-                }
+                classStatement.add(statement);
             }
             // модульная функция и переменная
             else if (check(TokenType.MOD)) {
                 // модуль
                 consume(TokenType.MOD);
                 // модульная функция
-                if (check(TokenType.FUNC) || check(TokenType.DECORATOR)) {
+                if (check(TokenType.FUNC)) {
                     // функция
-                    Statement statement = function();
+                    FunctionStatement statement = (FunctionStatement) function();
                     // добавляем
-                    if (statement instanceof FunctionStatement) {
-                        classStatement.addModule((FunctionStatement) statement);
-                    }
-                    else {
-                        error("Cannot Use Any Statements Except Functions: " + tokenInfo());
-                        return null;
-                    }
+                    classStatement.addModule(statement);
                 }
                 // модульная переменная
                 else {
@@ -627,6 +615,31 @@ public class Parser {
                     Expression expr = expression();
                     // добавляем модульную переменную
                     classStatement.addModuleVariable(idData, expr);
+                }
+            }
+            // декорированные функции
+            else if (check(TokenType.DECORATOR)) {
+                // парсим декоратор
+                consume(TokenType.DECORATOR);
+                AccessExpression decorator = parseAccess(false);
+                // парсим функцию
+                // функция
+                if (check(TokenType.FUNC)) {
+                    // функция
+                    FunctionStatement statement = (FunctionStatement) function();
+                    statement.setDecorator(decorator);
+                    // добавляем в класс
+                    classStatement.add((FunctionStatement) statement);
+                }
+                // модульная функция
+                else if (check(TokenType.MOD)) {
+                    // модуль
+                    consume(TokenType.MOD);
+                    // функция
+                    FunctionStatement statement = (FunctionStatement) function();
+                    statement.setDecorator(decorator);
+                    // добавляем
+                    classStatement.addModule((FunctionStatement) statement);
                 }
             }
             else {
