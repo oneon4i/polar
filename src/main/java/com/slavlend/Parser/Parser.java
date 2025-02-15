@@ -1,16 +1,18 @@
 package com.slavlend.Parser;
 
 import com.slavlend.Lexer.TokenType;
-import com.slavlend.Parser.Expressions.*;
 import com.slavlend.Lexer.Token;
 import com.slavlend.Parser.Expressions.Access.*;
-import com.slavlend.Parser.Statements.*;
 import com.slavlend.Parser.Statements.Match.CaseStatement;
 import com.slavlend.Parser.Statements.Match.DefaultStatement;
 import com.slavlend.Parser.Statements.Match.MatchStatement;
 import com.slavlend.PolarLogger;
 import lombok.Getter;
 import lombok.Setter;
+import com.slavlend.Parser.Statements.*;
+import com.slavlend.Parser.Expressions.*;
+import com.slavlend.Parser.Address;
+import com.slavlend.Parser.Statements.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

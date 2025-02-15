@@ -6,8 +6,8 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Access.AccessExpression;
 import com.slavlend.Parser.Expressions.ConditionExpression;
 import com.slavlend.Parser.Operator;
-import com.slavlend.Vm.Instructions.*;
 import com.slavlend.Vm.VmVarContainer;
+import com.slavlend.Vm.Instructions.*;
 import lombok.Getter;
 import lombok.Setter;
 

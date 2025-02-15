@@ -1,6 +1,9 @@
 package com.slavlend.Vm.Instructions;
 
-import com.slavlend.Vm.*;
+import com.slavlend.Vm.IceVm;
+import com.slavlend.Vm.VmFrame;
+import com.slavlend.Vm.VmInAddr;
+import com.slavlend.Vm.VmInstr;
 import lombok.Getter;
 
 /*

@@ -3,10 +3,9 @@ package com.slavlend.Parser.Expressions;
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
-import com.slavlend.Vm.Instructions.*;
 import com.slavlend.Vm.VmVarContainer;
+import com.slavlend.Vm.Instructions.*;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 

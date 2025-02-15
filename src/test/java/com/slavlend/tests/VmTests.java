@@ -1,5 +1,6 @@
-package com.slavlend;
+package com.slavlend.tests;
 
+import com.slavlend.PolarLogger;
 import com.slavlend.Vm.*;
 import com.slavlend.Vm.Instructions.*;
 import org.junit.Test;

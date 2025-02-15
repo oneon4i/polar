@@ -2,10 +2,7 @@ package com.slavlend.Parser.Statements;
 
 import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
-import com.slavlend.Parser.Expressions.LogicExpression;
-import com.slavlend.Parser.Operator;
 import com.slavlend.Parser.Address;
-import com.slavlend.Parser.Expressions.ConditionExpression;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Vm.Instructions.*;
 import lombok.Getter;

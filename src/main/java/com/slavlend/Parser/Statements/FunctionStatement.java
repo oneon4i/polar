@@ -15,7 +15,6 @@ import java.util.ArrayList;
 /*
 Стэйтмент функции - для дефенишена функции
  */
-@SuppressWarnings("SequencedCollectionMethodCanBeUsed")
 @Getter
 public class FunctionStatement implements Statement {
     // тело функции
