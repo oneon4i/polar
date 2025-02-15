@@ -109,7 +109,7 @@ public class ClassStatement implements Statement {
                 fn.getDecorator().compile();
                 Compiler.code.endWrite();
                 Compiler.code.visitInstr(
-                        new VmInstrDecorate(address.convert(), decoratorContainer, vmClass.getFunctions().lookup(address.convert(), fn.getName()))
+                        new VmInstrDecorate(address.convert(), decoratorContainer, vmClass.getModFunctions().lookup(address.convert(), fn.getName()))
                 );
             }
         }

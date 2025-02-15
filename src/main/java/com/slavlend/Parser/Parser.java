@@ -602,6 +602,7 @@ public class Parser {
             }
             // модульная функция и переменная
             else if (check(TokenType.MOD)) {
+                // модуль
                 consume(TokenType.MOD);
                 // модульная функция
                 if (check(TokenType.FUNC) || check(TokenType.DECORATOR)) {

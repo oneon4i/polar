@@ -6,6 +6,8 @@ import com.slavlend.Parser.Parser;
 import com.slavlend.Ver.PolarVersion;
 
 import java.io.File;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /*
@@ -20,6 +22,8 @@ public class App
     Точка входа в приложение
      */
     public static void main(String[] args) {
+        // устанавливаем кодировку UTF-8
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
         // заголовочек
         System.out.println("╭───────────────────╮");
         System.out.println("│ 🐻‍❄️ Polar v" + PolarVersion.build);
