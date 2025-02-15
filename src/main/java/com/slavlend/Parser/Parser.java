@@ -177,6 +177,7 @@ public class Parser {
         // добавляем акссесс
         expr.add(accessPart());
 
+        // пока есть точка, парсим
         while (check(TokenType.DOT)) {
             // консьюм
             consume(TokenType.DOT);
@@ -245,7 +246,7 @@ public class Parser {
     private Statement repeat() {
         // паттерн
         // repeat(times) { ... }
-        // адресс
+        // адрес
         Address address = address();
         // репит
         consume(TokenType.REPEAT);
