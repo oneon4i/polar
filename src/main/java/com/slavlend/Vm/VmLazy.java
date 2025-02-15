@@ -40,4 +40,13 @@ public class VmLazy {
         }
         return value;
     }
+
+    /**
+     * Вычисление значения
+     */
+    public void eval() {
+        if (value == null) {
+            value = lazyContainer.exec();
+        }
+    }
 }

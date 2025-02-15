@@ -5,6 +5,7 @@ import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Vm.Instructions.VmInstrDecorate;
+import com.slavlend.Vm.Instructions.VmInstrEvalLazy;
 import com.slavlend.Vm.VmClass;
 import com.slavlend.Vm.VmLazy;
 import com.slavlend.Vm.VmVarContainer;
@@ -82,6 +83,9 @@ public class ClassStatement implements Statement {
         compileFunctionDecorators(vmClass);
         // пишем модульные переменные
         compileModValues(vmClass);
+        // вычисляем lazy модульные значения после
+        // блока объявления класса
+        Compiler.code.visitInstr(new VmInstrEvalLazy(vmClass));
     }
 
     // компиляция декораторов функций
