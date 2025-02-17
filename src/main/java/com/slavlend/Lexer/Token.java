@@ -17,4 +17,15 @@ public class Token {
         this.value = value;
         this.line = line;
     }
+
+    // в строку
+
+    @Override
+    public String toString() {
+        return "Token{" +
+                "type=" + type +
+                ", value='" + value + '\'' +
+                ", line=" + line +
+                '}';
+    }
 }

@@ -2,19 +2,18 @@ package com.slavlend.Executor;
 
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Compiler.Functions.PolarFunctions;
+import com.slavlend.Lexer.Lexer;
 import com.slavlend.Lexer.Token;
 import com.slavlend.Parser.Statements.BlockStatement;
 import com.slavlend.App;
 import com.slavlend.Colors;
-import com.slavlend.Lexer.Lexer;
 import com.slavlend.Parser.Parser;
-import com.slavlend.Parser.Statements.FunctionStatement;
-import com.slavlend.Parser.Statements.Statement;
 import com.slavlend.PolarLogger;
 import com.slavlend.System.PolarSystem;
 import com.slavlend.Vm.IceVm;
 
 import java.nio.file.Paths;
+import java.util.List;
 
 /*
 Исполнение файла с кодом.
@@ -30,10 +29,10 @@ public class Executor {
         // лексер
         Lexer lexer = new Lexer(settings.getCode());
         // токенизация
-        lexer.Tokenize();
+        List<Token> tokens = lexer.scan();
         // парсер
         Parser parser = new Parser(
-                lexer.getTokens()
+                tokens
         );
         String envPath = "";
         String filePath = "";

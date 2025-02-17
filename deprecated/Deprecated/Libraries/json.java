@@ -2,7 +2,7 @@ package com.slavlend.Libraries;
 
 import com.slavlend.Polar.PolarObject;
 import com.slavlend.Polar.PolarValue;
-import com.slavlend.Lexer.Lexer;
+import com.slavlend.Lexer.LexerOld;
 import com.slavlend.Parser.Expressions.MapContainerExpression;
 import com.slavlend.Parser.Parser;
 
