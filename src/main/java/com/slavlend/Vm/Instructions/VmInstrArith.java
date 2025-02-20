@@ -53,20 +53,21 @@ public class VmInstrArith implements VmInstr {
                 vm.push(left / right);
             }
             case "%" -> vm.push((float)l % (float)r);
-            default -> IceVm.logger.error(addr, "operator not found: " + operator);
+            default -> IceVm.logger.error(addr, "operator not found!", operator);
         }
     }
 
     // проверка на типы
     private void checkForTypes(Object r, Object l) {
-        boolean stringOrFloatRight = !(r instanceof String) && !(r instanceof Float);
-        boolean stringOrFloatLeft = !(l instanceof String) && !(l instanceof Float);
-        if (stringOrFloatRight || (r instanceof String && !operator.equals("+"))) {
-            IceVm.logger.error(addr, "invalid value type for operator (" + operator + "): " + r);
+        boolean notStringOrFloatRight = !(r instanceof String) && !(r instanceof Float);
+        boolean notStringOrFloatLeft = !(l instanceof String) && !(l instanceof Float);
+
+        if (notStringOrFloatRight || (r instanceof String && !operator.equals("+"))) {
+            IceVm.logger.error(addr, "invalid value type for operator!", r.getClass().getSimpleName());
             return;
         }
-        if (stringOrFloatLeft || (l instanceof String && !operator.equals("+"))) {
-            IceVm.logger.error(addr, "invalid value type for operator (" + operator + "): " + l);
+        if (notStringOrFloatLeft || (l instanceof String && !operator.equals("+"))) {
+            IceVm.logger.error(addr, "invalid value type for operator!", l.getClass().getSimpleName());
             return;
         }
     }

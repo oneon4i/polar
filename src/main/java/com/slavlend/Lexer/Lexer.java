@@ -144,7 +144,7 @@ public class Lexer {
                     if (match('=')) {
                         addToken(TokenType.NOT_EQUAL, "!=");
                     } else {
-                        PolarLogger.exception("Only != operator available.", new Address(line));
+                        PolarLogger.exception("Only != operator available.", "!", new Address(line));
                     }
                     break;
                 }
@@ -180,7 +180,7 @@ public class Lexer {
                     } else if (Character.isLetter(current)) {
                         tokens.add(scanIdentifierOrKeyword(current));
                     } else {
-                        PolarLogger.exception("Unexpected character: ", new Address(line));
+                        PolarLogger.exception("Unexpected character.", String.valueOf(current), new Address(line));
                     }
                 }
             }
@@ -196,15 +196,16 @@ public class Lexer {
         while (peek() != '\'') {
             if (match('\n')) {
                 line += 1;
-                continue;
+                PolarLogger.exception("Unclosed string quotes.", text.toString(), new Address(line));
+                break;
             }
             if (isAtEnd()) {
-                PolarLogger.exception("Unclosed string quotes.", new Address(line));
+                PolarLogger.exception("Unclosed string quotes.", text.toString(), new Address(line));
             }
             text.append(advance());
         }
         if (isAtEnd()) {
-            PolarLogger.exception("Unclosed string quotes.", new Address(line));
+            PolarLogger.exception("Unclosed string quotes.", text.toString(), new Address(line));
         }
         advance();
         return text.toString();

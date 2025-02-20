@@ -55,7 +55,8 @@ public class VmInstrNewObj implements VmInstr {
     private void checkArgs(int parameterAmount, int argsAmount) {
         if (parameterAmount != argsAmount) {
             IceVm.logger.error(addr,
-                    "args and params not match: (expected:"+parameterAmount+",got:"+argsAmount +")");
+                    "constructor args and params not match: (expected:"+parameterAmount+",got:"+argsAmount +")",
+                    className);
         }
     }
 }

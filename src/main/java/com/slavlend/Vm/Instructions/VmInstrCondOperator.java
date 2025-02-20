@@ -31,7 +31,7 @@ public class VmInstrCondOperator implements VmInstr {
             case ">" -> vm.push((float)l > (float)r);
             case "<=" -> vm.push((float)l <= (float)r);
             case ">=" -> vm.push((float)l >= (float)r);
-            default -> throw new IllegalStateException("unexpected value: " + operator.operator);
+            default -> throw new VmException(addr, "invalid operator!", operator.operator);
         }
     }
 

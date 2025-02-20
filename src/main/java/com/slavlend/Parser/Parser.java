@@ -96,7 +96,7 @@ public class Parser {
             case BIGGER_EQUAL -> new Operator(consume(TokenType.BIGGER_EQUAL).value);
             case IS -> new Operator(consume(TokenType.IS).value);
             default -> {
-                PolarLogger.exception("Invalid Conditional Operator: " + tokenInfo(), new Address(tokens.get(current).line));
+                error("invalid conditional operator.", tokenInfo());
                 yield null;
             }
         };
@@ -410,14 +410,14 @@ public class Parser {
                         expr = new PipeExpression(expr, accessExpression);
                     }
                     else {
-                        PolarLogger.exception("Invalid Expression For Pipe: " + _expr.getClass().getName(), _expr.address());
+                        PolarLogger.exception("invalid expr for pipe!" + _expr.getClass().getName(), _expr.address());
                     }
                 }
                 if (expr instanceof PipeExpression) {
                     return ((PipeExpression) expr);
                 }
                 else {
-                    PolarLogger.exception("Invalid Expression During Parsing Pipe: "+ expr.getClass().getName(), expr.address());
+                    PolarLogger.exception("invalid expr during parsing pipe!", expr.getClass().getSimpleName(), expr.address());
                 }
             }
             else {
@@ -642,7 +642,7 @@ public class Parser {
                 }
             }
             else {
-                PolarLogger.exception("Invalid Statement Creation In Class: " + tokenInfo(), address());
+                PolarLogger.exception("invalid statement creation in class!", tokenInfo(), address());
             }
         }
         // брэйс
@@ -1046,7 +1046,7 @@ public class Parser {
                 expr = new PipeExpression(expr, accessExpression);
             }
             else {
-                PolarLogger.exception("Invalid Expression For Pipe: " + _expr.getClass().getName(), _expr.address());
+                PolarLogger.exception("invalid expr for pipe!", _expr.getClass().getName(), _expr.address());
             }
         }
 
@@ -1269,6 +1269,19 @@ public class Parser {
         }
         // трэйс ошибки
         PolarLogger.exception(message, new Address(token.line));
+    }
+
+    // вывод ошибки со значением
+    public void error(String message, String value) {
+        // токен
+        Token token;
+        if (current >= tokens.size()) {
+            token = tokens.get(current-1);
+        } else {
+            token = tokens.get(current);
+        }
+        // трэйс ошибки
+        PolarLogger.exception(message, value, new Address(token.line));
     }
 
     // токен инфо

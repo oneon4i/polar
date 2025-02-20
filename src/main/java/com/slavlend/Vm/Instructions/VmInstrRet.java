@@ -9,6 +9,7 @@ import lombok.Getter;
 для возврата, которое в дальнейшем ловится
 инструкцией Store
  */
+@SuppressWarnings("UnnecessaryToStringCall")
 @Getter
 public class VmInstrRet extends RuntimeException implements VmInstr {
     // адресс

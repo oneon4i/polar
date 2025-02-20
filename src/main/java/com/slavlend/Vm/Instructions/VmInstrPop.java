@@ -8,6 +8,7 @@ import com.slavlend.Vm.VmInstr;
 /*
 Удаление верхнего значения из стека VM
  */
+@SuppressWarnings("unused")
 public class VmInstrPop implements VmInstr {
     // адресс
     private final VmInAddr addr;

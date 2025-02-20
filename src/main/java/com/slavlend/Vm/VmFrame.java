@@ -29,7 +29,7 @@ public class VmFrame<K, V> {
         VmFrame<K, V> current = this;
         while (!current.getValues().containsKey(name)) {
             if (current.root == null) {
-                IceVm.logger.error(addr,"not found: " + name);
+                throw new VmException(addr,"not found.", name.toString());
             }
             current = current.root;
         }

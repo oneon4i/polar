@@ -10,7 +10,6 @@ import com.slavlend.Vm.VmInstr;
 /*
 Логика VM
  */
-@SuppressWarnings("ConstantValue")
 @Getter
 public class VmInstrLgcl implements VmInstr {
     // адресс
@@ -28,12 +27,8 @@ public class VmInstrLgcl implements VmInstr {
         Object r = vm.pop(addr);
         Object l = vm.pop(addr);
         switch (operator.operator) {
-            case "&&" -> {
-                vm.push((boolean) r && (boolean) l);
-            }
-            case "||" -> {
-                vm.push((boolean) r || (boolean) l);
-            }
+            case "&&" -> vm.push((boolean) r && (boolean) l);
+            case "||" -> vm.push((boolean) r || (boolean) l);
         }
     }
 

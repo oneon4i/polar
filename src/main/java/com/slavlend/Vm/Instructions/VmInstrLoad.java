@@ -32,7 +32,7 @@ public class VmInstrLoad implements VmInstr {
             } else if (vm.getFunctions().has(name))  {
                 vm.push(vm.getFunctions().lookup(addr, name));
             } else {
-                IceVm.logger.error(addr, "var not found: " + name);
+                IceVm.logger.error(addr, "var not found!", name);
             }
         } else {
             Object last = vm.pop(addr);
@@ -42,7 +42,7 @@ public class VmInstrLoad implements VmInstr {
                 } else if (vmObj.getClazz().getFunctions().has(name)) {
                     vm.push(vmObj.getClazz().getFunctions().lookup(addr, name));
                 } else {
-                    IceVm.logger.error(addr, "var not found: " + name);
+                    IceVm.logger.error(addr, "var not found!", vmObj.getClazz().getName() + "::" + name);
                 }
             } else {
                 VmClass clazz = (VmClass) last;
@@ -51,7 +51,7 @@ public class VmInstrLoad implements VmInstr {
                 } else if (clazz.getModFunctions().has(name)){
                     vm.push(clazz.getModFunctions().lookup(addr, name));
                 } else {
-                    IceVm.logger.error(addr, "var not found: " + name);
+                    IceVm.logger.error(addr, "mod var not found!", clazz.getName() + "::" + name);
                 }
             }
         }

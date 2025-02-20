@@ -57,10 +57,12 @@ public class VmInstrCall implements VmInstr {
         VmFunction fn;
         if (vmObj.getClazz().getFunctions().has(name)) {
             fn = vmObj.getClazz().getFunctions().lookup(addr, name);
-        } else {
+        } else if (vmObj.getScope().has(name)){
             fn = (VmFunction)vmObj.getScope().lookup(addr, name);
+        } else {
+            throw new VmException(addr, "function not found: " + vmObj.getClazz().getName(), name);
         }
-        checkArgs(fn.getArguments().size(), argsAmount);
+        checkArgs(vmObj.getClazz().getName() + "::" + name, fn.getArguments().size(), argsAmount);
         // вызов
         vmObj.call(addr, name, vm, shouldPushResult);
     }
@@ -72,10 +74,12 @@ public class VmInstrCall implements VmInstr {
         VmFunction fn;
         if (vmClass.getModFunctions().has(name)) {
             fn = vmClass.getModFunctions().lookup(addr, name);
-        } else {
+        } else if (vmClass.getModValues().has(name)) {
             fn = (VmFunction)vmClass.getModValues().lookup(addr, name).get();
+        } else {
+            throw new VmException(addr, "mod function not found: ", vmClass.getName() + "::" + name);
         }
-        checkArgs(fn.getArguments().size(), argsAmount);
+        checkArgs(vmClass.getName() + "::" + name, fn.getArguments().size(), argsAmount);
         // вызов модульной функции
         vmClass.getModFunctions().lookup(addr, name).exec(vm, shouldPushResult);
     }
@@ -100,10 +104,10 @@ public class VmInstrCall implements VmInstr {
             }
         }
         if (func == null) {
-            IceVm.logger.error(addr, "function not found: " + name + " in: " + last.getClass().getName());
+            IceVm.logger.error(addr, "function not found:", last.getClass().getName() + "::" + name);
         }
         else {
-            checkArgs(func.getParameterCount(), callArgs.size());
+            checkArgs(last.getClass().getName() + "::" + name, func.getParameterCount(), callArgs.size());
             try {
                 Object returned = func.invoke(last, callArgs.toArray());
                 // 👇 НЕ ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
@@ -125,7 +129,7 @@ public class VmInstrCall implements VmInstr {
             // аргументы
             int argsAmount = passArgs(vm, frame);
             VmFunction fn = ((VmFunction)frame.lookup(addr, name));
-            checkArgs(fn.getArguments().size(), argsAmount);
+            checkArgs(fn.getName(), fn.getArguments().size(), argsAmount);
             // вызов
             fn.exec(vm, shouldPushResult);
         } else {
@@ -134,24 +138,26 @@ public class VmInstrCall implements VmInstr {
             // вызов
             if (!vm.isCoreFunc(name)) {
                 if (vm.getFunctions().has(name)) {
-                    checkArgs(vm.getFunctions().lookup(addr, name).getArguments().size(), argsAmount);
+                    checkArgs(name,vm.getFunctions().lookup(addr, name).getArguments().size(), argsAmount);
                 }
-                else {
-                    checkArgs(((VmFunction)vm.getVariables().lookup(addr, name)).getArguments().size(), argsAmount);
+                else if (vm.getVariables().has(name)) {
+                    checkArgs(name,((VmFunction)vm.getVariables().lookup(addr, name)).getArguments().size(), argsAmount);
+                } else {
+                    IceVm.logger.error(addr, "function not found!", name);
                 }
                 vm.callGlobal(addr, name, shouldPushResult);
             } else {
-                checkArgs(vm.getCoreFunctions().lookup(addr, name).argsAmount(), argsAmount);
+                checkArgs(name, vm.getCoreFunctions().lookup(addr, name).argsAmount(), argsAmount);
                 vm.callGlobal(addr, name, shouldPushResult);
             }
         }
     }
 
     // проверка на колличество параметров и аргументов
-    private void checkArgs(int parameterAmount, int argsAmount) {
+    private void checkArgs(String value, int parameterAmount, int argsAmount) {
         if (parameterAmount != argsAmount) {
             IceVm.logger.error(addr,
-                    "args and params not match: (expected:"+parameterAmount+",got:"+argsAmount +")");
+                    "args and params not match (expected:"+parameterAmount+",got:"+argsAmount +")!", value);
         }
     }
 

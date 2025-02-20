@@ -68,7 +68,11 @@ public class IceVm {
                             + stack.get().size() + "(" + stack.get().toString() + ")" + Colors.ANSI_RESET
             );
         } catch (VmException exception) {
-            logger.error(exception.getAddr(), exception.getMessage());
+            if (exception.getValue() != null) {
+                logger.error(exception.getAddr(), exception.getMessage(), exception.getValue());
+            } else {
+                logger.error(exception.getAddr(), exception.getMessage());
+            }
         } catch (RuntimeException exception) {
             logger.error(new VmInAddr(-1), "java exception (" + exception.getMessage() + ")", exception);
         }

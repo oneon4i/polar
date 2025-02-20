@@ -7,7 +7,6 @@ import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Operator;
 import com.slavlend.Vm.Instructions.VmInstrArith;
 import lombok.Getter;
-import lombok.Setter;
 
 /*
 Арифмитическое выражение

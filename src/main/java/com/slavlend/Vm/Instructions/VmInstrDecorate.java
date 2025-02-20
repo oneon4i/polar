@@ -11,9 +11,9 @@ public class VmInstrDecorate implements VmInstr {
     // адресс
     private final VmInAddr addr;
     // декоратор
-    private VmVarContainer decorator;
+    private final VmVarContainer decorator;
     // функция
-    private VmFunction fn;
+    private final VmFunction fn;
 
 
     // конструктор

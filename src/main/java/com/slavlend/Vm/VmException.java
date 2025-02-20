@@ -11,6 +11,21 @@ public class VmException extends RuntimeException {
     private final VmInAddr addr;
     // сообщение
     private final String message;
+    // значение
+    private final String value;
+
+    /**
+     * Конструктор
+     * @param addr - адресс
+     * @param message - сообщение
+     * @param value - слово ссылающиеся
+     *              на ошибку
+     */
+    public VmException(VmInAddr addr, String message, String value) {
+        this.addr = addr;
+        this.message = message;
+        this.value = value;
+    }
 
     /**
      * Конструктор
@@ -20,5 +35,6 @@ public class VmException extends RuntimeException {
     public VmException(VmInAddr addr, String message) {
         this.addr = addr;
         this.message = message;
+        this.value = null;
     }
 }

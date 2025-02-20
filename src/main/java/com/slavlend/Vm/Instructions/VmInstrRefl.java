@@ -42,25 +42,34 @@ public class VmInstrRefl implements VmInstr {
                 callArgs.add(0, arg);
             }
             // ищем конструктор
-            Constructor constructor = null;
-            for (Constructor c : clazz.getConstructors()) {
-                if (c.getParameterCount() == argsAmount) {
-                    constructor = c; 
-                }
-            }
-            if (constructor == null) {
-                throw new VmException(
-                        addr, 
-                        "constructor with args amount: "
-                                + args + " not found for class: " 
-                                + clazz.getSimpleName()
-                );
-            }
+            Constructor constructor = findConstructor(clazz, argsAmount);
             Object o = constructor.newInstance(callArgs.toArray());
             vm.push(o);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new VmException(addr, e.getMessage());
+            throw new VmException(addr, name, e.getMessage());
         }
+    }
+
+    /*
+    Поиск конструктора
+     */
+    private Constructor findConstructor(Class<?> clazz, int argsAmount) {
+        Constructor constructor = null;
+        for (Constructor c : clazz.getConstructors()) {
+            if (c.getParameterCount() == argsAmount) {
+                constructor = c;
+            }
+        }
+        if (constructor == null) {
+            throw new VmException(
+                    addr,
+                    "constructor with args amount: "
+                            + args + " not found.",
+                    clazz.getSimpleName()
+            );
+        }
+
+        return constructor;
     }
 
     @Override
