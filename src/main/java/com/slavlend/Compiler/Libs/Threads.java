@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /*
-Потоки
+Библиотека для потоков и асинхронности
  */
 public class Threads {
     // многопоточка

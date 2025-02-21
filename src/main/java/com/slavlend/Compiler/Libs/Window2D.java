@@ -11,6 +11,10 @@ import com.slavlend.Compiler.Compiler;
 import com.slavlend.Vm.VmFunction;
 import lombok.Getter;
 
+/*
+Библиотека для работы с 2Д окном
+ */
+
 @Getter
 public class Window2D implements ApplicationListener {
     // при старте

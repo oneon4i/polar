@@ -1,6 +1,8 @@
 package com.slavlend.Compiler.Libs;
 
-// Рандомное число
+/*
+ Библиотека для рандома.
+ */
 public class Random {
     // рандом
     private final java.util.Random random = new java.util.Random();

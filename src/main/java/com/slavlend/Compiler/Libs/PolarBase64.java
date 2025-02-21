@@ -2,7 +2,8 @@ package com.slavlend.Compiler.Libs;
 import java.util.Base64;
 
 /*
-Библиотека для работы с BASE64 для vm
+Библиотека для работы с BASE64
+(by Sliva)
  */
 public class PolarBase64 {
 	/*

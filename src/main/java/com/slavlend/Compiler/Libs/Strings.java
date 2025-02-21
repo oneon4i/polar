@@ -1,7 +1,7 @@
 package com.slavlend.Compiler.Libs;
 
 /*
-Библиотека строк для VM
+Библиотека для работы со строками
  */
 public class Strings {
     public Object replace(String from, String what, String to) {

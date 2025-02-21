@@ -5,7 +5,7 @@ import com.slavlend.Vm.Instructions.VmInstrCondOperator;
 import java.util.HashMap;
 
 /*
-Библиотека мапы для VM
+Библиотека для работы со словарями/мапами
  */
 public class Map {
     private final HashMap<Object, Object> map = new HashMap<Object, Object>();

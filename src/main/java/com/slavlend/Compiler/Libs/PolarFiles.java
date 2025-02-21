@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 /*
-Библиотека для работы с файлами для vm
+Библиотека для работы с файлами
  */
 public class PolarFiles {
     public byte[] read_bytes(String path) {

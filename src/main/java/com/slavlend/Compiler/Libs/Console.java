@@ -5,7 +5,7 @@ import com.slavlend.Vm.Instructions.VmInstrCondOperator;
 import java.util.ArrayList;
 
 /*
-Библиотека консоли для VM
+Библиотека для работы с консолью
  */
 public class Console {
     public void clear() {

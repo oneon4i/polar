@@ -8,7 +8,8 @@ import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
 /*
-Библиотека криптографии для VM
+Библиотека для криптографии
+(by Sliva)
  */
 public class Crypto {
 
