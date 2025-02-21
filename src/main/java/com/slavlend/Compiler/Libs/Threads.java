@@ -33,7 +33,6 @@ public class Threads {
     // асинхронность
     public CompletableFuture<Object> async(VmFunction fn, Array args) {
         return CompletableFuture.supplyAsync(() -> {
-            System.out.println("Task in thread: " + Thread.currentThread().getName());
             // инициализируем стек под асинхронный поток
             Compiler.iceVm.initStackForThread();
             // помещаем аргументы в стек
