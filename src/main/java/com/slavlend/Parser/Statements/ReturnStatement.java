@@ -22,11 +22,6 @@ public class ReturnStatement implements Statement, Expression {
     private Address address = App.parser.address();
 
     @Override
-    public Statement copy() {
-        return new ReturnStatement(expr);
-    }
-
-    @Override
     public Address address() {
         return address;
     }

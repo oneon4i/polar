@@ -24,19 +24,6 @@ public class MatchStatement implements Statement {
         statements.add(statement);
     }
 
-    // копирование
-
-    @Override
-    public Statement copy() {
-        MatchStatement _copy = new MatchStatement(matchExpr);
-
-        for (Statement statement : statements) {
-            _copy.add(statement.copy());
-        }
-
-        return _copy;
-    }
-
     @Override
     public Address address() {
         return address;

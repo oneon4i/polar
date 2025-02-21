@@ -17,11 +17,6 @@ public class NextStatement extends RuntimeException implements Statement {
     private Address address = App.parser.address();
 
     @Override
-    public Statement copy() {
-        return new NextStatement();
-    }
-
-    @Override
     public Address address() {
         return address;
     }

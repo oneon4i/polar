@@ -268,3 +268,14 @@ func all_closures_tests() = {
     # put(closure_3) #
     closure_3()
 }
+
+@Tests.test
+func require_test() = {
+    func inner(a) {
+        require(a > 5) -> -1
+        return 0
+    }
+
+    assert(inner(6) == 0)
+    assert(inner(4) == -1)
+}

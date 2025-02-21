@@ -58,5 +58,6 @@ public enum TokenType {
     JUSE, // juse
     LAMBDA, // lambda
     GO, // ->
-    REPEAT // repeat
+    REPEAT, // repeat
+    REQUIRE // require
 }

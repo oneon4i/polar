@@ -32,11 +32,6 @@ public class JUseStatement implements Statement{
     }
 
     @Override
-    public Statement copy() {
-        return new JUseStatement(libName);
-    }
-
-    @Override
     public Address address() {
         return address;
     }

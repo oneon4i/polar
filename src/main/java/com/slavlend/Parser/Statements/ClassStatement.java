@@ -54,11 +54,6 @@ public class ClassStatement implements Statement {
     }
 
     @Override
-    public Statement copy() {
-        return new ClassStatement(getFullName(), getName(), getConstructor());
-    }
-
-    @Override
     public Address address() {
         return address;
     }

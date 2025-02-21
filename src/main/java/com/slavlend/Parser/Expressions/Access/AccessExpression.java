@@ -61,7 +61,6 @@ public class AccessExpression implements Expression, Statement {
         return _access;
     }
 
-    @Override
     public Statement copy() {
         return new AccessExpression(address, access.copy(), isStatement);
     }

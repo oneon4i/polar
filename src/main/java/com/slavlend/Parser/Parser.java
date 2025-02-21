@@ -267,6 +267,27 @@ public class Parser {
         return repeatStatement;
     }
 
+    // стэйтмент require
+    private Statement require() {
+        // паттерн
+        // require(...) -> ...
+        Address address = address();
+        // require
+        consume(TokenType.REQUIRE);
+        // логическое выражение
+        consume(TokenType.BRACKET);
+        Expression logical = expression();
+        consume(TokenType.BRACKET);
+        // go
+        consume(TokenType.GO);
+        // выражение для возврата
+        Expression returnExpr = expression();
+        // возвращаем стэйтмент
+        RequireStatement requireStatement = new RequireStatement(logical, returnExpr);
+        requireStatement.setAddress(address);
+        return requireStatement;
+    }
+
     // парсим стэйтмент
     public Statement statement() {
         // стэйтмент return
@@ -313,6 +334,10 @@ public class Parser {
         // стэйтмент repeat
         if (check(TokenType.REPEAT)) {
             return repeat();
+        }
+        // стэйтмент require
+        if (check(TokenType.REQUIRE)) {
+            return require();
         }
         // стэйтмент ассерт
         if (check(TokenType.ASSERT)) {

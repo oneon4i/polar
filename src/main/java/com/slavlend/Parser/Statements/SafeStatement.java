@@ -38,22 +38,6 @@ public class SafeStatement implements Statement {
         handleStatement.add(statement);
     }
 
-    // копирование
-    @Override
-    public Statement copy() {
-        SafeStatement _copy = new SafeStatement(variableName);
-
-        for (Statement statement : statements) {
-            _copy.add(statement.copy());
-        }
-
-        for (Statement statement : handleStatement) {
-            _copy.addHandleStatement(statement.copy());
-        }
-
-        return _copy;
-    }
-
     // адресс
     @Override
     public Address address() {

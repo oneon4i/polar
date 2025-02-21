@@ -25,18 +25,6 @@ public class DefaultStatement implements Statement {
         statements.add(statement);
     }
 
-    // копирование
-    @Override
-    public Statement copy() {
-        DefaultStatement _copy = new DefaultStatement();
-
-        for (Statement statement : statements) {
-            _copy.add(statement.copy());
-        }
-
-        return _copy;
-    }
-
     @Override
     public Address address() {
         return address;

@@ -4,20 +4,25 @@ import com.slavlend.App;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ConditionExpression;
+import com.slavlend.Parser.Expressions.Expression;
 import com.slavlend.Vm.Instructions.VmInstrIf;
 import com.slavlend.Vm.Instructions.VmInstrPush;
+import com.slavlend.Vm.Instructions.VmInstrRet;
 import com.slavlend.Vm.Instructions.VmInstrThrow;
 import com.slavlend.Vm.VmException;
 import lombok.Getter;
 import lombok.Setter;
 
 /*
-Стэйтмент для ассерта ( проверяет условие )
+Стэйтмент require. Возвращает значение
+если условие не выполняется
  */
 @Getter
-public class AssertStatement implements Statement {
-    // экспрешен
-    private final ConditionExpression expr;
+public class RequireStatement implements Statement {
+    // экспрешен логики
+    private final Expression logical;
+    // экспрешен возвратный
+    private final Expression retExpr;
     // аддресс
     @Setter
     private Address address = App.parser.address();
@@ -34,7 +39,7 @@ public class AssertStatement implements Statement {
         Compiler.code.visitInstr(ifInstr);
         Compiler.code.startWrite(ifInstr);
         ifInstr.setWritingConditions(true);
-        expr.compile();
+        logical.compile();
         ifInstr.setWritingConditions(false);
         Compiler.code.endWrite();
         // else
@@ -43,16 +48,14 @@ public class AssertStatement implements Statement {
         elseInstr.setWritingConditions(true);
         Compiler.code.visitInstr(new VmInstrPush(address.convert(), true));
         elseInstr.setWritingConditions(false);
-        Compiler.code.visitInstr(new VmInstrPush(address.convert(), new VmException(address.convert(), "assertion error")));
-        Compiler.code.visitInstr(
-                new VmInstrThrow(address.convert())
-        );
+        new ReturnStatement(retExpr).compile();
         Compiler.code.endWrite();
         ifInstr.setElse(elseInstr);
     }
 
     // конструктор
-    public AssertStatement(ConditionExpression expr) {
-        this.expr = expr;
+    public RequireStatement(Expression logical, Expression retExpr) {
+        this.logical = logical;
+        this.retExpr = retExpr;
     }
 }

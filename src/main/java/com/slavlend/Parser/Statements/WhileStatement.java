@@ -27,18 +27,6 @@ public class WhileStatement implements Statement {
         statements.add(statement);
     }
 
-    // копирование
-    @Override
-    public Statement copy() {
-        WhileStatement _copy = new WhileStatement(expression);
-
-        for (Statement statement : statements) {
-            _copy.add(statement.copy());
-        }
-
-        return _copy;
-    }
-
     // адресс
     @Override
     public Address address() {

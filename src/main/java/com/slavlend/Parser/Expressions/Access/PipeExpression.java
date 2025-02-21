@@ -28,11 +28,6 @@ public class PipeExpression implements Expression, Statement {
     }
 
     @Override
-    public Statement copy() {
-        return null;
-    }
-
-    @Override
     public Address address() {
         return address;
     }

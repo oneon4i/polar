@@ -30,11 +30,6 @@ public class UseLibStatement implements Statement{
     }
 
     @Override
-    public Statement copy() {
-        return new UseLibStatement(libName);
-    }
-
-    @Override
     public Address address() {
         return address;
     }

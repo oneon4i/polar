@@ -28,22 +28,6 @@ public class IfStatement implements Statement {
         statements.add(statement);
     }
 
-    // копирование
-    @Override
-    public Statement copy() {
-        IfStatement _copy = new IfStatement(expression);
-
-        for (Statement statement : statements) {
-            _copy.add(statement.copy());
-        }
-
-        if (elseCondition != null) {
-            _copy.elseCondition = (IfStatement) elseCondition.copy();
-        }
-
-        return _copy;
-    }
-
     @Override
     public Address address() {
         return address;

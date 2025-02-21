@@ -55,6 +55,7 @@ public class Lexer {
         put("juse", TokenType.JUSE);
         put("lambda", TokenType.LAMBDA);
         put("repeat", TokenType.REPEAT);
+        put("require", TokenType.REQUIRE);
     }};
 
     // сканнер
@@ -101,6 +102,7 @@ public class Lexer {
                         break;
                     }
                 }
+                case '%': addToken(TokenType.OPERATOR, "%"); break;
                 case '#': {
                     while (!isAtEnd() && !match('#')) advance();
                     break;
@@ -177,7 +179,7 @@ public class Lexer {
                 default: {
                     if (Character.isDigit(current)) {
                         tokens.add(scanNumber(current));
-                    } else if (Character.isLetter(current)) {
+                    } else if (Character.isLetter(current) || current == '_') {
                         tokens.add(scanIdentifierOrKeyword(current));
                     } else {
                         PolarLogger.exception("Unexpected character.", String.valueOf(current), new Address(line));

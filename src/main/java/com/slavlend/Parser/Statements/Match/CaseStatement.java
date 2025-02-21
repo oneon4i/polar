@@ -26,19 +26,6 @@ public class CaseStatement implements Statement {
         statements.add(statement);
     }
 
-    // копирование
-
-    @Override
-    public Statement copy() {
-        CaseStatement _copy = new CaseStatement(checkExpr);
-
-        for (Statement statement : statements) {
-            _copy.add(statement.copy());
-        }
-
-        return _copy;
-    }
-
     @Override
     public Address address() {
         return address;

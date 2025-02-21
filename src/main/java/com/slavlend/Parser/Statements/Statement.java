@@ -4,7 +4,6 @@ import com.slavlend.Parser.Address;
 
 // интерфейс для любого стэйтмента
 public interface Statement {
-    abstract Statement copy();
     abstract Address address();
     abstract void compile();
 }

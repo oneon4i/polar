@@ -36,19 +36,6 @@ public class EachStatement implements Statement {
         statements.add(statement);
     }
 
-    // копирование
-
-    @Override
-    public Statement copy() {
-        EachStatement _copy = new EachStatement(listVariable, variableName);
-
-        for (Statement statement : statements) {
-            _copy.add(statement.copy());
-        }
-
-        return _copy;
-    }
-
     // адресс
     @Override
     public Address address() {

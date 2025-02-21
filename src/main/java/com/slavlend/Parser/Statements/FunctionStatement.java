@@ -39,17 +39,6 @@ public class FunctionStatement implements Statement {
     }
 
     @Override
-    public Statement copy() {
-        FunctionStatement _copy = new FunctionStatement(fullName, name, arguments);
-
-        for (Statement statement : body) {
-            _copy.add(statement.copy());
-        }
-
-        return _copy;
-    }
-
-    @Override
     public Address address() {
         return address;
     }

@@ -19,12 +19,6 @@ public class RaiseStatement implements Statement {
     @Setter
     private Address address = App.parser.address();
 
-    // копирование
-    @Override
-    public Statement copy() {
-        return new RaiseStatement(throwableExpr);
-    }
-
     // адресс
     @Override
     public Address address() {

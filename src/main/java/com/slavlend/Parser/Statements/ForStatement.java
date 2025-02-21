@@ -32,18 +32,6 @@ public class ForStatement implements Statement {
         statements.add(statement);
     }
 
-    // копирование
-    @Override
-    public Statement copy() {
-        ForStatement _copy = new ForStatement(logic, variable, valueExpr);
-
-        for (Statement statement : statements) {
-            _copy.add(statement.copy());
-        }
-
-        return _copy;
-    }
-
     // адресс
     @Override
     public Address address() {

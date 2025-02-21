@@ -24,11 +24,6 @@ public class BlockStatement implements Statement {
     }
 
     @Override
-    public Statement copy() {
-        throw new RuntimeException("cannot copy block statement");
-    }
-
-    @Override
     public Address address() {
         return address;
     }
