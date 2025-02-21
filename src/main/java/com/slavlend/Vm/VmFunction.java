@@ -52,6 +52,7 @@ public class VmFunction implements VmInstrContainer {
     /**
      * Выполнение функции
      * @param vm - ВМ
+     * @param shouldPushResult - положить ли результат в стек
      */
     public void exec(IceVm vm, boolean shouldPushResult) {
         scope.set(new VmFrame<>());
@@ -71,11 +72,39 @@ public class VmFunction implements VmInstrContainer {
                 instr.run(vm, scope.get());
             }
         } catch (VmInstrRet e) {
-            if (shouldPushResult) {
-                e.pushResult(vm, scope.get());
+            e.pushResult(vm, scope.get());
+            if (!shouldPushResult) {
+                vm.pop(addr);
             }
             return;
         }
+    }
+
+    /**
+     * асинхронное выполнение
+     * @param vm - ВМ
+     */
+    public Object execAsync(IceVm vm) {
+        scope.set(new VmFrame<>());
+        if (getClosure().get() != null) {
+            getScope().get().getValues().putAll(closure.get().getValues());
+        }
+        if (definedFor == null) {
+            getScope().get().setRoot(vm.getVariables());
+        }
+        loadArgs(vm);
+        if (definedFor != null) {
+            scope.get().set("this", definedFor);
+        }
+        try {
+            // исполняем функцию
+            for (VmInstr instr : instructions) {
+                instr.run(vm, scope.get());
+            }
+        } catch (VmInstrRet e) {
+            return e.getResult(vm, scope.get());
+        }
+        return null;
     }
 
     /**

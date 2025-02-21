@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Stack;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /*
 Виртуальная машина ICE
@@ -14,6 +16,8 @@ import java.util.Stack;
 public class IceVm {
     // стек объектов
     private final ThreadLocal<Stack<Object>> stack = new ThreadLocal<>();
+    // асинхронный пул потоков
+    private final ExecutorService asyncExecutor = Executors.newCachedThreadPool();
     // хранилище
     private final VmFrame<String, Object> variables = new VmFrame<>();
     private final VmFrame<String, VmFunction> functions = new VmFrame<>();
@@ -67,6 +71,8 @@ public class IceVm {
                     Colors.ANSI_BLUE + "🧊 Exec time: " + benchmark.end() + "ms, stack size: "
                             + stack.get().size() + "(" + stack.get().toString() + ")" + Colors.ANSI_RESET
             );
+            // выключаем асинхронный пул потоков
+            asyncExecutor.shutdown();
         } catch (VmException exception) {
             if (exception.getValue() != null) {
                 logger.error(exception.getAddr(), exception.getMessage(), exception.getValue());

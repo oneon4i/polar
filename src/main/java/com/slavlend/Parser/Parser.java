@@ -38,6 +38,7 @@ public class Parser {
         put("lib.base64", "Libraries/base64.polar");
         put("lib.crypto", "Libraries/crypto.polar");
         put("lib.tests", "Libraries/tests.polar");
+        put("lib.events", "Libraries/events.polar");
     }};
 
     // путь эвайронмента (окружения)

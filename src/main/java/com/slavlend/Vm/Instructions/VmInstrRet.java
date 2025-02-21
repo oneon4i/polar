@@ -28,6 +28,13 @@ public class VmInstrRet extends RuntimeException implements VmInstr {
         }
     }
 
+    public Object getResult(IceVm vm, VmFrame<String, Object> scope) {
+        for (VmInstr i : ret.getVarContainer()) {
+            i.run(vm, scope);
+        }
+        return vm.pop(addr);
+    }
+
     @Override
     public void run(IceVm vm, VmFrame<String, Object> scope) {
         throw this;

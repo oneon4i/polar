@@ -5,11 +5,13 @@ import com.slavlend.Compiler.Compiler;
 import com.slavlend.Parser.Address;
 import com.slavlend.Parser.Expressions.ConditionExpression;
 import com.slavlend.Parser.Expressions.Expression;
+import com.slavlend.PolarLogger;
 import com.slavlend.Vm.Instructions.VmInstrIf;
 import com.slavlend.Vm.Instructions.VmInstrPush;
 import com.slavlend.Vm.Instructions.VmInstrRet;
 import com.slavlend.Vm.Instructions.VmInstrThrow;
 import com.slavlend.Vm.VmException;
+import com.slavlend.Vm.VmFunction;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,6 +36,11 @@ public class RequireStatement implements Statement {
 
     @Override
     public void compile() {
+        // проверяем, находимся ли мы в блоке функции
+        if (Compiler.code.getWriteTo().empty()
+                || !(Compiler.code.getWriteTo().lastElement() instanceof VmFunction)) {
+            PolarLogger.exception("can't use 'require' outside of a func.", address);
+        }
         // условие
         VmInstrIf ifInstr = new VmInstrIf(address.convert());
         Compiler.code.visitInstr(ifInstr);

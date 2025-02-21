@@ -4,11 +4,16 @@ import com.slavlend.Compiler.Compiler;
 import com.slavlend.Vm.VmFunction;
 import com.slavlend.Vm.VmObj;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /*
 Потоки
  */
 public class Threads {
-    public void start(VmFunction fn, Array args) {
+    // многопоточка
+    public Thread start(VmFunction fn, Array args) {
         // создаем новый поток
         Thread thread = new Thread() {
             @Override
@@ -22,5 +27,19 @@ public class Threads {
             }
         };
         thread.start();
+        return thread;
+    }
+
+    // асинхронность
+    public CompletableFuture<Object> async(VmFunction fn, Array args) {
+        return CompletableFuture.supplyAsync(() -> {
+            System.out.println("Task in thread: " + Thread.currentThread().getName());
+            // инициализируем стек под асинхронный поток
+            Compiler.iceVm.initStackForThread();
+            // помещаем аргументы в стек
+            Compiler.iceVm.push(args);
+            // запускаем
+            return fn.execAsync(Compiler.iceVm);
+        }, Compiler.iceVm.getAsyncExecutor());
     }
 }
