@@ -48,13 +48,15 @@ public class IceVm {
      * @param code - код для запуска
      *             кода в виртуальной машине
      */
-    public void run(VmCode code, boolean isDebugMode) {
+    public void run(VmCode code, boolean isDebugMode)  {
         // запуск
         try {
             // выводим байткод (инструкции вм)
             if (isDebugMode) {
                 printByteCode(code);
             }
+            // дефайн переменных среды
+            variables.set("__VM__", this);
             // запускаем бенчмарк
             VmBenchmark benchmark = new VmBenchmark();
             benchmark.start();
@@ -162,7 +164,7 @@ public class IceVm {
      * Вызывает глобальную функцию
      * @param name - имя для вызова
      */
-    public void callGlobal(VmInAddr addr, String name, boolean shouldPushResult) {
+    public void callGlobal(VmInAddr addr, String name, boolean shouldPushResult)  {
         if (functions.getValues().containsKey(name)) {
             functions.lookup(addr, name).exec(this, shouldPushResult);
         } else if (variables.getValues().containsKey(name)){

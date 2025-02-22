@@ -58,6 +58,9 @@ public class PolarLogger implements VmErrLogger {
         System.out.println("│ at line: " + addr.getLine());
         System.out.println("│ thread: " + Thread.currentThread().getName());
         System.out.println("│ java stack trace: ");
+        for (StackTraceElement elem : exception.getStackTrace()) {
+            System.out.println(elem);
+        }
         System.out.println("╰");
         System.exit(1);
     }

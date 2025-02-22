@@ -41,7 +41,7 @@ public class BlockStatement implements Statement {
         for (Statement s : statements) {
             // Если функция или класс - ток компилируем
             if (s instanceof FunctionStatement
-                    || s instanceof ClassStatement) {
+                    || s instanceof ClassStatement || s instanceof UseLibStatement) {
                 s.compile();
             }
         }

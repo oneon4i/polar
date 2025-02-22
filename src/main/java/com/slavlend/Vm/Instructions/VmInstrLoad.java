@@ -22,7 +22,7 @@ public class VmInstrLoad implements VmInstr {
     }
 
     @Override
-    public void run(IceVm vm, VmFrame<String, Object> frame) {
+    public void run(IceVm vm, VmFrame<String, Object> frame)  {
         if (!hasPrevious) {
             if (frame.has(name)) {
                 vm.load(addr, frame, name);

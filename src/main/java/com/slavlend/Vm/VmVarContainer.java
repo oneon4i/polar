@@ -24,7 +24,7 @@ public class VmVarContainer implements VmInstrContainer{
         this.varContainer.add(instr);
     }
 
-    public Object exec() {
+    public Object exec()  {
         for (VmInstr instr : varContainer) {
             instr.run(Compiler.iceVm, Compiler.iceVm.getVariables());
         }

@@ -5,9 +5,7 @@ Coroutines.start_coro_loop()
 repeat (10) {
     Coroutines.run(lambda()->{
         put('before')
-        raise(1)
+        raise new CoroWait(5000)
         put('after')
     })
 }
-
-Coroutines.end_coro_loop()

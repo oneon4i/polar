@@ -24,7 +24,7 @@ public class VmInstrNewObj implements VmInstr {
     }
 
     @Override
-    public void run(IceVm vm, VmFrame<String, Object> frame) {
+    public void run(IceVm vm, VmFrame<String, Object> frame)  {
         // конструктор
         int amount = passArgs(vm, frame);
         VmClass clazz = vm.getClasses().lookup(addr, className);
@@ -43,7 +43,7 @@ public class VmInstrNewObj implements VmInstr {
     }
 
     // передача аргументов
-    private int passArgs(IceVm vm, VmFrame<String, Object> frame) {
+    private int passArgs(IceVm vm, VmFrame<String, Object> frame)  {
         int size = vm.stack().size();
         for (VmInstr instr : args.getVarContainer()) {
             instr.run(vm, frame);

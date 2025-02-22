@@ -15,7 +15,7 @@ public class VmObj {
     private final VmInAddr addr;
 
     // конструктор
-    public VmObj(IceVm vm, VmClass clazz, VmInAddr addr) {
+    public VmObj(IceVm vm, VmClass clazz, VmInAddr addr)  {
         this.clazz = clazz;
         this.addr = addr;
         for (int i = clazz.getConstructor().size()-1; i >= 0; i--) {
@@ -33,7 +33,7 @@ public class VmObj {
      * @param name - имя функции
      * @param vm - ВМ
      */
-    public void call(VmInAddr inAddr, String name, IceVm vm, boolean shouldPushResult) {
+    public void call(VmInAddr inAddr, String name, IceVm vm, boolean shouldPushResult)  {
         // копируем и вызываем функцию
         VmFunction func;
         if (clazz.getFunctions().getValues().containsKey(name)) {

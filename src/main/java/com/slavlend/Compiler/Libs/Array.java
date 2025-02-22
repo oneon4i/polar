@@ -69,4 +69,7 @@ public class Array {
         arr.array = values;
         return arr;
     }
+    public void del_all(Array arr) {
+        this.array.removeAll(arr.array);
+    }
 }

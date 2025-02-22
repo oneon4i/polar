@@ -22,13 +22,13 @@ public class VmInstrRet extends RuntimeException implements VmInstr {
         this.addr = addr;
     }
 
-    public void pushResult(IceVm vm, VmFrame<String, Object> scope) {
+    public void pushResult(IceVm vm, VmFrame<String, Object> scope)  {
         for (VmInstr i : ret.getVarContainer()) {
             i.run(vm, scope);
         }
     }
 
-    public Object getResult(IceVm vm, VmFrame<String, Object> scope) {
+    public Object getResult(IceVm vm, VmFrame<String, Object> scope)  {
         for (VmInstr i : ret.getVarContainer()) {
             i.run(vm, scope);
         }

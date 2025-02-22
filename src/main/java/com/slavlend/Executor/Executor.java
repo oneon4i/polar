@@ -11,6 +11,7 @@ import com.slavlend.Parser.Parser;
 import com.slavlend.PolarLogger;
 import com.slavlend.System.PolarSystem;
 import com.slavlend.Vm.IceVm;
+import com.slavlend.Vm.VmThrowable;
 
 import java.nio.file.Paths;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 @SuppressWarnings({"DuplicateExpressions"})
 public class Executor {
     // запуск polar-файла
-    public static void exec(ExecutorSettings settings) {
+    public static void exec(ExecutorSettings settings)  {
         // статус - парсинг
         System.out.println(Colors.ANSI_LIME + "Analyzing code..." + Colors.ANSI_RESET);
         System.out.println("╭ Parsing...");

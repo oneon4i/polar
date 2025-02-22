@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Vm.VmFunction;
+import com.slavlend.Vm.VmThrowable;
 import lombok.Getter;
 
 /*
@@ -46,7 +47,11 @@ public class Window2D implements ApplicationListener {
     @Override
     public void create() {
         spriteBatch = new SpriteBatch();
-        onStart.exec(Compiler.iceVm, false);
+        try {
+            onStart.exec(Compiler.iceVm, false);
+        } catch (VmThrowable e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -57,7 +62,11 @@ public class Window2D implements ApplicationListener {
     @Override
     public void render() {
         spriteBatch.begin();
-        onUpdate.exec(Compiler.iceVm, false);
+        try {
+            onUpdate.exec(Compiler.iceVm, false);
+        } catch (VmThrowable e) {
+            throw new RuntimeException(e);
+        }
         spriteBatch.end();
     }
 

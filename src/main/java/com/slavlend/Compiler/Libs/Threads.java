@@ -2,11 +2,10 @@ package com.slavlend.Compiler.Libs;
 
 import com.slavlend.Compiler.Compiler;
 import com.slavlend.Vm.VmFunction;
-import com.slavlend.Vm.VmObj;
+import com.slavlend.Vm.VmThrowable;
+import lombok.SneakyThrows;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /*
 Библиотека для потоков и асинхронности
@@ -16,6 +15,7 @@ public class Threads {
     public Thread start(VmFunction fn, Array args) {
         // создаем новый поток
         Thread thread = new Thread() {
+            @SneakyThrows
             @Override
             public void run() {
                 // инициализируем стек под поток
@@ -38,7 +38,11 @@ public class Threads {
             // помещаем аргументы в стек
             Compiler.iceVm.push(args);
             // запускаем
-            return fn.execAsync(Compiler.iceVm);
+            try {
+                return fn.execAsync(Compiler.iceVm);
+            } catch (VmThrowable e) {
+                return null;
+            }
         }, Compiler.iceVm.getAsyncExecutor());
     }
 }

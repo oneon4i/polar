@@ -24,7 +24,7 @@ public class VmInstrDecorate implements VmInstr {
     }
 
     @Override
-    public void run(IceVm vm, VmFrame<String, Object> frame) {
+    public void run(IceVm vm, VmFrame<String, Object> frame)  {
         // получаем декоратор
         VmFunction decoratorFn = (VmFunction) decorator.exec();
         // пушим функцию

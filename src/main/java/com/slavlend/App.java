@@ -4,6 +4,7 @@ import com.slavlend.Executor.Executor;
 import com.slavlend.Executor.ExecutorSettings;
 import com.slavlend.Parser.Parser;
 import com.slavlend.Ver.PolarVersion;
+import com.slavlend.Vm.VmThrowable;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -21,7 +22,7 @@ public class App
     /*
     Точка входа в приложение
      */
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         // устанавливаем кодировку UTF-8
         System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
         // заголовочек

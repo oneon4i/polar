@@ -34,7 +34,7 @@ public class VmLazy {
      * Получение значения
      * @return вычисленное значение
      */
-    public Object get() {
+    public Object get()  {
         if (value == null) {
             value = lazyContainer.exec();
         }
@@ -44,7 +44,7 @@ public class VmLazy {
     /**
      * Вычисление значения
      */
-    public void eval() {
+    public void eval()  {
         if (value == null) {
             value = lazyContainer.exec();
         }

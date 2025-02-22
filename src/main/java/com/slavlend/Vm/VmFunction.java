@@ -50,17 +50,23 @@ public class VmFunction implements VmInstrContainer {
     }
 
     /**
+     * Создание скоупа
+     */
+    public VmFrame<String, Object> makeScope(IceVm vm) {
+        VmFrame<String, Object> newScope = new VmFrame<>();
+        newScope.setRoot(vm.getVariables());
+        return newScope;
+    }
+
+    /**
      * Выполнение функции
      * @param vm - ВМ
      * @param shouldPushResult - положить ли результат в стек
      */
-    public void exec(IceVm vm, boolean shouldPushResult) {
-        scope.set(new VmFrame<>());
+    public void exec(IceVm vm, boolean shouldPushResult)  {
+        scope.set(makeScope(vm));
         if (getClosure().get() != null) {
             getScope().get().getValues().putAll(closure.get().getValues());
-        }
-        if (definedFor == null) {
-            getScope().get().setRoot(vm.getVariables());
         }
         loadArgs(vm);
         if (definedFor != null) {
@@ -84,13 +90,10 @@ public class VmFunction implements VmInstrContainer {
      * асинхронное выполнение
      * @param vm - ВМ
      */
-    public Object execAsync(IceVm vm) {
-        scope.set(new VmFrame<>());
+    public Object execAsync(IceVm vm)  {
+        scope.set(makeScope(vm));
         if (getClosure().get() != null) {
             getScope().get().getValues().putAll(closure.get().getValues());
-        }
-        if (definedFor == null) {
-            getScope().get().setRoot(vm.getVariables());
         }
         loadArgs(vm);
         if (definedFor != null) {
