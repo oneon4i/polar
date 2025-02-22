@@ -20,6 +20,10 @@ public class VmInstrCondOperator implements VmInstr {
         this.operator = operator;
     }
 
+    public static <T> T cast(Class<T> clazz, Object o) {
+        return clazz.cast(o);
+    }
+
     @Override
     public void run(IceVm vm, VmFrame<String, Object> frame) {
         Object r = vm.pop(addr);
@@ -27,10 +31,34 @@ public class VmInstrCondOperator implements VmInstr {
         switch (operator.operator) {
             case "==" -> vm.push(equal(l, r));
             case "!=" -> vm.push(!equal(l, r));
-            case "<" -> vm.push((float)l < (float)r);
-            case ">" -> vm.push((float)l > (float)r);
-            case "<=" -> vm.push((float)l <= (float)r);
-            case ">=" -> vm.push((float)l >= (float)r);
+            case "<" -> {
+                if (l instanceof Float && r instanceof Float) {
+                    vm.push((float) l < (float) r);
+                } else {
+                    throw new VmException(addr, "Not a number.", (l instanceof Number ? l : r).toString());
+                }
+            }
+            case ">" -> {
+                if (l instanceof Float && r instanceof Float) {
+                    vm.push((float) l > (float) r);
+                } else {
+                    throw new VmException(addr, "Not a number.", (l instanceof Number ? l : r).toString());
+                }
+            }
+            case "<=" -> {
+                if (l instanceof Float && r instanceof Float) {
+                    vm.push((float) l <= (float) r);
+                } else {
+                    throw new VmException(addr, "Not a number.", (l instanceof Number ? l : r).toString());
+                }
+            }
+            case ">=" -> {
+                if (l instanceof Float && r instanceof Float) {
+                    vm.push((float) l >= (float) r);
+                } else {
+                    throw new VmException(addr, "Not a number.", (l instanceof Number ? l : r).toString());
+                }
+            }
             default -> throw new VmException(addr, "invalid operator!", operator.operator);
         }
     }

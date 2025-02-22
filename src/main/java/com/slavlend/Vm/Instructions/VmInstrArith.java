@@ -63,11 +63,11 @@ public class VmInstrArith implements VmInstr {
         boolean notStringOrFloatLeft = !(l instanceof String) && !(l instanceof Float);
 
         if (notStringOrFloatRight || (r instanceof String && !operator.equals("+"))) {
-            IceVm.logger.error(addr, "invalid value type for operator!", r.getClass().getSimpleName());
+            IceVm.logger.error(addr, "invalid value type for operator: " + operator, r.getClass().getSimpleName());
             return;
         }
         if (notStringOrFloatLeft || (l instanceof String && !operator.equals("+"))) {
-            IceVm.logger.error(addr, "invalid value type for operator!", l.getClass().getSimpleName());
+            IceVm.logger.error(addr, "invalid value type for operator: " + operator, l.getClass().getSimpleName());
             return;
         }
     }

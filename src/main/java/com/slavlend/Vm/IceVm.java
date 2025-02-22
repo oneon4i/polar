@@ -1,6 +1,7 @@
 package com.slavlend.Vm;
 
 import com.slavlend.Colors;
+import com.slavlend.PolarLogger;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -63,8 +64,16 @@ public class IceVm {
             // инициализация стека
             initStackForThread();
             // исполняем код
-            for (VmInstr instr : code.getInstructions()) {
-                instr.run(this, variables);
+            try {
+                for (VmInstr instr : code.getInstructions()) {
+                    instr.run(this, variables);
+                }
+            } catch (VmException e) {
+                if (e.getValue() != null) {
+                    PolarLogger.polarLogger.error(e.getAddr(), e.getMessage(), e.getValue());
+                } else {
+                    PolarLogger.polarLogger.error(e.getAddr(), e.getMessage());
+                }
             }
             // останавливаем бенчмарк и
             // выводим время исполнения

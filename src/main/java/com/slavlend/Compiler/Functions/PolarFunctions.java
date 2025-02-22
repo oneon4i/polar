@@ -1,6 +1,8 @@
 package com.slavlend.Compiler.Functions;
 
 import com.slavlend.Compiler.Compiler;
+import com.slavlend.Parser.Address;
+import com.slavlend.PolarLogger;
 import com.slavlend.Vm.VmCoreFunction;
 import com.slavlend.Vm.VmException;
 import com.slavlend.Vm.VmInAddr;
@@ -156,6 +158,20 @@ public class PolarFunctions {
         }
     }
 
+    // ошибка
+    public static class PanicFn implements VmCoreFunction {
+        @Override
+        public Object exec(VmInAddr addr) {
+            PolarLogger.exception(Compiler.iceVm.pop(addr).toString(), new Address(addr.getLine()));
+            return null;
+        }
+
+        @Override
+        public int argsAmount() {
+            return 1;
+        }
+    }
+
     // Объявление
     public static void provide() {
         Compiler.iceVm.getCoreFunctions().set("put", new PutFn());
@@ -166,5 +182,6 @@ public class PolarFunctions {
         Compiler.iceVm.getCoreFunctions().set("bool", new ToBoolFn());
         Compiler.iceVm.getCoreFunctions().set("number", new ToFloatFn());
         Compiler.iceVm.getCoreFunctions().set("string", new ToStringFn());
+        Compiler.iceVm.getCoreFunctions().set("panic", new PanicFn());
     }
 }

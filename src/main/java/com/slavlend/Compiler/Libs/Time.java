@@ -13,8 +13,15 @@ public class Time {
     /*
     Получение текущего времени в мс
      */
-    public long now_milliseconds() {
+    public long now_mills() {
         return System.currentTimeMillis();
+    }
+
+    /*
+    Получение текущего времени в мс с оффсетом
+     */
+    public long now_mills_offset(Float offset) {
+        return System.currentTimeMillis() + offset.longValue();
     }
 
     /*
@@ -23,6 +30,12 @@ public class Time {
     public long now_seconds() {
         return System.currentTimeMillis() / 1000;
     }
+
+    /*
+    Сравнение
+     */
+    public boolean is_greater(long left, long right) { return left > right; }
+    public boolean is_less(long left, long right) { return left < right; }
 
     /*
     Из таймстампа

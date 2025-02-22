@@ -78,7 +78,7 @@ public class VmInstrCall implements VmInstr {
         } else if (vmClass.getModValues().has(name)) {
             fn = (VmFunction)vmClass.getModValues().lookup(addr, name).get();
         } else {
-            throw new VmException(addr, "mod function not found: ", vmClass.getName() + "::" + name);
+            throw new VmException(addr, "mod function not found.", vmClass.getName() + "::" + name);
         }
         checkArgs(vmClass.getName() + "::" + name, fn.getArguments().size(), argsAmount);
         // вызов модульной функции

@@ -1,6 +1,8 @@
 package com.slavlend.Compiler.Libs;
 
 import com.slavlend.Compiler.Compiler;
+import com.slavlend.PolarLogger;
+import com.slavlend.Vm.VmException;
 import com.slavlend.Vm.VmFunction;
 import com.slavlend.Vm.VmThrowable;
 import lombok.SneakyThrows;
@@ -23,7 +25,15 @@ public class Threads {
                 // помещаем аргументы в стек
                 Compiler.iceVm.push(args);
                 // вызов функции
-                fn.exec(Compiler.iceVm, false);
+                try {
+                    fn.exec(Compiler.iceVm, false);
+                } catch (VmException e) {
+                    if (e.getValue() != null) {
+                        PolarLogger.polarLogger.error(e.getAddr(), e.getMessage(), e.getValue());
+                    } else {
+                        PolarLogger.polarLogger.error(e.getAddr(), e.getMessage());
+                    }
+                }
             }
         };
         thread.start();
@@ -41,6 +51,13 @@ public class Threads {
             try {
                 return fn.execAsync(Compiler.iceVm);
             } catch (VmThrowable e) {
+                return null;
+            } catch (VmException e) {
+                if (e.getValue() != null) {
+                    PolarLogger.polarLogger.error(e.getAddr(), e.getMessage(), e.getValue());
+                } else {
+                    PolarLogger.polarLogger.error(e.getAddr(), e.getMessage());
+                }
                 return null;
             }
         }, Compiler.iceVm.getAsyncExecutor());
