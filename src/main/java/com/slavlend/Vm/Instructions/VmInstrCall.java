@@ -121,9 +121,6 @@ public class VmInstrCall implements VmInstr {
                     IceVm.logger.error(addr, e.getMessage());
                 }
                 else {
-                    if (e.getCause() instanceof VmThrowable || e.getCause() instanceof VmInstrRet) {
-                        throw e.getCause();
-                    }
                     IceVm.logger.error(addr, e.getCause().toString());
                 }
             }
