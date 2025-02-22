@@ -41,6 +41,7 @@ public class Parser {
         put("lib.events", "Libraries/events.polar");
         put("lib.reflection", "Libraries/reflection.polar");
         put("lib.time", "Libraries/time.polar");
+        put("lib.files", "Libraries/files.polar");
     }};
 
     // путь эвайронмента (окружения)
