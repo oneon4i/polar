@@ -8,7 +8,7 @@ use 'lib.crypto'
 
 @Tests.test
 func hello_world_test() = {
-    put('Hello World!')
+    put('Hello\n World!')
 }
 
 @Tests.test

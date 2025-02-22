@@ -192,10 +192,49 @@ public class Lexer {
         return tokens;
     }
 
+    // escape-коды
+    private void parseEscape(StringBuilder text) {
+        switch (next()) {
+            case 'n' -> {
+                // забираем \
+                advance();
+                // забираем n
+                advance();
+                // добавляем символ
+                text.append('\n');
+                break;
+            }
+            case 'r' -> {
+                // забираем \
+                advance();
+                // забираем n
+                advance();
+                // добавляем символ
+                text.append('\r');
+                break;
+            }
+            case 't' -> {
+                // забираем \
+                advance();
+                // забираем n
+                advance();
+                // добавляем символ
+                text.append('\t');
+                break;
+            }
+            default -> {
+                break;
+            }
+        }
+    }
+
     // сканируем строку
     private String scanString() {
         StringBuilder text = new StringBuilder();
         while (peek() != '\'') {
+            if (peek() == '\\') {
+                parseEscape(text);
+            }
             if (match('\n')) {
                 line += 1;
                 PolarLogger.exception("Unclosed string quotes.", text.toString(), new Address(line));
@@ -261,6 +300,13 @@ public class Lexer {
     private char peek() {
         if (isAtEnd()) return '\1';
         return code.charAt(current);
+    }
+
+    // символ на следующей позиции без добавления
+    // еденицы к текущему символу
+    private char next() {
+        if (current+1 >= code.length()) return '\1';
+        return code.charAt(current+1);
     }
 
     // добавление токена
