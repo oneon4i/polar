@@ -9,6 +9,6 @@ import java.util.ArrayList;
  */
 public class Console {
     public void clear() {
-        System.out.flush();
+        java.lang.System.out.flush();
     }
 }
