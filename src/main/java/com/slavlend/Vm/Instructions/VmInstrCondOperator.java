@@ -35,14 +35,14 @@ public class VmInstrCondOperator implements VmInstr {
                 if (l instanceof Float && r instanceof Float) {
                     vm.push((float) l < (float) r);
                 } else {
-                    throw new VmException(addr, "Not a number.", (l instanceof Number ? l : r).toString());
+                    throw new VmException(addr, "Not a number.", (l instanceof Number ? r : l).toString());
                 }
             }
             case ">" -> {
                 if (l instanceof Float && r instanceof Float) {
                     vm.push((float) l > (float) r);
                 } else {
-                    throw new VmException(addr, "Not a number.", (l instanceof Number ? l : r).toString());
+                    throw new VmException(addr, "Not a number.", (l instanceof Number ? r : l).toString());
                 }
             }
             case "<=" -> {

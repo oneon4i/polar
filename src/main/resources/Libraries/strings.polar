@@ -23,4 +23,10 @@ class Strings() = {
     mod func lower(str) = {
         return(Strings.reflected.lower(str))
     }
+    mod func is_letter(str) = {
+        return Strings.reflected.is_letter(str)
+    }
+    mod func is_number(str) = {
+        return Strings.reflected.is_number(str)
+    }
 }

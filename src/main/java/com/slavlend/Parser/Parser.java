@@ -42,6 +42,7 @@ public class Parser {
         put("lib.reflection", "Libraries/reflection.polar");
         put("lib.time", "Libraries/time.polar");
         put("lib.files", "Libraries/files.polar");
+        put("lib.system", "Libraries/system.polar");
     }};
 
     // путь эвайронмента (окружения)
@@ -147,7 +148,7 @@ public class Parser {
                 // аргументы
                 consume(TokenType.BRACKET);
 
-                while (!match(")")) {
+                while (!(check(TokenType.BRACKET) && match(")"))) {
                     if (!check(TokenType.COMMA)) {
                         params.add(expression());
                     }
@@ -998,7 +999,7 @@ public class Parser {
         // параметры
         ArrayList<Expression> params = new ArrayList<>();
         // конструктор
-        while (!match(")")) {
+        while (!(check(TokenType.BRACKET) && match(")"))) {
             if (!check(TokenType.COMMA)) {
                 params.add(expression());
             }

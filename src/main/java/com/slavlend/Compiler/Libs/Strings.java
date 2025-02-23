@@ -4,10 +4,10 @@ package com.slavlend.Compiler.Libs;
 Библиотека для работы со строками
  */
 public class Strings {
-    public Object replace(String from, String what, String to) {
+    public String replace(String from, String what, String to) {
         return from.replace(what,to);
     }
-    public Object split(String str, String delim) {
+    public Array split(String str, String delim) {
         String[] splitted = str.split(delim);
         Array arr = new Array();
         for (String s : splitted) {
@@ -15,13 +15,16 @@ public class Strings {
         }
         return arr;
     }
-    public Object at(String str, Float index) {
+    public String at(String str, Float index) {
         return String.valueOf(str.charAt(index.intValue()));
     }
-    public Object upper(String str) {
+    public String upper(String str) {
         return str.toUpperCase();
     }
-    public Object lower(String str) {
+    public String lower(String str) {
         return str.toLowerCase();
     }
+    public boolean is_letter(char str) {return Character.isLetter(str);}
+    public boolean is_number(char str) {return Character.isDigit(str);}
+
 }

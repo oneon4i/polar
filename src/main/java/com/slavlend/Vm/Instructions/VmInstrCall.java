@@ -111,17 +111,17 @@ public class VmInstrCall implements VmInstr {
         else {
             checkArgs(last.getClass().getName() + "::" + name, func.getParameterCount(), callArgs.size());
             try {
+                // 👇 ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
                 Object returned = func.invoke(last, callArgs.toArray());
-                // 👇 НЕ ВОЗВРАЩАЕТ NULL, ЕСЛИ ФУНКЦИЯ НИЧЕГО НЕ ВОЗВРАЩАЕТ
                 if (shouldPushResult) {
                     vm.push(returned);
                 }
             } catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
                 if (e.getCause() == null) {
-                    IceVm.logger.error(addr, e.getMessage());
+                    IceVm.logger.error(addr, e.getMessage(), last.getClass().getName() + "::" + name);
                 }
                 else {
-                    IceVm.logger.error(addr, e.getCause().toString());
+                    IceVm.logger.error(addr, e.getCause().toString(), last.getClass().getName() + "::" + name);
                 }
             }
         }
